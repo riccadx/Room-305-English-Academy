@@ -2,7 +2,7 @@ import React from 'react';
 import { GraduationCap, User, RefreshCw, Sparkles, BookOpen, ShieldCheck } from './Icons';
 import { dbService } from '../services/db';
 
-export default function Navbar({ currentUser, onUserChange, activeTab, setActiveTab }) {
+export default function Navbar({ currentUser, onUserChange, activeTab, setActiveTab, onLogout }) {
   const isTeacher = currentUser?.role === 'teacher';
 
   const handleToggleRole = () => {
@@ -96,6 +96,13 @@ export default function Navbar({ currentUser, onUserChange, activeTab, setActive
               <span className="user-role">{isTeacher ? 'Teacher / Admin' : 'Student'}</span>
             </div>
           </div>
+
+          {/* Logout Button */}
+          {onLogout && (
+            <button className="icon-btn logout-btn" onClick={onLogout} title="Log out to Animated Login Page">
+              <User className="w-4 h-4 text-rose" />
+            </button>
+          )}
 
           {/* Reset Demo Data Button */}
           <button className="icon-btn" onClick={() => dbService.resetToDefault()} title="Reset demo database">

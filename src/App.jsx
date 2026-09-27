@@ -1,24 +1,38 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Navbar from './components/Navbar';
 import TeacherDashboard from './components/TeacherDashboard';
 import LearnerDashboard from './components/LearnerDashboard';
 import LessonViewer from './components/LessonViewer';
 import InteractiveQuiz from './components/InteractiveQuiz';
 import ProgressReport from './components/ProgressReport';
+import WeeklyScheduleView from './components/WeeklyScheduleView';
+import AnimatedLogin from './components/AnimatedLogin';
 import { dbService } from './services/db';
 import './App.css';
 
-import WeeklyScheduleView from './components/WeeklyScheduleView';
-
 export default function App() {
   const [currentUser, setCurrentUser] = useState(dbService.getCurrentUser());
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [activeTab, setActiveTab] = useState('pathway'); // 'pathway' | 'feed' | 'manage' | 'create' | 'progress'
   
   // Modal / View states
   const [selectedLesson, setSelectedLesson] = useState(null);
   const [activeQuiz, setActiveQuiz] = useState(null);
 
-  // Sync activeTab when user switches roles
+  const handleLoginSuccess = (user) => {
+    setCurrentUser(user);
+    setIsAuthenticated(true);
+    if (user.role === 'teacher') {
+      setActiveTab('manage');
+    } else {
+      setActiveTab('pathway');
+    }
+  };
+
+  const handleLogout = () => {
+    setIsAuthenticated(false);
+  };
+
   const handleUserChange = (newUser) => {
     setCurrentUser(newUser);
     if (newUser.role === 'teacher') {
@@ -44,6 +58,11 @@ export default function App() {
 
   const isTeacher = currentUser?.role === 'teacher';
 
+  // If not authenticated, render Animated Login Screen
+  if (!isAuthenticated) {
+    return <AnimatedLogin onLoginSuccess={handleLoginSuccess} />;
+  }
+
   return (
     <div className="app-layout">
       {/* Top Navbar Header */}
@@ -52,6 +71,7 @@ export default function App() {
         onUserChange={handleUserChange}
         activeTab={activeTab}
         setActiveTab={setActiveTab}
+        onLogout={handleLogout}
       />
 
       {/* Main Body View Container */}
@@ -59,14 +79,14 @@ export default function App() {
         {activeTab === 'pathway' ? (
           <WeeklyScheduleView currentUser={currentUser} />
         ) : isTeacher ? (
-          // TEACHER PORTAL VIEWS
+          // TEACHER / EDUCATOR PORTAL VIEWS
           <TeacherDashboard
             activeTab={activeTab}
             setActiveTab={setActiveTab}
             onLessonSelect={handleOpenLesson}
           />
         ) : (
-          // LEARNER PORTAL VIEWS
+          // LEARNER / STUDENT PORTAL VIEWS
           <>
             {activeTab === 'progress' ? (
               <ProgressReport
@@ -112,6 +132,10 @@ export default function App() {
         <div className="footer-container">
           <p>© 2026 Room-305-English-Academy • Interactive English Learning Platform</p>
           <div className="footer-links">
+            <button className="footer-link-btn" onClick={() => handleLogout()}>
+              Switch Account / Sign Out
+            </button>
+            <span className="mx-2">•</span>
             <button className="footer-link-btn" onClick={() => dbService.resetToDefault()}>
               Reset Database Demo
             </button>
