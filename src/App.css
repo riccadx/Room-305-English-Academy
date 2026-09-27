@@ -351,6 +351,11 @@
   top: 50%;
   transform: translateY(-50%);
   color: var(--text-muted);
+  width: 16px !important;
+  height: 16px !important;
+  max-width: 16px !important;
+  max-height: 16px !important;
+  pointer-events: none;
 }
 
 .search-input {
@@ -386,6 +391,10 @@
   position: absolute;
   left: 0.85rem;
   color: var(--text-muted);
+  width: 16px !important;
+  height: 16px !important;
+  max-width: 16px !important;
+  max-height: 16px !important;
   pointer-events: none;
 }
 

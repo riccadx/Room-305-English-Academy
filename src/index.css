@@ -47,6 +47,25 @@ body {
   min-height: 100vh;
 }
 
+/* GLOBAL SVG ICON SAFETY RESTRICTION (PREVENTS GIANT OVERSIZED SVGS) */
+svg {
+  display: inline-block;
+  vertical-align: middle;
+  flex-shrink: 0;
+  max-width: 100%;
+}
+
+/* TAILWIND UTILITY ICON SIZES */
+.w-3\.5, .h-3\.5 { width: 0.875rem !important; height: 0.875rem !important; }
+.w-3, .h-3 { width: 0.75rem !important; height: 0.75rem !important; }
+.w-4, .h-4 { width: 1rem !important; height: 1rem !important; }
+.w-5, .h-5 { width: 1.25rem !important; height: 1.25rem !important; }
+.w-6, .h-6 { width: 1.5rem !important; height: 1.5rem !important; }
+.w-7, .h-7 { width: 1.75rem !important; height: 1.75rem !important; }
+.w-8, .h-8 { width: 2rem !important; height: 2rem !important; }
+.w-12, .h-12 { width: 3rem !important; height: 3rem !important; }
+.w-16, .h-16 { width: 4rem !important; height: 4rem !important; }
+
 /* Scrollbar Styling */
 ::-webkit-scrollbar {
   width: 8px;
