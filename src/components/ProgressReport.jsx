@@ -116,7 +116,7 @@ export default function ProgressReport({ currentUser, onOpenLesson }) {
           <Award className="w-8 h-8 text-yellow" />
           <div>
             <h3>Certificate of English Proficiency</h3>
-            <p className="text-sm text-muted">Issued by LinguaCraft Academy for module completion</p>
+            <p className="text-sm text-muted">Issued by Room 305 English Academy for module completion</p>
           </div>
         </div>
 
@@ -130,7 +130,7 @@ export default function ProgressReport({ currentUser, onOpenLesson }) {
             </div>
             <div className="cert-footer">
               <div>Date: {new Date().toLocaleDateString()}</div>
-              <div className="cert-seal">verified by LinguaCraft</div>
+              <div className="cert-seal">verified by Room 305 Academy</div>
             </div>
           </div>
         </div>
