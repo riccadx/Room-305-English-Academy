@@ -1,16 +1,47 @@
-# React + Vite
+# Room-305-English-Academy 🎓
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+A modern, full-featured web-based English learning application featuring two distinct user interfaces: **Teacher Portal** and **Learner Portal**.
 
-Currently, two official plugins are available:
+## 🌟 Key Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+### 👩‍🏫 Educator / Teacher Dashboard
+- **Content Creation & Management**: Create, edit, publish, and delete English study materials.
+- **Rich Text Formatting**: Built-in support for headings, teacher tips, callouts, and vocabulary tables.
+- **Multi-Media Attachments**: Support for MP3 listening clips, video embeds (YouTube/MP4), and downloadable PDF worksheets.
+- **Interactive Quiz Builder**: Attach multiple-choice quizzes with custom pedagogical explanation notes for learners.
 
-## React Compiler
+### 🧑‍🎓 Student / Learner Dashboard
+- **Course Feed & Module Explorer**: Filter lessons by category (*Grammar, Business, Vocabulary, Pronunciation*) or proficiency level (*Beginner, Intermediate, Advanced*).
+- **Interactive Lesson Reader**: Built-in audio player with speed controls (`0.8x`, `1.0x`, `1.25x`), video player, and PDF downloads.
+- **Step-by-Step Quiz Engine**: Real-time scoring, answer validation, detailed teacher explanations, and celebratory particle confetti.
+- **Learning Progress & Analytics**: Track streaks, XP, quiz scores, and view your Certificate of Accomplishment.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+---
 
-## Expanding the Oxlint configuration
+## 🚀 Quick Start
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and Oxlint's TypeScript related rules in your project.
+1. Install dependencies:
+   ```bash
+   npm install
+   ```
+
+2. Run local dev server:
+   ```bash
+   npm run dev
+   ```
+
+3. Build for production:
+   ```bash
+   npm run build
+   ```
+
+---
+
+## 📦 Deployment
+
+Link your remote repository and push:
+```bash
+git remote add origin https://github.com/riccadx/Room-305-English-Academy.git
+git push -u origin main
+```
+Deploy instantly on **Vercel** with automatic CI/CD.

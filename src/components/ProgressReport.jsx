@@ -130,7 +130,7 @@ export default function ProgressReport({ currentUser, onOpenLesson }) {
             </div>
             <div className="cert-footer">
               <div>Date: {new Date().toLocaleDateString()}</div>
-              <div className="cert-seal">verified by Room 305 Academy</div>
+              <div className="cert-seal">verified by Room-305-English-Academy</div>
             </div>
           </div>
         </div>

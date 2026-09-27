@@ -20,7 +20,7 @@ export default function Navbar({ currentUser, onUserChange, activeTab, setActive
             <GraduationCap className="w-6 h-6 text-indigo" />
           </div>
           <div className="brand-text">
-            <span className="brand-title">Room 305 <span className="brand-accent">Academy</span></span>
+            <span className="brand-title">Room-305-English-Academy</span>
             <span className="brand-subtitle">English Learning Portal</span>
           </div>
         </div>

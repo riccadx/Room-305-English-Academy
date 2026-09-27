@@ -106,7 +106,7 @@ export default function App() {
       {/* Footer */}
       <footer className="app-footer">
         <div className="footer-container">
-          <p>© 2026 Room 305 English Academy • Interactive English Learning Platform</p>
+          <p>© 2026 Room-305-English-Academy • Interactive English Learning Platform</p>
           <div className="footer-links">
             <button className="footer-link-btn" onClick={() => dbService.resetToDefault()}>
               Reset Database Demo
