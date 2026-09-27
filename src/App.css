@@ -1818,3 +1818,132 @@
   font-size: 0.8rem;
   color: var(--text-muted);
 }
+
+/* DASHBOARD SECTIONS 1 & 2 STYLES */
+.dashboard-section {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 20px;
+  padding: 1.75rem;
+}
+
+.section-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.section-heading {
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: #ffffff;
+}
+
+.section-subtext {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+/* WEEKLY SCHEDULE GRID (5 CARDS: MON - THU + VOCAB) */
+.weekly-schedule-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1.25rem;
+}
+
+.day-card {
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  padding: 1.25rem;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: all 0.25s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.day-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+}
+
+.card-monday:hover { border-color: #10b981; background: rgba(16, 185, 129, 0.1); }
+.card-tuesday:hover { border-color: #6366f1; background: rgba(99, 102, 241, 0.1); }
+.card-wednesday:hover { border-color: #f59e0b; background: rgba(245, 158, 11, 0.1); }
+.card-thursday:hover { border-color: #ef4444; background: rgba(239, 68, 68, 0.15); }
+.card-vocab:hover { border-color: #fbbf24; background: rgba(251, 191, 36, 0.1); }
+
+.day-badge {
+  font-size: 0.7rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  color: #a5b4fc;
+  margin-bottom: 0.5rem;
+}
+
+.badge-thursday { color: #fca5a5; }
+.badge-vocab { color: #fde047; }
+
+.day-icon {
+  margin-bottom: 0.5rem;
+}
+
+.day-title {
+  font-size: 1.15rem;
+  font-weight: 800;
+  margin-bottom: 0.4rem;
+  color: #ffffff;
+}
+
+.day-desc {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  line-height: 1.4;
+  margin-bottom: 1rem;
+}
+
+.day-action {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--primary-indigo);
+}
+
+/* SKILL HUBS GRID */
+.skill-hubs-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+}
+
+.skill-hub-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  padding: 1rem;
+  border-radius: 14px;
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid var(--border-color);
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 0.9rem;
+  transition: all 0.2s ease;
+}
+
+.skill-hub-btn:hover, .skill-hub-btn.active {
+  background: var(--primary-indigo-light);
+  border-color: var(--primary-indigo);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 14px rgba(99, 102, 241, 0.3);
+}
+
+@media (max-width: 900px) {
+  .skill-hubs-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+

@@ -78,6 +78,7 @@ export default function App() {
                 currentUser={currentUser}
                 onOpenLesson={handleOpenLesson}
                 onOpenQuiz={handleOpenQuiz}
+                onNavigateTab={(tabName) => setActiveTab(tabName)}
               />
             )}
           </>
