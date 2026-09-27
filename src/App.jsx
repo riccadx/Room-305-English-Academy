@@ -8,9 +8,11 @@ import ProgressReport from './components/ProgressReport';
 import { dbService } from './services/db';
 import './App.css';
 
+import WeeklyScheduleView from './components/WeeklyScheduleView';
+
 export default function App() {
   const [currentUser, setCurrentUser] = useState(dbService.getCurrentUser());
-  const [activeTab, setActiveTab] = useState('feed'); // 'feed' | 'manage' | 'create' | 'progress'
+  const [activeTab, setActiveTab] = useState('pathway'); // 'pathway' | 'feed' | 'manage' | 'create' | 'progress'
   
   // Modal / View states
   const [selectedLesson, setSelectedLesson] = useState(null);
@@ -22,7 +24,7 @@ export default function App() {
     if (newUser.role === 'teacher') {
       setActiveTab('manage');
     } else {
-      setActiveTab('feed');
+      setActiveTab('pathway');
     }
   };
 
@@ -54,8 +56,9 @@ export default function App() {
 
       {/* Main Body View Container */}
       <main className="main-content">
-        {/* Protected Routing Guard */}
-        {isTeacher ? (
+        {activeTab === 'pathway' ? (
+          <WeeklyScheduleView currentUser={currentUser} />
+        ) : isTeacher ? (
           // TEACHER PORTAL VIEWS
           <TeacherDashboard
             activeTab={activeTab}

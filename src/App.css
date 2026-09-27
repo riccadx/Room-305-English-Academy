@@ -1461,3 +1461,360 @@
   .viewer-modal-backdrop { padding: 0.5rem; }
   .viewer-modal-container { max-height: 98vh; }
 }
+
+/* 30-WEEK PATHWAY & JAPANESE HELP BUTTON STYLES */
+.curriculum-pathway-header {
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.2), rgba(139, 92, 246, 0.1));
+  border: 1px solid var(--border-highlight);
+  border-radius: 20px;
+  padding: 1.75rem;
+}
+
+.pathway-title-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.japanese-support-badge {
+  background: rgba(245, 158, 11, 0.2);
+  color: #fcd34d;
+  font-weight: 700;
+  font-size: 0.8rem;
+  padding: 0.35rem 0.75rem;
+  border-radius: 20px;
+  border: 1px solid rgba(245, 158, 11, 0.3);
+}
+
+.level-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+}
+
+.level-selector-card {
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid var(--border-color);
+  border-radius: 14px;
+  padding: 1rem;
+  text-align: left;
+  transition: all 0.2s ease;
+}
+
+.level-selector-card:hover {
+  border-color: rgba(255, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.level-selector-card.active.indigo {
+  background: rgba(99, 102, 241, 0.25);
+  border-color: var(--primary-indigo);
+}
+
+.level-selector-card.active.emerald {
+  background: rgba(16, 185, 129, 0.25);
+  border-color: var(--accent-emerald);
+}
+
+.level-selector-card.active.violet {
+  background: rgba(139, 92, 246, 0.25);
+  border-color: var(--accent-violet);
+}
+
+.level-card-name {
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: #ffffff;
+}
+
+.level-card-weeks {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--primary-indigo);
+  margin-bottom: 0.3rem;
+}
+
+.level-card-desc {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.week-selector-scroll {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  overflow-x: auto;
+  padding-bottom: 0.5rem;
+}
+
+.scroll-label {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+.week-pill {
+  padding: 0.35rem 0.85rem;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border-color);
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.week-pill:hover, .week-pill.active {
+  background: var(--primary-indigo);
+  color: #ffffff;
+  border-color: var(--primary-indigo);
+}
+
+.week-goal-banner {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  padding: 1.5rem;
+}
+
+.week-main-title {
+  font-size: 1.5rem;
+  font-weight: 800;
+  margin: 0.4rem 0;
+}
+
+.week-goal-text {
+  font-size: 0.95rem;
+  color: #d1d5db;
+}
+
+/* DAY TABS */
+.day-tabs-container {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.day-tabs-header {
+  display: flex;
+  background: rgba(0, 0, 0, 0.3);
+  border-bottom: 1px solid var(--border-color);
+  overflow-x: auto;
+}
+
+.day-tab-btn {
+  padding: 0.85rem 1.25rem;
+  background: transparent;
+  color: var(--text-muted);
+  font-weight: 700;
+  font-size: 0.85rem;
+  border-bottom: 3px solid transparent;
+  white-space: nowrap;
+  transition: all 0.2s ease;
+}
+
+.day-tab-btn:hover {
+  color: #ffffff;
+}
+
+.day-tab-btn.active {
+  color: var(--primary-indigo);
+  border-bottom-color: var(--primary-indigo);
+  background: rgba(99, 102, 241, 0.1);
+}
+
+.day-tab-btn.active.speaking-tab {
+  color: #fcd34d;
+  border-bottom-color: var(--accent-amber);
+  background: rgba(245, 158, 11, 0.1);
+}
+
+.day-tab-body {
+  padding: 1.75rem;
+}
+
+.transcript-box {
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 1.25rem;
+}
+
+.transcript-text {
+  font-family: var(--font-family);
+  white-space: pre-wrap;
+  color: #e5e7eb;
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+
+/* HELP BUTTON & POPOVER */
+.help-button-container {
+  display: inline-block;
+}
+
+.help-toggle-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.3rem 0.65rem;
+  border-radius: 8px;
+  background: rgba(245, 158, 11, 0.15);
+  border: 1px solid rgba(245, 158, 11, 0.3);
+  color: #fcd34d;
+  font-weight: 700;
+  font-size: 0.75rem;
+  transition: all 0.2s ease;
+}
+
+.help-toggle-btn:hover, .help-toggle-btn.active {
+  background: rgba(245, 158, 11, 0.3);
+  box-shadow: 0 2px 8px rgba(245, 158, 11, 0.25);
+}
+
+.help-content-popover {
+  margin-top: 0.5rem;
+  background: #1e1b4b;
+  border: 1px solid #6366f1;
+  border-radius: 10px;
+  padding: 0.85rem 1rem;
+  box-shadow: var(--shadow-lg);
+}
+
+.help-japanese-translation {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.help-jp-badge {
+  background: #4338ca;
+  color: #ffffff;
+  font-size: 0.7rem;
+  font-weight: 800;
+  padding: 0.15rem 0.4rem;
+  border-radius: 4px;
+}
+
+.help-jp-text {
+  font-weight: 700;
+  color: #a5b4fc;
+  font-size: 0.9rem;
+}
+
+.help-explanation-text {
+  font-size: 0.8rem;
+  color: #d1d5db;
+  margin-top: 0.4rem;
+}
+
+/* WEDNESDAY & THURSDAY SCRIPT PREP */
+.reading-passage-card {
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 1.25rem;
+}
+
+.passage-body {
+  font-size: 0.95rem;
+  line-height: 1.7;
+}
+
+.role-prep-box {
+  background: rgba(16, 185, 129, 0.08);
+  border: 1px solid rgba(16, 185, 129, 0.3);
+  border-radius: 14px;
+  padding: 1.5rem;
+}
+
+.roles-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-top: 0.75rem;
+}
+
+.role-card {
+  background: rgba(0, 0, 0, 0.25);
+  padding: 1rem;
+  border-radius: 10px;
+  font-size: 0.85rem;
+}
+
+/* THURSDAY SPEAKING */
+.speaking-hero-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: linear-gradient(135deg, rgba(245, 158, 11, 0.2), rgba(239, 68, 68, 0.1));
+  border: 1px solid rgba(245, 158, 11, 0.4);
+  border-radius: 16px;
+  padding: 1.5rem;
+}
+
+.btn-zoom {
+  background: linear-gradient(135deg, #2563eb, #1d4ed8) !important;
+  box-shadow: 0 4px 14px rgba(37, 99, 235, 0.4) !important;
+}
+
+.script-display-box {
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid var(--border-color);
+  padding: 1rem;
+  border-radius: 10px;
+  font-size: 0.9rem;
+  min-height: 80px;
+}
+
+.prompts-card {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--border-color);
+  padding: 1.25rem;
+  border-radius: 12px;
+}
+
+.prompts-card ul {
+  margin-left: 1.25rem;
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
+}
+
+/* VOCAB CARDS */
+.vocab-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.25rem;
+}
+
+.vocab-item-card {
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid var(--border-color);
+  border-radius: 14px;
+  padding: 1.25rem;
+}
+
+.vocab-word {
+  font-size: 1.2rem;
+  font-weight: 800;
+  color: var(--primary-indigo);
+}
+
+.vocab-pos {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+.vocab-meaning {
+  font-size: 0.85rem;
+  color: #e5e7eb;
+}
+
+.vocab-example {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}

@@ -30,6 +30,13 @@ export default function Navbar({ currentUser, onUserChange, activeTab, setActive
           {isTeacher ? (
             <>
               <button
+                className={`nav-link ${activeTab === 'pathway' ? 'active' : ''}`}
+                onClick={() => setActiveTab('pathway')}
+              >
+                <Sparkles className="w-4 h-4 text-amber" />
+                30-Week Pathway
+              </button>
+              <button
                 className={`nav-link ${activeTab === 'manage' ? 'active' : ''}`}
                 onClick={() => setActiveTab('manage')}
               >
@@ -46,6 +53,13 @@ export default function Navbar({ currentUser, onUserChange, activeTab, setActive
             </>
           ) : (
             <>
+              <button
+                className={`nav-link ${activeTab === 'pathway' ? 'active' : ''}`}
+                onClick={() => setActiveTab('pathway')}
+              >
+                <Sparkles className="w-4 h-4 text-amber" />
+                30-Week Pathway
+              </button>
               <button
                 className={`nav-link ${activeTab === 'feed' ? 'active' : ''}`}
                 onClick={() => setActiveTab('feed')}
