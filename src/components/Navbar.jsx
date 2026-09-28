@@ -78,15 +78,12 @@ export default function Navbar({ currentUser, onUserChange, activeTab, setActive
           )}
         </nav>
 
-        {/* Right Action Tools & Role Switcher */}
+        {/* Right Action Tools & Profile */}
         <div className="navbar-actions">
-          {/* Active Role Pill & Switcher */}
-          <button className="role-switch-btn" onClick={handleToggleRole} title="Click to switch between Teacher and Learner view">
-            <span className={`role-badge ${isTeacher ? 'teacher-badge' : 'learner-badge'}`}>
-              {isTeacher ? 'Educator Portal' : 'Learner Portal'}
-            </span>
-            <span className="role-switch-label">Switch to {isTeacher ? 'Learner' : 'Educator'}</span>
-          </button>
+          {/* Active Portal Badge (Non-clickable) */}
+          <span className={`role-badge ${isTeacher ? 'teacher-badge' : 'learner-badge'}`}>
+            {isTeacher ? 'Educator Portal' : 'Learner Portal'}
+          </span>
 
           {/* User Profile */}
           <div className="user-profile-pill">
@@ -97,10 +94,10 @@ export default function Navbar({ currentUser, onUserChange, activeTab, setActive
             </div>
           </div>
 
-          {/* Logout Button */}
+          {/* Logout / Sign Out Button */}
           {onLogout && (
-            <button className="icon-btn logout-btn" onClick={onLogout} title="Log out to Animated Login Page">
-              <User className="w-4 h-4 text-rose" />
+            <button className="primary-btn text-xs py-1.5 px-3" onClick={onLogout} title="Log out to Login / Register screen">
+              Sign Out
             </button>
           )}
 

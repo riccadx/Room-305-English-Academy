@@ -58,13 +58,48 @@ export const dbService = {
     return targetUser;
   },
 
+  loginUser(email, password) {
+    const users = this.getUsers();
+    const foundUser = users.find(u => u.email.toLowerCase() === email.trim().toLowerCase());
+    
+    if (!foundUser) {
+      // Fallback for default demo accounts if not matched by exact email
+      if (email.toLowerCase().includes('teacher') || email.toLowerCase().includes('sarah')) {
+        const teacher = users.find(u => u.role === 'teacher') || users[0];
+        this.setCurrentUser(teacher);
+        return teacher;
+      } else {
+        const learner = users.find(u => u.role === 'learner') || users[1];
+        this.setCurrentUser(learner);
+        return learner;
+      }
+    }
+
+    this.setCurrentUser(foundUser);
+    return foundUser;
+  },
+
   registerUser(userData) {
     const users = this.getUsers();
+    const existing = users.find(u => u.email.toLowerCase() === userData.email.trim().toLowerCase());
+    if (existing) {
+      this.setCurrentUser(existing);
+      return existing;
+    }
+
+    const defaultAvatar = userData.role === 'teacher'
+      ? 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=150&auto=format&fit=crop&q=80'
+      : 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80';
+
     const newUser = {
       id: 'usr_' + Date.now(),
       createdAt: new Date().toISOString(),
+      avatar: defaultAvatar,
+      streak: 1,
+      xp: 100,
       ...userData
     };
+
     users.push(newUser);
     localStorage.setItem(KEYS.USERS, JSON.stringify(users));
     this.setCurrentUser(newUser);
