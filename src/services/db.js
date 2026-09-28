@@ -58,33 +58,41 @@ export const dbService = {
     return targetUser;
   },
 
-  loginUser(email, password) {
+  loginUser(email, password, fallbackRole = 'learner') {
     const users = this.getUsers();
     const foundUser = users.find(u => u.email.toLowerCase() === email.trim().toLowerCase());
     
-    if (!foundUser) {
-      // Fallback for default demo accounts if not matched by exact email
-      if (email.toLowerCase().includes('teacher') || email.toLowerCase().includes('sarah')) {
-        const teacher = users.find(u => u.role === 'teacher') || users[0];
-        this.setCurrentUser(teacher);
-        return teacher;
-      } else {
-        const learner = users.find(u => u.role === 'learner') || users[1];
-        this.setCurrentUser(learner);
-        return learner;
-      }
+    if (foundUser) {
+      this.setCurrentUser(foundUser);
+      return foundUser;
     }
 
-    this.setCurrentUser(foundUser);
-    return foundUser;
+    // If user typed email containing teacher/sarah or passed fallbackRole === 'teacher'
+    const targetRole = (email.toLowerCase().includes('teacher') || email.toLowerCase().includes('sarah') || fallbackRole === 'teacher')
+      ? 'teacher'
+      : 'learner';
+
+    const targetUser = users.find(u => u.role === targetRole) || users[0];
+    this.setCurrentUser(targetUser);
+    return targetUser;
   },
 
   registerUser(userData) {
     const users = this.getUsers();
-    const existing = users.find(u => u.email.toLowerCase() === userData.email.trim().toLowerCase());
-    if (existing) {
-      this.setCurrentUser(existing);
-      return existing;
+    const cleanEmail = userData.email.trim().toLowerCase();
+    
+    // Check if user already exists
+    const existingIndex = users.findIndex(u => u.email.toLowerCase() === cleanEmail);
+    if (existingIndex !== -1) {
+      users[existingIndex] = {
+        ...users[existingIndex],
+        ...userData,
+        email: cleanEmail,
+        role: userData.role || users[existingIndex].role || 'learner'
+      };
+      localStorage.setItem(KEYS.USERS, JSON.stringify(users));
+      this.setCurrentUser(users[existingIndex]);
+      return users[existingIndex];
     }
 
     const defaultAvatar = userData.role === 'teacher'
@@ -97,7 +105,10 @@ export const dbService = {
       avatar: defaultAvatar,
       streak: 1,
       xp: 100,
-      ...userData
+      name: userData.name || 'User',
+      email: cleanEmail,
+      password: userData.password || '••••••••',
+      role: userData.role || 'learner'
     };
 
     users.push(newUser);

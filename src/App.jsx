@@ -76,12 +76,10 @@ export default function App() {
 
       {/* Main Body View Container */}
       <main className="main-content">
-        {activeTab === 'pathway' ? (
-          <WeeklyScheduleView currentUser={currentUser} />
-        ) : isTeacher ? (
-          // TEACHER / EDUCATOR PORTAL VIEWS
+        {isTeacher ? (
+          // TEACHER / EDUCATOR PORTAL VIEWS (Strictly Educator Dashboard)
           <TeacherDashboard
-            activeTab={activeTab}
+            activeTab={activeTab === 'pathway' ? 'manage' : activeTab}
             setActiveTab={setActiveTab}
             onLessonSelect={handleOpenLesson}
           />
@@ -93,13 +91,15 @@ export default function App() {
                 currentUser={currentUser}
                 onOpenLesson={handleOpenLesson}
               />
-            ) : (
+            ) : activeTab === 'feed' ? (
               <LearnerDashboard
                 currentUser={currentUser}
                 onOpenLesson={handleOpenLesson}
                 onOpenQuiz={handleOpenQuiz}
                 onNavigateTab={(tabName) => setActiveTab(tabName)}
               />
+            ) : (
+              <WeeklyScheduleView currentUser={currentUser} />
             )}
           </>
         )}

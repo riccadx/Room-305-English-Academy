@@ -68,7 +68,7 @@ export default function AnimatedLogin({ onLoginSuccess }) {
 
   const handleSignIn = (e) => {
     e.preventDefault();
-    const user = dbService.loginUser(email, password);
+    const user = dbService.loginUser(email, password, selectedRole);
     startCircularAuthProcess(user);
   };
 
