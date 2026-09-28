@@ -115,9 +115,44 @@ export default function AnimatedLogin({ onLoginSuccess }) {
 
   return (
     <div className={`animated-login-backdrop role-${selectedRole}`}>
-      {/* Background Ambient Glow Circles */}
-      <div className="login-bg-glow glow-1" />
-      <div className="login-bg-glow glow-2" />
+      {/* Dynamic Animated Background Scene */}
+      <div className="login-bg-scene">
+        <div className="login-bg-grid" />
+        <div className="login-bg-glow glow-1" />
+        <div className="login-bg-glow glow-2" />
+        <div className="login-bg-glow glow-center" />
+
+        {/* Floating Background English Academy Badges */}
+        <div className="bg-floating-badge badge-top-left">
+          <span>🎧 Listening & Audio Hub</span>
+        </div>
+        <div className="bg-floating-badge badge-top-right">
+          <span>🗓️ Thursday 30-Min Live Speaking</span>
+        </div>
+        <div className="bg-floating-badge badge-bottom-left">
+          <span>💡 Try English First (ヒント)</span>
+        </div>
+        <div className="bg-floating-badge badge-bottom-right">
+          <span>📚 30-Week Learning Pathway</span>
+        </div>
+        <div className="bg-floating-badge badge-mid-left">
+          <span>✍️ Mon-Thu Self Study</span>
+        </div>
+        <div className="bg-floating-badge badge-mid-right">
+          <span>🇬🇧 Room-305 Academy</span>
+        </div>
+
+        {/* Animated Floating Words in Background */}
+        <div className="bg-word-stream">
+          <span className="bg-word word-1">Fluency</span>
+          <span className="bg-word word-2">Confidence</span>
+          <span className="bg-word word-3">Pronunciation</span>
+          <span className="bg-word word-4">Vocabulary</span>
+          <span className="bg-word word-5">Listening</span>
+          <span className="bg-word word-6">Speaking</span>
+        </div>
+      </div>
+
 
       {/* FULL CIRCULAR DOWNLOAD / AUTHENTICATION OVERLAY */}
       {isAuthenticating && (
