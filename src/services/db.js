@@ -58,23 +58,33 @@ export const dbService = {
     return targetUser;
   },
 
-  loginUser(email, password, fallbackRole = 'learner') {
+  loginUser(email, password) {
     const users = this.getUsers();
-    const foundUser = users.find(u => u.email.toLowerCase() === email.trim().toLowerCase());
+    const cleanEmail = email.trim().toLowerCase();
     
-    if (foundUser) {
-      this.setCurrentUser(foundUser);
-      return foundUser;
+    // Strict exact email lookup in registered users database
+    const foundUser = users.find(u => u.email.toLowerCase() === cleanEmail);
+    
+    if (!foundUser) {
+      return { 
+        success: false, 
+        message: 'Account not found in database. Please click "Register / Sign Up" to create an account first.' 
+      };
     }
 
-    // If user typed email containing teacher/sarah or passed fallbackRole === 'teacher'
-    const targetRole = (email.toLowerCase().includes('teacher') || email.toLowerCase().includes('sarah') || fallbackRole === 'teacher')
-      ? 'teacher'
-      : 'learner';
+    // Validate password if user set a custom password
+    if (foundUser.password && password && foundUser.password !== '••••••••' && foundUser.password !== password) {
+      return { 
+        success: false, 
+        message: 'Incorrect password. Please check your password and try again.' 
+      };
+    }
 
-    const targetUser = users.find(u => u.role === targetRole) || users[0];
-    this.setCurrentUser(targetUser);
-    return targetUser;
+    this.setCurrentUser(foundUser);
+    return { 
+      success: true, 
+      user: foundUser 
+    };
   },
 
   registerUser(userData) {

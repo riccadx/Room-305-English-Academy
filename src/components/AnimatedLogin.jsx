@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { GraduationCap, User, ShieldCheck, Sparkles, Plus, Check } from './Icons';
+import { GraduationCap, User, ShieldCheck, Sparkles, Plus, Check, AlertTriangle } from './Icons';
 import { dbService } from '../services/db';
 
 export default function AnimatedLogin({ onLoginSuccess }) {
@@ -10,6 +10,7 @@ export default function AnimatedLogin({ onLoginSuccess }) {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('alex.rivera@student.edu');
   const [password, setPassword] = useState('••••••••');
+  const [errorMessage, setErrorMessage] = useState('');
   
   // Circular Download / Progress Loading State
   const [isAuthenticating, setIsAuthenticating] = useState(false);
@@ -19,6 +20,7 @@ export default function AnimatedLogin({ onLoginSuccess }) {
 
   const handleRoleToggle = (role) => {
     setSelectedRole(role);
+    setErrorMessage('');
     if (authMode === 'signin') {
       if (role === 'learner') {
         setEmail('alex.rivera@student.edu');
@@ -45,7 +47,7 @@ export default function AnimatedLogin({ onLoginSuccess }) {
       setProgressPercent(currentPercent);
 
       if (currentPercent < 30) {
-        setStatusMessage('🔐 Verifying Account & Credentials...');
+        setStatusMessage('🔐 Verifying Account & Database Record...');
       } else if (currentPercent < 65) {
         setStatusMessage(userObj.role === 'learner' 
           ? '📚 Loading Student Dashboard & 30-Week Pathway...' 
@@ -68,12 +70,20 @@ export default function AnimatedLogin({ onLoginSuccess }) {
 
   const handleSignIn = (e) => {
     e.preventDefault();
-    const user = dbService.loginUser(email, password, selectedRole);
-    startCircularAuthProcess(user);
+    setErrorMessage('');
+
+    const result = dbService.loginUser(email, password);
+    if (!result.success) {
+      setErrorMessage(result.message);
+      return;
+    }
+
+    startCircularAuthProcess(result.user);
   };
 
   const handleRegister = (e) => {
     e.preventDefault();
+    setErrorMessage('');
     if (!name.trim()) return;
 
     const newUser = dbService.registerUser({
@@ -87,6 +97,7 @@ export default function AnimatedLogin({ onLoginSuccess }) {
   };
 
   const handleQuickDemo = (role) => {
+    setErrorMessage('');
     const user = dbService.switchRole(role);
     setSelectedRole(role);
     startCircularAuthProcess(user);
@@ -165,7 +176,7 @@ export default function AnimatedLogin({ onLoginSuccess }) {
             </div>
             <h1 className="hero-brand-title">Room-305<br /><span className="brand-accent">English Academy</span></h1>
             <p className="hero-brand-desc">
-              Weekly Self-Study + Thursday 30-Minute Live Online Speaking Class.
+              Weekly Self-Study + Thursday 30-Minute Live Online Speaking Portal.
             </p>
           </div>
 
@@ -198,7 +209,10 @@ export default function AnimatedLogin({ onLoginSuccess }) {
               <button
                 type="button"
                 className={`auth-mode-btn ${authMode === 'signin' ? 'active' : ''}`}
-                onClick={() => setAuthMode('signin')}
+                onClick={() => {
+                  setAuthMode('signin');
+                  setErrorMessage('');
+                }}
               >
                 Sign In
               </button>
@@ -207,6 +221,7 @@ export default function AnimatedLogin({ onLoginSuccess }) {
                 className={`auth-mode-btn ${authMode === 'register' ? 'active' : ''}`}
                 onClick={() => {
                   setAuthMode('register');
+                  setErrorMessage('');
                   setName('');
                   setEmail('');
                 }}
@@ -224,10 +239,18 @@ export default function AnimatedLogin({ onLoginSuccess }) {
               </h2>
               <p className="form-card-subtitle">
                 {authMode === 'signin'
-                  ? 'Enter your email & password to access your assigned portal.'
+                  ? 'Enter your registered email & password to enter your portal.'
                   : 'Register as a Student or Educator to save your progress permanently.'}
               </p>
             </div>
+
+            {/* Error Message Alert */}
+            {errorMessage && (
+              <div className="login-error-alert mt-3 animate-fadeIn">
+                <AlertTriangle className="w-4 h-4" />
+                <span>{errorMessage}</span>
+              </div>
+            )}
 
             {/* SIGN IN FORM */}
             {authMode === 'signin' && (
@@ -256,7 +279,7 @@ export default function AnimatedLogin({ onLoginSuccess }) {
                   />
                 </div>
 
-                <button type="submit" className="login-submit-btn mt-6">
+                <button type="submit" className="login-submit-btn mt-5">
                   <Sparkles className="w-4 h-4" />
                   Sign In & Enter Portal
                 </button>
@@ -331,8 +354,8 @@ export default function AnimatedLogin({ onLoginSuccess }) {
           </div>
 
           <div>
-            <div className="quick-demo-divider mt-5">
-              <span>Instant Demo Login</span>
+            <div className="quick-demo-divider mt-4">
+              <span>Instant Demo Access</span>
             </div>
 
             <div className="quick-demo-buttons mt-3">
