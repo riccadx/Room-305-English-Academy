@@ -2628,6 +2628,110 @@
   filter: drop-shadow(0 10px 20px rgba(99, 102, 241, 0.35));
 }
 
+/* ==========================================================================
+   FLOATING BACKGROUND CARTOON CHARACTERS (FOX, CAT, PANDA, ROBOT)
+   ========================================================================== */
+.background-cartoons-layer {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  z-index: 2;
+}
+
+.bg-cartoon-wrapper {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  filter: drop-shadow(0 12px 24px rgba(0, 0, 0, 0.5));
+  transition: transform 0.3s ease;
+}
+
+.cartoon-fox { top: 10%; left: 3.5%; }
+.cartoon-cat { top: 12%; right: 4%; }
+.cartoon-panda { bottom: 6%; left: 4.5%; }
+.cartoon-robot { bottom: 8%; right: 4%; }
+
+.cartoon-speech-tag {
+  background: rgba(15, 23, 42, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #f8fafc;
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 0.35rem 0.75rem;
+  border-radius: 12px;
+  margin-bottom: 0.3rem;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4);
+  white-space: nowrap;
+  position: relative;
+}
+
+.cartoon-speech-tag::after {
+  content: '';
+  position: absolute;
+  bottom: -6px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-width: 6px 5px 0 5px;
+  border-style: solid;
+  border-color: rgba(15, 23, 42, 0.9) transparent transparent transparent;
+}
+
+.cartoon-svg {
+  transform-origin: center bottom;
+}
+
+/* Individual Cartoon Animations */
+.float-anim-1 { animation: floatCartoon1 5s ease-in-out infinite; }
+.float-anim-2 { animation: floatCartoon2 6s ease-in-out infinite; }
+.float-anim-3 { animation: floatCartoon3 5.5s ease-in-out infinite; }
+.float-anim-4 { animation: floatCartoon4 4.5s ease-in-out infinite; }
+
+@keyframes floatCartoon1 {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-14px) rotate(2deg); }
+}
+
+@keyframes floatCartoon2 {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-18px) rotate(-2.5deg); }
+}
+
+@keyframes floatCartoon3 {
+  0%, 100% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(-12px) scale(1.03); }
+}
+
+@keyframes floatCartoon4 {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-16px) rotate(1.8deg); }
+}
+
+.note-float-1 { animation: noteFloat 2.5s infinite ease-out; }
+.note-float-2 { animation: noteFloat 3s infinite ease-out 0.8s; }
+
+@keyframes noteFloat {
+  0% { transform: translateY(0) scale(0.8); opacity: 0; }
+  50% { opacity: 1; }
+  100% { transform: translateY(-20px) scale(1.2); opacity: 0; }
+}
+
+.pulse-glow-dot {
+  animation: dotGlow 1.5s infinite alternate;
+}
+
+@keyframes dotGlow {
+  from { opacity: 0.5; filter: drop-shadow(0 0 2px #f59e0b); }
+  to { opacity: 1; filter: drop-shadow(0 0 8px #f59e0b); }
+}
+
+@media (max-width: 1024px) {
+  .bg-cartoon-wrapper {
+    display: none; /* Hide background side cartoons on small screens to prevent clutter */
+  }
+}
+
+
 
 
 

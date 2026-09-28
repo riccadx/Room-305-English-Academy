@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { GraduationCap, User, ShieldCheck, Sparkles, Plus, Check, AlertTriangle } from './Icons';
 import { dbService } from '../services/db';
 import EnglishMascot from './EnglishMascot';
+import BackgroundCartoons from './BackgroundCartoons';
 
 export default function AnimatedLogin({ onLoginSuccess }) {
   const [authMode, setAuthMode] = useState('signin'); // 'signin' | 'register'
@@ -122,6 +123,9 @@ export default function AnimatedLogin({ onLoginSuccess }) {
         <div className="login-bg-glow glow-2" />
         <div className="login-bg-glow glow-center" />
 
+        {/* Animated Background Cartoon Characters Layer */}
+        <BackgroundCartoons />
+
         {/* Floating Background English Academy Badges */}
         <div className="bg-floating-badge badge-top-left">
           <span>🎧 Listening & Audio Hub</span>
@@ -152,6 +156,7 @@ export default function AnimatedLogin({ onLoginSuccess }) {
           <span className="bg-word word-6">Speaking</span>
         </div>
       </div>
+
 
 
       {/* FULL CIRCULAR DOWNLOAD / AUTHENTICATION OVERLAY */}
