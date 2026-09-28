@@ -2725,11 +2725,91 @@
   to { opacity: 1; filter: drop-shadow(0 0 8px #f59e0b); }
 }
 
+.pointer-events-auto {
+  pointer-events: auto !important;
+}
+
+.bg-cartoon-wrapper:hover {
+  transform: scale(1.08) translateY(-4px);
+}
+
+.play-tap-hint {
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: #a5b4fc;
+  margin-top: 0.25rem;
+  opacity: 0.75;
+  transition: opacity 0.2s ease;
+  background: rgba(0, 0, 0, 0.5);
+  padding: 0.15rem 0.5rem;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.bg-cartoon-wrapper:hover .play-tap-hint {
+  opacity: 1;
+  color: #ffffff;
+  border-color: rgba(99, 102, 241, 0.5);
+  background: rgba(99, 102, 241, 0.3);
+}
+
+/* Interactive Cartoon Animation Trigger Classes */
+.cartoon-spin-anim {
+  animation: cartoonSpin 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.cartoon-bounce-anim {
+  animation: cartoonBounce 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.cartoon-jump-anim {
+  animation: cartoonJumpHigh 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.cartoon-shake-anim {
+  animation: cartoonShake 0.6s ease-in-out;
+}
+
+@keyframes cartoonSpin {
+  0% { transform: scale(1) rotate(0deg); }
+  50% { transform: scale(1.2) rotate(180deg) translateY(-20px); }
+  100% { transform: scale(1) rotate(360deg); }
+}
+
+@keyframes cartoonBounce {
+  0%, 100% { transform: scale(1) translateY(0); }
+  30% { transform: scale(1.25) translateY(-25px); }
+  60% { transform: scale(0.9) translateY(5px); }
+}
+
+@keyframes cartoonJumpHigh {
+  0%, 100% { transform: scale(1) translateY(0); }
+  40% { transform: scale(1.18) translateY(-30px) rotate(-8deg); }
+  70% { transform: scale(0.95) translateY(3px); }
+}
+
+@keyframes cartoonShake {
+  0%, 100% { transform: translateX(0); }
+  20%, 60% { transform: translateX(-8px) rotate(-6deg); }
+  40%, 80% { transform: translateX(8px) rotate(6deg); }
+}
+
+.bounce-pop {
+  animation: popBounce 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes popBounce {
+  0% { transform: scale(0.7); opacity: 0.5; }
+  50% { transform: scale(1.15); opacity: 1; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
 @media (max-width: 1024px) {
   .bg-cartoon-wrapper {
     display: none; /* Hide background side cartoons on small screens to prevent clutter */
   }
 }
+
 
 
 
