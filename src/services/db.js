@@ -8,6 +8,30 @@ const KEYS = {
   PROGRESS: 'lingua_progress_v1'
 };
 
+export const GOOGLE_SHEETS_URL = 'https://script.google.com/macros/s/AKfycbxM3lZVOF0b9OsPST73U0PDa8RtQ4z7qBL2whEVbCewOU6GTjmD1CY6ejh_0cJM5BjO/exec';
+
+// Real-time background sync helper for Google Sheets
+async function syncToGoogleSheet(action, data) {
+  if (!GOOGLE_SHEETS_URL) return;
+  try {
+    const payload = {
+      action,
+      timestamp: new Date().toLocaleString(),
+      ...data
+    };
+    await fetch(GOOGLE_SHEETS_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: {
+        'Content-Type': 'text/plain'
+      },
+      body: JSON.stringify(payload)
+    });
+  } catch (err) {
+    console.warn('Google Sheets sync notice:', err);
+  }
+}
+
 export const dbService = {
   // Initialize storage with seeds if empty
   init() {
@@ -81,6 +105,14 @@ export const dbService = {
     }
 
     this.setCurrentUser(foundUser);
+
+    // Sync login activity event to Google Sheet
+    syncToGoogleSheet('LOGIN_USER', {
+      name: foundUser.name,
+      email: foundUser.email,
+      role: foundUser.role
+    });
+
     return { 
       success: true, 
       user: foundUser 
@@ -102,6 +134,13 @@ export const dbService = {
       };
       localStorage.setItem(KEYS.USERS, JSON.stringify(users));
       this.setCurrentUser(users[existingIndex]);
+
+      syncToGoogleSheet('UPDATE_USER', {
+        name: users[existingIndex].name,
+        email: users[existingIndex].email,
+        role: users[existingIndex].role
+      });
+
       return users[existingIndex];
     }
 
@@ -124,6 +163,17 @@ export const dbService = {
     users.push(newUser);
     localStorage.setItem(KEYS.USERS, JSON.stringify(users));
     this.setCurrentUser(newUser);
+
+    // Sync registration live to Google Sheet database
+    syncToGoogleSheet('REGISTER_USER', {
+      id: newUser.id,
+      name: newUser.name,
+      email: newUser.email,
+      password: newUser.password,
+      role: newUser.role,
+      createdAt: newUser.createdAt
+    });
+
     return newUser;
   },
 
@@ -165,6 +215,15 @@ export const dbService = {
     }
 
     localStorage.setItem(KEYS.LESSONS, JSON.stringify(lessons));
+
+    // Sync lesson creation to Google Sheets
+    syncToGoogleSheet('SAVE_LESSON', {
+      id: lessonData.id,
+      title: lessonData.title,
+      level: lessonData.level,
+      authorName: currentUser?.name || 'Teacher'
+    });
+
     return lessonData;
   },
 
@@ -177,6 +236,8 @@ export const dbService = {
     let quizzes = this.getQuizzes();
     quizzes = quizzes.filter(q => q.lessonId !== lessonId);
     localStorage.setItem(KEYS.QUIZZES, JSON.stringify(quizzes));
+
+    syncToGoogleSheet('DELETE_LESSON', { lessonId });
   },
 
   toggleLessonPublish(lessonId) {
@@ -185,6 +246,7 @@ export const dbService = {
     if (lesson) {
       lesson.published = !lesson.published;
       localStorage.setItem(KEYS.LESSONS, JSON.stringify(lessons));
+      syncToGoogleSheet('TOGGLE_LESSON_PUBLISH', { lessonId, published: lesson.published });
     }
   },
 
@@ -213,6 +275,8 @@ export const dbService = {
     }
 
     localStorage.setItem(KEYS.QUIZZES, JSON.stringify(quizzes));
+
+    syncToGoogleSheet('SAVE_QUIZ', { lessonId: quizData.lessonId, title: quizData.title });
   },
 
   // LEARNER PROGRESS TRACKING
@@ -248,8 +312,19 @@ export const dbService = {
     };
 
     localStorage.setItem(KEYS.PROGRESS, JSON.stringify(allProgress));
+
+    // Sync learner progress to Google Sheets
+    syncToGoogleSheet('SAVE_PROGRESS', {
+      userId,
+      lessonId,
+      score: newScore,
+      maxScore: maxScore || 0,
+      attempts
+    });
+
     return allProgress[userId];
   }
 };
 
 dbService.init();
+

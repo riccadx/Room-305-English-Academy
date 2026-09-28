@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { GraduationCap, User, ShieldCheck, Sparkles, Plus, Check, AlertTriangle } from './Icons';
 import { dbService } from '../services/db';
+import EnglishMascot from './EnglishMascot';
 
 export default function AnimatedLogin({ onLoginSuccess }) {
   const [authMode, setAuthMode] = useState('signin'); // 'signin' | 'register'
@@ -11,6 +12,10 @@ export default function AnimatedLogin({ onLoginSuccess }) {
   const [email, setEmail] = useState('alex.rivera@student.edu');
   const [password, setPassword] = useState('••••••••');
   const [errorMessage, setErrorMessage] = useState('');
+
+  // Interactive Mascot Input Focus States
+  const [isFocusedOnEmail, setIsFocusedOnEmail] = useState(false);
+  const [isFocusedOnPassword, setIsFocusedOnPassword] = useState(false);
   
   // Circular Download / Progress Loading State
   const [isAuthenticating, setIsAuthenticating] = useState(false);
@@ -168,14 +173,18 @@ export default function AnimatedLogin({ onLoginSuccess }) {
       )}
 
       <div className="animated-login-container">
-        {/* Left Hero Side */}
-        <div className="login-hero-side">
+        {/* Left Hero Side with Interactive Eddie Mascot */}
+        <div className="login-hero-side flex flex-col justify-between">
           <div>
-            <div className="hero-brand-icon">
-              <GraduationCap className="w-10 h-10 text-indigo" />
-            </div>
-            <h1 className="hero-brand-title">Room-305<br /><span className="brand-accent">English Academy</span></h1>
-            <p className="hero-brand-desc">
+            {/* Live Interactive Cartoon Mascot */}
+            <EnglishMascot 
+              isFocusedOnPassword={isFocusedOnPassword}
+              isFocusedOnEmail={isFocusedOnEmail}
+              role={selectedRole}
+            />
+
+            <h1 className="hero-brand-title text-center">Room-305<br /><span className="brand-accent">English Academy</span></h1>
+            <p className="hero-brand-desc text-center">
               Weekly Self-Study + Thursday 30-Minute Live Online Speaking Portal.
             </p>
           </div>
@@ -262,6 +271,8 @@ export default function AnimatedLogin({ onLoginSuccess }) {
                     required
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
+                    onFocus={() => setIsFocusedOnEmail(true)}
+                    onBlur={() => setIsFocusedOnEmail(false)}
                     className="form-input login-input"
                     placeholder="enter@room305.edu"
                   />
@@ -274,6 +285,8 @@ export default function AnimatedLogin({ onLoginSuccess }) {
                     required
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
+                    onFocus={() => setIsFocusedOnPassword(true)}
+                    onBlur={() => setIsFocusedOnPassword(false)}
                     className="form-input login-input"
                     placeholder="Password"
                   />
@@ -308,6 +321,8 @@ export default function AnimatedLogin({ onLoginSuccess }) {
                     required
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
+                    onFocus={() => setIsFocusedOnEmail(true)}
+                    onBlur={() => setIsFocusedOnEmail(false)}
                     className="form-input login-input"
                     placeholder="e.g. yuki.tanaka@student.edu"
                   />
@@ -320,6 +335,8 @@ export default function AnimatedLogin({ onLoginSuccess }) {
                     required
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
+                    onFocus={() => setIsFocusedOnPassword(true)}
+                    onBlur={() => setIsFocusedOnPassword(false)}
                     className="form-input login-input"
                     placeholder="Choose a password"
                   />
@@ -380,3 +397,4 @@ export default function AnimatedLogin({ onLoginSuccess }) {
     </div>
   );
 }
+
