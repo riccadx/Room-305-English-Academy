@@ -2909,33 +2909,191 @@ body.day-mode .filter-select {
 }
 
 body.day-mode .navbar {
-  background: rgba(255, 255, 255, 0.92);
-  border-bottom-color: rgba(15, 23, 42, 0.1);
+  background: rgba(255, 255, 255, 0.96);
+  border-bottom-color: rgba(15, 23, 42, 0.12);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
 }
 
 body.day-mode .brand-title {
   color: #0f172a;
+  font-weight: 800;
 }
 
-body.day-mode .bg-floating-badge {
-  background: rgba(255, 255, 255, 0.75);
-  color: #334155;
-  border-color: rgba(15, 23, 42, 0.12);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+body.day-mode .brand-subtitle {
+  color: #475569;
+  font-weight: 700;
 }
 
-body.day-mode .bg-word {
-  color: rgba(15, 23, 42, 0.04);
+body.day-mode .nav-link {
+  color: #334155 !important;
+  font-weight: 700 !important;
 }
 
+body.day-mode .nav-link:hover,
+body.day-mode .nav-link.active {
+  color: #4f46e5 !important;
+  background: rgba(79, 70, 229, 0.14) !important;
+}
+
+body.day-mode .teacher-badge {
+  background: #f3e8ff !important;
+  color: #6b21a8 !important;
+  border: 1px solid #c084fc !important;
+  font-weight: 800 !important;
+}
+
+body.day-mode .learner-badge {
+  background: #d1fae5 !important;
+  color: #065f46 !important;
+  border: 1px solid #6ee7b7 !important;
+  font-weight: 800 !important;
+}
+
+body.day-mode .user-name {
+  color: #0f172a !important;
+  font-weight: 800 !important;
+}
+
+body.day-mode .user-role {
+  color: #334155 !important;
+  font-weight: 700 !important;
+}
+
+/* METRIC CARDS IN DAY MODE */
+body.day-mode .bg-gradient-indigo {
+  background: linear-gradient(135deg, #e0e7ff, #ffffff) !important;
+  border: 1.5px solid #a5b4fc !important;
+  box-shadow: 0 4px 15px rgba(99, 102, 241, 0.12) !important;
+}
+
+body.day-mode .bg-gradient-emerald {
+  background: linear-gradient(135deg, #d1fae5, #ffffff) !important;
+  border: 1.5px solid #6ee7b7 !important;
+  box-shadow: 0 4px 15px rgba(16, 185, 129, 0.12) !important;
+}
+
+body.day-mode .bg-gradient-violet {
+  background: linear-gradient(135deg, #ede9fe, #ffffff) !important;
+  border: 1.5px solid #c4b5fd !important;
+  box-shadow: 0 4px 15px rgba(139, 92, 246, 0.12) !important;
+}
+
+body.day-mode .metric-header {
+  color: #334155 !important;
+}
+
+body.day-mode .metric-title {
+  color: #1e293b !important;
+  font-weight: 800 !important;
+}
+
+body.day-mode .metric-value {
+  color: #0f172a !important;
+  font-weight: 900 !important;
+}
+
+body.day-mode .metric-subtext {
+  color: #334155 !important;
+  font-weight: 700 !important;
+}
+
+/* TABLE & CARDS IN DAY MODE */
 body.day-mode .custom-table th {
-  background: rgba(0, 0, 0, 0.03);
-  color: #64748b;
+  background: #f1f5f9 !important;
+  color: #1e293b !important;
+  font-weight: 800 !important;
+  border-bottom: 2px solid #cbd5e1 !important;
+}
+
+body.day-mode .custom-table td {
+  border-bottom: 1px solid #e2e8f0 !important;
+  color: #0f172a !important;
 }
 
 body.day-mode .table-lesson-title .title-text {
-  color: #0f172a;
+  color: #0f172a !important;
+  font-weight: 800 !important;
 }
+
+body.day-mode .table-lesson-title .date-subtext {
+  color: #475569 !important;
+  font-weight: 600 !important;
+}
+
+body.day-mode .module-tags .badge-level {
+  background: #f1f5f9 !important;
+  color: #1e293b !important;
+  border: 1px solid #cbd5e1 !important;
+  font-weight: 700 !important;
+}
+
+body.day-mode .module-tags .badge-module {
+  background: #e0e7ff !important;
+  color: #3730a3 !important;
+  border: 1px solid #a5b4fc !important;
+  font-weight: 700 !important;
+}
+
+body.day-mode .status-pill.published {
+  background: #d1fae5 !important;
+  color: #065f46 !important;
+  font-weight: 800 !important;
+}
+
+body.day-mode .status-pill.draft {
+  background: #f1f5f9 !important;
+  color: #475569 !important;
+  font-weight: 700 !important;
+}
+
+body.day-mode .secondary-btn {
+  background: #ffffff !important;
+  border-color: #cbd5e1 !important;
+  color: #0f172a !important;
+  font-weight: 700 !important;
+}
+
+body.day-mode .secondary-btn:hover {
+  background: #f8fafc !important;
+  border-color: #94a3b8 !important;
+}
+
+body.day-mode .tab-pills {
+  background: #e2e8f0 !important;
+  border-color: #cbd5e1 !important;
+}
+
+body.day-mode .tab-btn {
+  color: #334155 !important;
+  font-weight: 700 !important;
+}
+
+body.day-mode .tab-btn.active {
+  background: #ffffff !important;
+  color: #0f172a !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
+}
+
+body.day-mode .lessons-table-card,
+body.day-mode .form-card,
+body.day-mode .quiz-question-card,
+body.day-mode .lesson-modal-card {
+  background: #ffffff !important;
+  border-color: #cbd5e1 !important;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08) !important;
+}
+
+body.day-mode .bg-floating-badge {
+  background: rgba(255, 255, 255, 0.85);
+  color: #1e293b;
+  border-color: rgba(15, 23, 42, 0.15);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+}
+
+body.day-mode .bg-word {
+  color: rgba(15, 23, 42, 0.05);
+}
+
 
 
 

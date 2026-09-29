@@ -52,24 +52,25 @@ body {
 body.day-mode {
   --bg-color: #f1f5f9;
   --bg-surface: #ffffff;
-  --bg-card: rgba(255, 255, 255, 0.92);
+  --bg-card: rgba(255, 255, 255, 0.95);
   --bg-card-hover: rgba(241, 245, 249, 0.95);
   
-  --border-color: rgba(15, 23, 42, 0.12);
-  --border-highlight: rgba(79, 70, 229, 0.35);
+  --border-color: rgba(15, 23, 42, 0.15);
+  --border-highlight: rgba(79, 70, 229, 0.4);
 
   --text-main: #0f172a;
-  --text-muted: #64748b;
-  --text-dark: #0f172a;
+  --text-muted: #334155;
+  --text-dark: #000000;
 
   --primary-indigo: #4f46e5;
   --primary-indigo-hover: #4338ca;
-  --primary-indigo-light: rgba(79, 70, 229, 0.12);
+  --primary-indigo-light: rgba(79, 70, 229, 0.14);
 
-  --shadow-sm: 0 2px 4px rgba(0,0,0,0.05);
-  --shadow-md: 0 4px 20px rgba(0,0,0,0.08);
-  --shadow-lg: 0 10px 30px rgba(0,0,0,0.12);
+  --shadow-sm: 0 2px 4px rgba(0,0,0,0.06);
+  --shadow-md: 0 4px 20px rgba(0,0,0,0.1);
+  --shadow-lg: 0 10px 30px rgba(0,0,0,0.15);
 }
+
 
 
 /* GLOBAL SVG ICON SAFETY RESTRICTION (PREVENTS GIANT OVERSIZED SVGS) */
