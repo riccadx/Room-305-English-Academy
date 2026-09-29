@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import { GraduationCap, User, ShieldCheck, Sparkles, Plus, Check, AlertTriangle } from './Icons';
+import { GraduationCap, User, ShieldCheck, Sparkles, Plus, Check, AlertTriangle, Sun, Moon } from './Icons';
 import { dbService } from '../services/db';
 import EnglishMascot from './EnglishMascot';
 import BackgroundCartoons from './BackgroundCartoons';
 
-export default function AnimatedLogin({ onLoginSuccess }) {
+export default function AnimatedLogin({ onLoginSuccess, isDayMode, onToggleTheme }) {
   const [authMode, setAuthMode] = useState('signin'); // 'signin' | 'register'
   const [selectedRole, setSelectedRole] = useState('learner'); // 'learner' | 'teacher'
 
@@ -116,6 +116,18 @@ export default function AnimatedLogin({ onLoginSuccess }) {
 
   return (
     <div className={`animated-login-backdrop role-${selectedRole}`}>
+      {/* Top Corner Day/Night Theme Toggler */}
+      {onToggleTheme && (
+        <button
+          className="login-corner-theme-btn"
+          onClick={onToggleTheme}
+          title={isDayMode ? "Switch to Night Mode 🌙" : "Switch to Day Mode ☀️"}
+        >
+          {isDayMode ? <Moon className="w-4 h-4 text-indigo" /> : <Sun className="w-4 h-4 text-amber" />}
+          <span>{isDayMode ? 'Night Mode' : 'Day Mode'}</span>
+        </button>
+      )}
+
       {/* Dynamic Animated Background Scene */}
       <div className="login-bg-scene">
         <div className="login-bg-grid" />
@@ -156,6 +168,7 @@ export default function AnimatedLogin({ onLoginSuccess }) {
           <span className="bg-word word-6">Speaking</span>
         </div>
       </div>
+
 
 
 

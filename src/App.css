@@ -2810,6 +2810,134 @@
   }
 }
 
+/* ==========================================================================
+   DAY / NIGHT MODE TOGGLE BUTTONS & THEME STYLES
+   ========================================================================== */
+.theme-toggle-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.45rem 0.85rem;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--border-color);
+  color: var(--text-main);
+  font-size: 0.8rem;
+  font-weight: 700;
+  transition: all 0.25s ease;
+  cursor: pointer;
+}
+
+.theme-toggle-btn:hover {
+  background: rgba(255, 255, 255, 0.18);
+  border-color: var(--primary-indigo);
+  transform: translateY(-1px);
+}
+
+.login-corner-theme-btn {
+  position: absolute;
+  top: 1.25rem;
+  right: 1.25rem;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  background: rgba(15, 23, 42, 0.75);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+  font-size: 0.8rem;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  transition: all 0.25s ease;
+}
+
+.login-corner-theme-btn:hover {
+  transform: scale(1.05);
+  border-color: var(--primary-indigo);
+}
+
+/* DAY MODE VISUAL OVERRIDES */
+body.day-mode .theme-toggle-btn {
+  background: rgba(15, 23, 42, 0.06);
+  border-color: rgba(15, 23, 42, 0.12);
+  color: #0f172a;
+}
+
+body.day-mode .login-corner-theme-btn {
+  background: rgba(255, 255, 255, 0.9);
+  color: #0f172a;
+  border-color: rgba(15, 23, 42, 0.15);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+}
+
+body.day-mode .animated-login-backdrop {
+  background: #cbd5e1;
+}
+
+body.day-mode .animated-login-backdrop.role-teacher {
+  background: #ddd6fe;
+}
+
+body.day-mode .animated-login-container {
+  background: rgba(255, 255, 255, 0.94);
+  border-color: rgba(15, 23, 42, 0.12);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.12);
+}
+
+body.day-mode .login-hero-side {
+  background: linear-gradient(135deg, rgba(79, 70, 229, 0.08), rgba(241, 245, 249, 0.95));
+  border-right-color: rgba(15, 23, 42, 0.08);
+}
+
+body.day-mode .hero-brand-title,
+body.day-mode .form-card-title {
+  color: #0f172a;
+}
+
+body.day-mode .login-input,
+body.day-mode .search-input,
+body.day-mode .form-input,
+body.day-mode .form-textarea,
+body.day-mode .filter-select {
+  background: #ffffff !important;
+  color: #0f172a !important;
+  border-color: rgba(15, 23, 42, 0.18) !important;
+}
+
+body.day-mode .navbar {
+  background: rgba(255, 255, 255, 0.92);
+  border-bottom-color: rgba(15, 23, 42, 0.1);
+}
+
+body.day-mode .brand-title {
+  color: #0f172a;
+}
+
+body.day-mode .bg-floating-badge {
+  background: rgba(255, 255, 255, 0.75);
+  color: #334155;
+  border-color: rgba(15, 23, 42, 0.12);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+}
+
+body.day-mode .bg-word {
+  color: rgba(15, 23, 42, 0.04);
+}
+
+body.day-mode .custom-table th {
+  background: rgba(0, 0, 0, 0.03);
+  color: #64748b;
+}
+
+body.day-mode .table-lesson-title .title-text {
+  color: #0f172a;
+}
+
+
 
 
 

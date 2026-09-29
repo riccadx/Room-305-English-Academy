@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Navbar from './components/Navbar';
 import TeacherDashboard from './components/TeacherDashboard';
 import LearnerDashboard from './components/LearnerDashboard';
@@ -14,6 +14,27 @@ export default function App() {
   const [currentUser, setCurrentUser] = useState(dbService.getCurrentUser());
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [activeTab, setActiveTab] = useState('pathway'); // 'pathway' | 'feed' | 'manage' | 'create' | 'progress'
+
+  // Day / Night Theme Mode State ('night' | 'day')
+  const [isDayMode, setIsDayMode] = useState(() => {
+    return localStorage.getItem('lingua_theme_v1') === 'day';
+  });
+
+  const toggleDayNightMode = () => {
+    setIsDayMode((prev) => {
+      const nextMode = !prev;
+      localStorage.setItem('lingua_theme_v1', nextMode ? 'day' : 'night');
+      return nextMode;
+    });
+  };
+
+  useEffect(() => {
+    if (isDayMode) {
+      document.body.classList.add('day-mode');
+    } else {
+      document.body.classList.remove('day-mode');
+    }
+  }, [isDayMode]);
   
   // Modal / View states
   const [selectedLesson, setSelectedLesson] = useState(null);
@@ -60,7 +81,13 @@ export default function App() {
 
   // If not authenticated, render Animated Login Screen
   if (!isAuthenticated) {
-    return <AnimatedLogin onLoginSuccess={handleLoginSuccess} />;
+    return (
+      <AnimatedLogin 
+        onLoginSuccess={handleLoginSuccess}
+        isDayMode={isDayMode}
+        onToggleTheme={toggleDayNightMode}
+      />
+    );
   }
 
   return (
@@ -72,7 +99,10 @@ export default function App() {
         activeTab={activeTab}
         setActiveTab={setActiveTab}
         onLogout={handleLogout}
+        isDayMode={isDayMode}
+        onToggleTheme={toggleDayNightMode}
       />
+
 
       {/* Main Body View Container */}
       <main className="main-content">

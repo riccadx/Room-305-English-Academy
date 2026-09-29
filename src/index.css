@@ -45,7 +45,32 @@ body {
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   min-height: 100vh;
+  transition: background-color 0.4s ease, color 0.4s ease;
 }
+
+/* DAY / LIGHT MODE THEME OVERRIDES */
+body.day-mode {
+  --bg-color: #f1f5f9;
+  --bg-surface: #ffffff;
+  --bg-card: rgba(255, 255, 255, 0.92);
+  --bg-card-hover: rgba(241, 245, 249, 0.95);
+  
+  --border-color: rgba(15, 23, 42, 0.12);
+  --border-highlight: rgba(79, 70, 229, 0.35);
+
+  --text-main: #0f172a;
+  --text-muted: #64748b;
+  --text-dark: #0f172a;
+
+  --primary-indigo: #4f46e5;
+  --primary-indigo-hover: #4338ca;
+  --primary-indigo-light: rgba(79, 70, 229, 0.12);
+
+  --shadow-sm: 0 2px 4px rgba(0,0,0,0.05);
+  --shadow-md: 0 4px 20px rgba(0,0,0,0.08);
+  --shadow-lg: 0 10px 30px rgba(0,0,0,0.12);
+}
+
 
 /* GLOBAL SVG ICON SAFETY RESTRICTION (PREVENTS GIANT OVERSIZED SVGS) */
 svg {

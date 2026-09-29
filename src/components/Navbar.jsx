@@ -1,8 +1,8 @@
 import React from 'react';
-import { GraduationCap, User, RefreshCw, Sparkles, BookOpen, ShieldCheck } from './Icons';
+import { GraduationCap, User, RefreshCw, Sparkles, BookOpen, ShieldCheck, Sun, Moon } from './Icons';
 import { dbService } from '../services/db';
 
-export default function Navbar({ currentUser, onUserChange, activeTab, setActiveTab, onLogout }) {
+export default function Navbar({ currentUser, onUserChange, activeTab, setActiveTab, onLogout, isDayMode, onToggleTheme }) {
   const isTeacher = currentUser?.role === 'teacher';
 
   const handleToggleRole = () => {
@@ -80,6 +80,18 @@ export default function Navbar({ currentUser, onUserChange, activeTab, setActive
 
         {/* Right Action Tools & Profile */}
         <div className="navbar-actions">
+          {/* Day / Night Theme Toggle Button */}
+          {onToggleTheme && (
+            <button
+              className="theme-toggle-btn"
+              onClick={onToggleTheme}
+              title={isDayMode ? "Switch to Night Mode 🌙" : "Switch to Day Mode ☀️"}
+            >
+              {isDayMode ? <Moon className="w-4 h-4 text-indigo" /> : <Sun className="w-4 h-4 text-amber" />}
+              <span className="theme-toggle-label">{isDayMode ? 'Night Mode' : 'Day Mode'}</span>
+            </button>
+          )}
+
           {/* Active Portal Badge (Non-clickable) */}
           <span className={`role-badge ${isTeacher ? 'teacher-badge' : 'learner-badge'}`}>
             {isTeacher ? 'Educator Portal' : 'Learner Portal'}
@@ -110,3 +122,4 @@ export default function Navbar({ currentUser, onUserChange, activeTab, setActive
     </header>
   );
 }
+
