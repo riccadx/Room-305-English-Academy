@@ -177,6 +177,32 @@ export const dbService = {
     return newUser;
   },
 
+  updateUserAvatar(userId, avatarConfig) {
+    const users = this.getUsers();
+    const index = users.findIndex(u => u.id === userId);
+    if (index !== -1) {
+      users[index].avatarConfig = avatarConfig;
+      localStorage.setItem(KEYS.USERS, JSON.stringify(users));
+      
+      const currentUser = this.getCurrentUser();
+      if (currentUser && currentUser.id === userId) {
+        currentUser.avatarConfig = avatarConfig;
+        this.setCurrentUser(currentUser);
+      }
+
+      syncToGoogleSheet('UPDATE_AVATAR', {
+        userId,
+        character: avatarConfig.character,
+        accessory: avatarConfig.accessory,
+        bgGlow: avatarConfig.bgGlow
+      });
+
+      return users[index];
+    }
+    return null;
+  },
+
+
   // LESSON MANAGEMENT (TEACHER CRUD)
   getLessons() {
     return JSON.parse(localStorage.getItem(KEYS.LESSONS) || '[]');

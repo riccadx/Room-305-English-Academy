@@ -1,14 +1,24 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { GraduationCap, User, RefreshCw, Sparkles, BookOpen, ShieldCheck, Sun, Moon } from './Icons';
 import { dbService } from '../services/db';
+import AvatarDesignerModal, { RenderAvatar } from './AvatarDesignerModal';
 
 export default function Navbar({ currentUser, onUserChange, activeTab, setActiveTab, onLogout, isDayMode, onToggleTheme }) {
   const isTeacher = currentUser?.role === 'teacher';
+  const [showAvatarDesigner, setShowAvatarDesigner] = useState(false);
 
   const handleToggleRole = () => {
     const nextRole = isTeacher ? 'learner' : 'teacher';
     const newUser = dbService.switchRole(nextRole);
     onUserChange(newUser);
+  };
+
+  const handleSaveAvatar = (avatarConfig) => {
+    if (currentUser) {
+      const updatedUser = dbService.updateUserAvatar(currentUser.id, avatarConfig);
+      onUserChange(updatedUser || currentUser);
+      setShowAvatarDesigner(false);
+    }
   };
 
   return (
@@ -97,11 +107,22 @@ export default function Navbar({ currentUser, onUserChange, activeTab, setActive
             {isTeacher ? 'Educator Portal' : 'Learner Portal'}
           </span>
 
-          {/* User Profile */}
-          <div className="user-profile-pill">
-            <img src={currentUser?.avatar} alt={currentUser?.name} className="user-avatar" />
+          {/* User Profile - Clickable to redesign avatar */}
+          <div 
+            className="user-profile-pill cursor-pointer hover:opacity-90 transition"
+            onClick={() => setShowAvatarDesigner(true)}
+            title="Click to customize your cartoon profile avatar!"
+          >
+            {currentUser?.avatarConfig ? (
+              <RenderAvatar config={currentUser.avatarConfig} size={36} className="user-avatar" />
+            ) : (
+              <img src={currentUser?.avatar} alt={currentUser?.name} className="user-avatar" />
+            )}
             <div className="user-info">
-              <span className="user-name">{currentUser?.name}</span>
+              <span className="user-name flex items-center gap-1">
+                {currentUser?.name}
+                <Sparkles className="w-3 h-3 text-amber inline" />
+              </span>
               <span className="user-role">{isTeacher ? 'Teacher / Admin' : 'Student'}</span>
             </div>
           </div>
@@ -119,7 +140,17 @@ export default function Navbar({ currentUser, onUserChange, activeTab, setActive
           </button>
         </div>
       </div>
+
+      {/* Avatar Redesign Modal */}
+      {showAvatarDesigner && (
+        <AvatarDesignerModal
+          user={currentUser}
+          onSave={handleSaveAvatar}
+          onClose={() => setShowAvatarDesigner(false)}
+        />
+      )}
     </header>
   );
 }
+
 

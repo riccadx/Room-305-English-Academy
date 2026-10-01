@@ -3,6 +3,7 @@ import { GraduationCap, User, ShieldCheck, Sparkles, Plus, Check, AlertTriangle,
 import { dbService } from '../services/db';
 import EnglishMascot from './EnglishMascot';
 import BackgroundCartoons from './BackgroundCartoons';
+import AvatarDesignerModal from './AvatarDesignerModal';
 
 export default function AnimatedLogin({ onLoginSuccess, isDayMode, onToggleTheme }) {
   const [authMode, setAuthMode] = useState('signin'); // 'signin' | 'register'
@@ -13,6 +14,9 @@ export default function AnimatedLogin({ onLoginSuccess, isDayMode, onToggleTheme
   const [email, setEmail] = useState('alex.rivera@student.edu');
   const [password, setPassword] = useState('••••••••');
   const [errorMessage, setErrorMessage] = useState('');
+
+  // First-Time Registration Cartoon Avatar Customization
+  const [pendingNewUser, setPendingNewUser] = useState(null);
 
   // Interactive Mascot Input Focus States
   const [isFocusedOnEmail, setIsFocusedOnEmail] = useState(false);
@@ -99,7 +103,16 @@ export default function AnimatedLogin({ onLoginSuccess, isDayMode, onToggleTheme
       role: selectedRole
     });
 
-    startCircularAuthProcess(newUser);
+    // Open First-Time Avatar Designer Modal!
+    setPendingNewUser(newUser);
+  };
+
+  const handleSaveAvatar = (avatarConfig) => {
+    if (pendingNewUser) {
+      const updatedUser = dbService.updateUserAvatar(pendingNewUser.id, avatarConfig);
+      setPendingNewUser(null);
+      startCircularAuthProcess(updatedUser || pendingNewUser);
+    }
   };
 
   const handleQuickDemo = (role) => {
@@ -108,6 +121,7 @@ export default function AnimatedLogin({ onLoginSuccess, isDayMode, onToggleTheme
     setSelectedRole(role);
     startCircularAuthProcess(user);
   };
+
 
   // SVG Circular Ring parameters
   const radius = 54;
@@ -447,7 +461,16 @@ export default function AnimatedLogin({ onLoginSuccess, isDayMode, onToggleTheme
           </div>
         </div>
       </div>
+
+      {/* FIRST-TIME REGISTRATION CARTOON AVATAR DESIGNER MODAL */}
+      {pendingNewUser && (
+        <AvatarDesignerModal
+          user={pendingNewUser}
+          onSave={handleSaveAvatar}
+        />
+      )}
     </div>
   );
 }
+
 
