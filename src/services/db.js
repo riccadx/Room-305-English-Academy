@@ -84,15 +84,16 @@ export const dbService = {
 
   loginUser(email, password) {
     const users = this.getUsers();
-    const cleanEmail = email.trim().toLowerCase();
+    const cleanEmail = (email || '').trim().toLowerCase();
     
-    // Strict exact email lookup in registered users database
-    const foundUser = users.find(u => u.email.toLowerCase() === cleanEmail);
+    // Exact email lookup in registered users database (case-insensitive & trimmed)
+    const foundUser = users.find(u => (u.email || '').trim().toLowerCase() === cleanEmail);
     
     if (!foundUser) {
       return { 
         success: false, 
-        message: 'Account not found in database. Please click "Register / Sign Up" to create an account first.' 
+        notFound: true,
+        message: `Account "${cleanEmail}" not found in database. Click "Register Now" below to create it instantly!` 
       };
     }
 
@@ -100,6 +101,7 @@ export const dbService = {
     if (foundUser.password && password && foundUser.password !== '••••••••' && foundUser.password !== password) {
       return { 
         success: false, 
+        notFound: false,
         message: 'Incorrect password. Please check your password and try again.' 
       };
     }

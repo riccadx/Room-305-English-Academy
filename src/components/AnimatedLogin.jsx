@@ -17,6 +17,7 @@ export default function AnimatedLogin({ onLoginSuccess, isDayMode, onToggleTheme
 
   // First-Time Registration Cartoon Avatar Customization
   const [pendingNewUser, setPendingNewUser] = useState(null);
+  const [accountNotFound, setAccountNotFound] = useState(false);
 
   // Interactive Mascot Input Focus States
   const [isFocusedOnEmail, setIsFocusedOnEmail] = useState(false);
@@ -31,6 +32,7 @@ export default function AnimatedLogin({ onLoginSuccess, isDayMode, onToggleTheme
   const handleRoleToggle = (role) => {
     setSelectedRole(role);
     setErrorMessage('');
+    setAccountNotFound(false);
     if (authMode === 'signin') {
       if (role === 'learner') {
         setEmail('alex.rivera@student.edu');
@@ -81,10 +83,14 @@ export default function AnimatedLogin({ onLoginSuccess, isDayMode, onToggleTheme
   const handleSignIn = (e) => {
     e.preventDefault();
     setErrorMessage('');
+    setAccountNotFound(false);
 
     const result = dbService.loginUser(email, password);
     if (!result.success) {
       setErrorMessage(result.message);
+      if (result.notFound) {
+        setAccountNotFound(true);
+      }
       return;
     }
 
@@ -92,12 +98,14 @@ export default function AnimatedLogin({ onLoginSuccess, isDayMode, onToggleTheme
   };
 
   const handleRegister = (e) => {
-    e.preventDefault();
+    if (e) e.preventDefault();
     setErrorMessage('');
-    if (!name.trim()) return;
+    setAccountNotFound(false);
+
+    const effectiveName = name.trim() || email.split('@')[0] || 'Learner';
 
     const newUser = dbService.registerUser({
-      name: name.trim(),
+      name: effectiveName,
       email: email.trim(),
       password: password,
       role: selectedRole
@@ -105,6 +113,10 @@ export default function AnimatedLogin({ onLoginSuccess, isDayMode, onToggleTheme
 
     // Open First-Time Avatar Designer Modal!
     setPendingNewUser(newUser);
+  };
+
+  const handleQuickRegisterFromLogin = () => {
+    handleRegister();
   };
 
   const handleSaveAvatar = (avatarConfig) => {
@@ -298,8 +310,7 @@ export default function AnimatedLogin({ onLoginSuccess, isDayMode, onToggleTheme
                 onClick={() => {
                   setAuthMode('register');
                   setErrorMessage('');
-                  setName('');
-                  setEmail('');
+                  setAccountNotFound(false);
                 }}
               >
                 Register / Sign Up
@@ -322,9 +333,27 @@ export default function AnimatedLogin({ onLoginSuccess, isDayMode, onToggleTheme
 
             {/* Error Message Alert */}
             {errorMessage && (
-              <div className="login-error-alert mt-3 animate-fadeIn">
-                <AlertTriangle className="w-4 h-4" />
-                <span>{errorMessage}</span>
+              <div className="login-error-alert mt-3 animate-fadeIn flex flex-col gap-2">
+                <div className="flex items-center gap-2">
+                  <AlertTriangle className="w-4 h-4 flex-shrink-0 text-amber" />
+                  <span>{errorMessage}</span>
+                </div>
+                {accountNotFound && email && (
+                  <button
+                    type="button"
+                    onClick={handleQuickRegisterFromLogin}
+                    className="mt-1 py-2 px-3 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs flex items-center justify-center gap-2 transition shadow-md cursor-pointer"
+                    style={{
+                      background: 'linear-gradient(135deg, #6366f1, #8b5cf6)',
+                      border: 'none',
+                      color: '#ffffff',
+                      fontWeight: 800
+                    }}
+                  >
+                    <Sparkles className="w-4 h-4 text-amber" />
+                    Register "{email}" Now & Launch Studio 🚀
+                  </button>
+                )}
               </div>
             )}
 
