@@ -32,14 +32,50 @@ async function syncToGoogleSheet(action, data) {
   }
 }
 
+// Fetch live database from Google Sheets on startup
+export async function fetchLiveGoogleSheetData() {
+  if (!GOOGLE_SHEETS_URL) return null;
+  try {
+    const res = await fetch(GOOGLE_SHEETS_URL + '?action=GET_ALL');
+    if (!res.ok) return null;
+    const data = await res.json();
+    if (data && Array.isArray(data.users)) {
+      const localUsers = JSON.parse(localStorage.getItem(KEYS.USERS) || '[]');
+      const userMap = new Map();
+
+      localUsers.forEach(u => userMap.set(u.email.toLowerCase(), u));
+      data.users.forEach(u => {
+        if (u.email) {
+          const existing = userMap.get(u.email.toLowerCase()) || {};
+          let parsedAvatar = u.avatarConfig;
+          if (typeof parsedAvatar === 'string' && parsedAvatar.startsWith('{')) {
+            try { parsedAvatar = JSON.parse(parsedAvatar); } catch(e){}
+          }
+          userMap.set(u.email.toLowerCase(), {
+            ...existing,
+            ...u,
+            avatarConfig: parsedAvatar || existing.avatarConfig
+          });
+        }
+      });
+
+      const mergedUsers = Array.from(userMap.values());
+      localStorage.setItem(KEYS.USERS, JSON.stringify(mergedUsers));
+      return mergedUsers;
+    }
+  } catch (err) {
+    console.warn('Google Sheets fetch notice:', err);
+  }
+  return null;
+}
+
 export const dbService = {
-  // Initialize storage with seeds if empty
+  // Initialize storage with seeds if empty & trigger cloud fetch
   init() {
     if (!localStorage.getItem(KEYS.USERS)) {
       localStorage.setItem(KEYS.USERS, JSON.stringify(DEFAULT_USERS));
     }
     if (!localStorage.getItem(KEYS.CURRENT_USER)) {
-      // Default logged in as Teacher for convenient demo, or Learner
       localStorage.setItem(KEYS.CURRENT_USER, JSON.stringify(DEFAULT_USERS[0]));
     }
     if (!localStorage.getItem(KEYS.LESSONS)) {
@@ -51,6 +87,9 @@ export const dbService = {
     if (!localStorage.getItem(KEYS.PROGRESS)) {
       localStorage.setItem(KEYS.PROGRESS, JSON.stringify(DEFAULT_PROGRESS));
     }
+
+    // Trigger silent cloud sync from Google Sheets
+    fetchLiveGoogleSheetData();
   },
 
   resetToDefault() {
