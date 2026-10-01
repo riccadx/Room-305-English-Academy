@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { GraduationCap, User, ShieldCheck, Sparkles, Plus, Check, AlertTriangle, Sun, Moon } from './Icons';
-import { dbService } from '../services/db';
+import { dbService, TEACHER_PASSCODE } from '../services/db';
 import EnglishMascot from './EnglishMascot';
 import BackgroundCartoons from './BackgroundCartoons';
 import AvatarDesignerModal from './AvatarDesignerModal';
@@ -13,7 +13,14 @@ export default function AnimatedLogin({ onLoginSuccess, isDayMode, onToggleTheme
   const [name, setName] = useState('');
   const [email, setEmail] = useState('alex.rivera@student.edu');
   const [password, setPassword] = useState('••••••••');
+  const [teacherPasscode, setTeacherPasscode] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
+
+  // Teacher Passcode Modal Verification State
+  const [showPasscodeModal, setShowPasscodeModal] = useState(false);
+  const [passcodeModalInput, setPasscodeModalInput] = useState('');
+  const [passcodeModalError, setPasscodeModalError] = useState('');
+  const [pendingTeacherAction, setPendingTeacherAction] = useState(null);
 
   // First-Time Registration Cartoon Avatar Customization
   const [pendingNewUser, setPendingNewUser] = useState(null);
@@ -39,6 +46,21 @@ export default function AnimatedLogin({ onLoginSuccess, isDayMode, onToggleTheme
       } else {
         setEmail('sarah.jenkins@lingua.edu');
       }
+    }
+  };
+
+  const verifyPasscodeModal = (e) => {
+    if (e) e.preventDefault();
+    if (passcodeModalInput.trim() !== TEACHER_PASSCODE) {
+      setPasscodeModalError('❌ Incorrect Passcode. Only authorized teachers can access Educator Portal.');
+      return;
+    }
+    setPasscodeModalError('');
+    setShowPasscodeModal(false);
+    setPasscodeModalInput('');
+    if (pendingTeacherAction) {
+      pendingTeacherAction();
+      setPendingTeacherAction(null);
     }
   };
 
@@ -85,6 +107,12 @@ export default function AnimatedLogin({ onLoginSuccess, isDayMode, onToggleTheme
     setErrorMessage('');
     setAccountNotFound(false);
 
+    // If teacher role, verify passcode
+    if (selectedRole === 'teacher' && teacherPasscode.trim() !== TEACHER_PASSCODE) {
+      setErrorMessage('⛔ Teacher Access Denied: Incorrect Teacher Passcode.');
+      return;
+    }
+
     const result = dbService.loginUser(email, password, selectedRole);
     if (!result.success) {
       setErrorMessage(result.message);
@@ -106,6 +134,12 @@ export default function AnimatedLogin({ onLoginSuccess, isDayMode, onToggleTheme
     if (e) e.preventDefault();
     setErrorMessage('');
     setAccountNotFound(false);
+
+    // If teacher role, verify passcode
+    if (selectedRole === 'teacher' && teacherPasscode.trim() !== TEACHER_PASSCODE) {
+      setErrorMessage('⛔ Teacher Access Denied: Incorrect Teacher Passcode.');
+      return;
+    }
 
     const effectiveName = name.trim() || email.split('@')[0] || 'Learner';
 
@@ -134,6 +168,16 @@ export default function AnimatedLogin({ onLoginSuccess, isDayMode, onToggleTheme
 
   const handleQuickDemo = (role) => {
     setErrorMessage('');
+    if (role === 'teacher') {
+      // Prompt for passcode modal
+      setPendingTeacherAction(() => () => {
+        const user = dbService.switchRole('teacher');
+        setSelectedRole('teacher');
+        startCircularAuthProcess(user);
+      });
+      setShowPasscodeModal(true);
+      return;
+    }
     const user = dbService.switchRole(role);
     setSelectedRole(role);
     startCircularAuthProcess(user);
@@ -393,6 +437,23 @@ export default function AnimatedLogin({ onLoginSuccess, isDayMode, onToggleTheme
                   />
                 </div>
 
+                {selectedRole === 'teacher' && (
+                  <div className="form-group mt-3 animate-fadeIn">
+                    <label className="form-label text-amber-300 font-bold flex items-center gap-1">
+                      🔑 Teacher Secret Passcode *
+                    </label>
+                    <input
+                      type="password"
+                      required
+                      value={teacherPasscode}
+                      onChange={(e) => setTeacherPasscode(e.target.value)}
+                      className="form-input login-input"
+                      style={{ border: '1px solid #f59e0b' }}
+                      placeholder="Enter Master Teacher Passcode"
+                    />
+                  </div>
+                )}
+
                 <button type="submit" className="login-submit-btn mt-5">
                   <Sparkles className="w-4 h-4" />
                   Sign In & Enter Portal
@@ -463,6 +524,23 @@ export default function AnimatedLogin({ onLoginSuccess, isDayMode, onToggleTheme
                   </div>
                 </div>
 
+                {selectedRole === 'teacher' && (
+                  <div className="form-group mt-3 animate-fadeIn">
+                    <label className="form-label text-amber-300 font-bold flex items-center gap-1">
+                      🔑 Teacher Secret Passcode *
+                    </label>
+                    <input
+                      type="password"
+                      required
+                      value={teacherPasscode}
+                      onChange={(e) => setTeacherPasscode(e.target.value)}
+                      className="form-input login-input"
+                      style={{ border: '1px solid #f59e0b' }}
+                      placeholder="Enter Master Teacher Passcode"
+                    />
+                  </div>
+                )}
+
                 <button type="submit" className="login-submit-btn mt-5">
                   <Plus className="w-4 h-4" />
                   Register Account & Save
@@ -489,7 +567,7 @@ export default function AnimatedLogin({ onLoginSuccess, isDayMode, onToggleTheme
                 className="quick-demo-btn btn-teacher"
                 onClick={() => handleQuickDemo('teacher')}
               >
-                <ShieldCheck className="w-4 h-4" /> Demo Educator (Sarah)
+                <ShieldCheck className="w-4 h-4" /> Demo Educator (Sarah) 🔐
               </button>
             </div>
 
@@ -507,7 +585,14 @@ export default function AnimatedLogin({ onLoginSuccess, isDayMode, onToggleTheme
                       onClick={() => {
                         setEmail(u.email);
                         setSelectedRole(u.role);
-                        startCircularAuthProcess(u);
+                        if (u.role === 'teacher') {
+                          setPendingTeacherAction(() => () => {
+                            startCircularAuthProcess(u);
+                          });
+                          setShowPasscodeModal(true);
+                        } else {
+                          startCircularAuthProcess(u);
+                        }
                       }}
                       className="px-3 py-1.5 rounded-xl bg-white/10 hover:bg-white/20 border border-white/15 text-white text-xs flex items-center gap-2 cursor-pointer transition shadow-sm"
                       style={{
@@ -534,6 +619,106 @@ export default function AnimatedLogin({ onLoginSuccess, isDayMode, onToggleTheme
           user={pendingNewUser}
           onSave={handleSaveAvatar}
         />
+      )}
+
+      {/* MASTER TEACHER PASSCODE VERIFICATION MODAL */}
+      {showPasscodeModal && (
+        <div 
+          className="avatar-modal-overlay animate-fadeIn"
+          style={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            zIndex: 999999,
+            backgroundColor: 'rgba(11, 15, 25, 0.88)',
+            backdropFilter: 'blur(16px)',
+            WebkitBackdropFilter: 'blur(16px)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            padding: '1rem'
+          }}
+        >
+          <div 
+            className="avatar-modal-card p-6"
+            style={{
+              width: '100%',
+              maxWidth: '440px',
+              background: 'linear-gradient(165deg, rgba(26, 35, 58, 0.98), rgba(15, 22, 38, 0.98))',
+              border: '1px solid rgba(255, 255, 255, 0.18)',
+              borderRadius: '24px',
+              color: '#ffffff',
+              padding: '1.5rem'
+            }}
+          >
+            <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center gap-2 text-amber-400 font-bold text-lg">
+                <ShieldCheck className="w-6 h-6 text-amber" />
+                <span>Teacher Security Verification</span>
+              </div>
+              <button
+                type="button"
+                onClick={() => {
+                  setShowPasscodeModal(false);
+                  setPasscodeModalError('');
+                }}
+                className="avatar-close-btn"
+              >
+                ✕
+              </button>
+            </div>
+
+            <p className="text-xs text-gray-300 mb-4" style={{ fontSize: '0.85rem', color: '#cbd5e1' }}>
+              Access to Educator / Teacher tools is restricted. Please enter the <strong>Master Teacher Passcode</strong>:
+            </p>
+
+            {passcodeModalError && (
+              <div className="login-error-alert mb-3 text-xs" style={{ padding: '0.5rem', borderRadius: '8px', background: 'rgba(239, 68, 68, 0.2)', color: '#f87171' }}>
+                <span>{passcodeModalError}</span>
+              </div>
+            )}
+
+            <form onSubmit={verifyPasscodeModal} className="flex flex-col gap-3">
+              <input
+                type="password"
+                autoFocus
+                value={passcodeModalInput}
+                onChange={(e) => setPasscodeModalInput(e.target.value)}
+                placeholder="Enter Teacher Passcode"
+                className="form-input login-input"
+                style={{ width: '100%', padding: '0.75rem 1rem', borderRadius: '12px', background: 'rgba(0,0,0,0.4)', color: '#fff', border: '1px solid rgba(255,255,255,0.2)' }}
+              />
+              <div className="flex gap-2 mt-4" style={{ display: 'flex', gap: '0.5rem', marginTop: '1rem' }}>
+                <button
+                  type="button"
+                  onClick={() => setShowPasscodeModal(false)}
+                  className="avatar-cancel-btn flex-1"
+                  style={{ flex: 1, padding: '0.75rem', borderRadius: '12px', background: 'rgba(255,255,255,0.1)', color: '#94a3b8' }}
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="primary-btn flex-1"
+                  style={{
+                    flex: 1,
+                    padding: '0.75rem',
+                    borderRadius: '12px',
+                    background: 'linear-gradient(135deg, #8b5cf6, #6366f1)',
+                    color: '#ffffff',
+                    fontWeight: 800,
+                    border: 'none',
+                    cursor: 'pointer'
+                  }}
+                >
+                  🔓 Unlock Educator Portal
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
       )}
     </div>
   );

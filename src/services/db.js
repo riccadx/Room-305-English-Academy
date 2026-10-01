@@ -10,6 +10,9 @@ const KEYS = {
 
 export const GOOGLE_SHEETS_URL = 'https://script.google.com/macros/s/AKfycbxM3lZVOF0b9OsPST73U0PDa8RtQ4z7qBL2whEVbCewOU6GTjmD1CY6ejh_0cJM5BjO/exec';
 
+// Master Passcode required for Educator / Teacher Portal Access
+export const TEACHER_PASSCODE = 'Big_305EN';
+
 // Real-time background sync helper for Google Sheets
 async function syncToGoogleSheet(action, data) {
   if (!GOOGLE_SHEETS_URL) return;
