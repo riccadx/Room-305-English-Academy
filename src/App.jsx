@@ -164,17 +164,25 @@ export default function App() {
         <div className="footer-container">
           <p>© 2026 Room-305-English-Academy • Interactive English Learning Platform</p>
           <div className="footer-links">
-            <button className="footer-link-btn" onClick={() => setShowDbInspector(true)}>
-              📊 View Registered Accounts & Database
-            </button>
-            <span className="mx-2">•</span>
+            {isTeacher && (
+              <>
+                <button className="footer-link-btn" onClick={() => setShowDbInspector(true)} style={{ color: '#c4b5fd', fontWeight: 600 }}>
+                  📊 Teacher Database Studio
+                </button>
+                <span className="mx-2">•</span>
+              </>
+            )}
             <button className="footer-link-btn" onClick={() => handleLogout()}>
               Switch Account / Sign Out
             </button>
-            <span className="mx-2">•</span>
-            <button className="footer-link-btn" onClick={() => dbService.resetToDefault()}>
-              Reset Database Demo
-            </button>
+            {isTeacher && (
+              <>
+                <span className="mx-2">•</span>
+                <button className="footer-link-btn" onClick={() => dbService.resetToDefault()}>
+                  Reset Database Demo
+                </button>
+              </>
+            )}
           </div>
         </div>
       </footer>

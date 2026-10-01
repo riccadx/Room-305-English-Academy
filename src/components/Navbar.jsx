@@ -136,15 +136,23 @@ export default function Navbar({ currentUser, onUserChange, activeTab, setActive
             </button>
           )}
 
-          {/* Database Inspector Button */}
-          <button className="icon-btn" onClick={() => setShowDbInspector(true)} title="📊 Open Database & Registered Accounts Inspector">
-            <span style={{ fontSize: '0.9rem' }}>📊</span>
-          </button>
+          {/* Database Inspector & Reset Demo Buttons - STRICTLY TEACHER / EDUCATOR PORTAL ONLY */}
+          {isTeacher && (
+            <>
+              <button 
+                className="teacher-db-inspector-btn" 
+                onClick={() => setShowDbInspector(true)} 
+                title="📊 Open Database & Registered Accounts Inspector (Educator Only)"
+              >
+                <span className="teacher-db-icon">📊</span>
+                <span className="teacher-db-text">DB Studio</span>
+              </button>
 
-          {/* Reset Demo Data Button */}
-          <button className="icon-btn" onClick={() => dbService.resetToDefault()} title="Reset demo database">
-            <RefreshCw className="w-4 h-4" />
-          </button>
+              <button className="icon-btn" onClick={() => dbService.resetToDefault()} title="Reset demo database">
+                <RefreshCw className="w-4 h-4" />
+              </button>
+            </>
+          )}
         </div>
       </div>
 
