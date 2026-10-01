@@ -123,12 +123,8 @@ export default function AnimatedLogin({ onLoginSuccess, isDayMode, onToggleTheme
       return;
     }
 
-    if (result.isNewRegistration) {
-      // New account created on the fly! Open Cartoon Avatar Studio
-      setPendingNewUser(result.user);
-    } else {
-      startCircularAuthProcess(result.user);
-    }
+    // Directly launch portal on Sign In (Avatar Studio opens only on first-time Register)
+    startCircularAuthProcess(result.user);
   };
 
   const handleRegister = (e) => {
