@@ -7,6 +7,7 @@ import InteractiveQuiz from './components/InteractiveQuiz';
 import ProgressReport from './components/ProgressReport';
 import WeeklyScheduleView from './components/WeeklyScheduleView';
 import AnimatedLogin from './components/AnimatedLogin';
+import DatabaseInspectorModal from './components/DatabaseInspectorModal';
 import { dbService } from './services/db';
 import './App.css';
 
@@ -39,6 +40,7 @@ export default function App() {
   // Modal / View states
   const [selectedLesson, setSelectedLesson] = useState(null);
   const [activeQuiz, setActiveQuiz] = useState(null);
+  const [showDbInspector, setShowDbInspector] = useState(false);
 
   const handleLoginSuccess = (user) => {
     setCurrentUser(user);
@@ -162,6 +164,10 @@ export default function App() {
         <div className="footer-container">
           <p>© 2026 Room-305-English-Academy • Interactive English Learning Platform</p>
           <div className="footer-links">
+            <button className="footer-link-btn" onClick={() => setShowDbInspector(true)}>
+              📊 View Registered Accounts & Database
+            </button>
+            <span className="mx-2">•</span>
             <button className="footer-link-btn" onClick={() => handleLogout()}>
               Switch Account / Sign Out
             </button>
@@ -172,6 +178,13 @@ export default function App() {
           </div>
         </div>
       </footer>
+
+      {/* Database Inspector Modal */}
+      {showDbInspector && (
+        <DatabaseInspectorModal
+          onClose={() => setShowDbInspector(false)}
+        />
+      )}
     </div>
   );
 }

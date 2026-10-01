@@ -2,10 +2,12 @@ import React, { useState } from 'react';
 import { GraduationCap, User, RefreshCw, Sparkles, BookOpen, ShieldCheck, Sun, Moon } from './Icons';
 import { dbService } from '../services/db';
 import AvatarDesignerModal, { RenderAvatar } from './AvatarDesignerModal';
+import DatabaseInspectorModal from './DatabaseInspectorModal';
 
 export default function Navbar({ currentUser, onUserChange, activeTab, setActiveTab, onLogout, isDayMode, onToggleTheme }) {
   const isTeacher = currentUser?.role === 'teacher';
   const [showAvatarDesigner, setShowAvatarDesigner] = useState(false);
+  const [showDbInspector, setShowDbInspector] = useState(false);
 
   const handleToggleRole = () => {
     const nextRole = isTeacher ? 'learner' : 'teacher';
@@ -134,6 +136,11 @@ export default function Navbar({ currentUser, onUserChange, activeTab, setActive
             </button>
           )}
 
+          {/* Database Inspector Button */}
+          <button className="icon-btn" onClick={() => setShowDbInspector(true)} title="📊 Open Database & Registered Accounts Inspector">
+            <span style={{ fontSize: '0.9rem' }}>📊</span>
+          </button>
+
           {/* Reset Demo Data Button */}
           <button className="icon-btn" onClick={() => dbService.resetToDefault()} title="Reset demo database">
             <RefreshCw className="w-4 h-4" />
@@ -147,6 +154,13 @@ export default function Navbar({ currentUser, onUserChange, activeTab, setActive
           user={currentUser}
           onSave={handleSaveAvatar}
           onClose={() => setShowAvatarDesigner(false)}
+        />
+      )}
+
+      {/* Database Inspector Modal */}
+      {showDbInspector && (
+        <DatabaseInspectorModal
+          onClose={() => setShowDbInspector(false)}
         />
       )}
     </header>
