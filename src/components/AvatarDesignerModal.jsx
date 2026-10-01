@@ -27,7 +27,7 @@ export const ACCESSORIES = [
   { id: 'crown', name: 'Royal Crown', icon: '👑' },
   { id: 'star', name: 'Star Badge', icon: '🌟' },
   { id: 'bowtie', name: 'Party Bowtie', icon: '🎀' },
-  { id: 'tophat', name: 'Gentleman Tophat', icon: '🎩' },
+  { id: 'tophat', name: 'Top Hat', icon: '🎩' },
   { id: 'cowboy', name: 'Cowboy Hat', icon: '🤠' }
 ];
 
@@ -48,7 +48,7 @@ export function RenderAvatar({ config, size = 100, className = "" }) {
 
   return (
     <div 
-      className={`avatar-render-box relative flex items-center justify-center rounded-full overflow-hidden shadow-lg ${className}`}
+      className={`avatar-render-box ${className}`}
       style={{ width: `${size}px`, height: `${size}px`, background: currentBg }}
     >
       <svg width={size} height={size} viewBox="0 0 120 120">
@@ -316,116 +316,101 @@ export default function AvatarDesignerModal({ user, onSave, onClose }) {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-md animate-fadeIn">
-      <div className="avatar-designer-card max-w-xl w-full bg-slate-900 border border-slate-700/60 rounded-3xl p-6 shadow-2xl relative overflow-hidden">
+    <div className="avatar-modal-overlay animate-fadeIn">
+      <div className="avatar-modal-card">
         {/* Header */}
-        <div className="flex items-center justify-between mb-4 border-b border-slate-800 pb-3">
-          <div className="flex items-center gap-2">
+        <div className="avatar-modal-header">
+          <div className="avatar-title-group">
             <Sparkles className="w-6 h-6 text-amber" />
-            <h2 className="text-xl font-extrabold text-white">Design Your Animal Cartoon Avatar! 🐾</h2>
+            <h2>Design Your Cartoon Avatar! 🐾</h2>
           </div>
           {onClose && (
-            <button 
-              onClick={onClose} 
-              className="text-slate-400 hover:text-white p-1 rounded-lg hover:bg-slate-800 transition"
-            >
+            <button type="button" onClick={onClose} className="avatar-close-btn" title="Close">
               <X className="w-5 h-5" />
             </button>
           )}
         </div>
 
         {/* Live Preview Display */}
-        <div className="flex flex-col items-center justify-center my-3 py-3 bg-slate-950/70 rounded-2xl border border-slate-800/80">
+        <div className="avatar-preview-box">
           <RenderAvatar config={avatarConfig} size={110} />
-          <h3 className="mt-3 text-lg font-bold text-white">{user?.name || 'Student'}</h3>
-          <p className="text-xs font-semibold text-indigo-400 mt-1 italic">"{motto}"</p>
+          <h3 className="avatar-user-name">{user?.name || 'Student'}</h3>
+          <p className="avatar-user-motto">"{motto}"</p>
         </div>
 
-        {/* Controls Sections */}
-        <div className="space-y-4 max-h-[340px] overflow-y-auto pr-1 custom-scrollbar">
+        {/* Controls Sections Scroll Area */}
+        <div className="avatar-modal-scroll">
           {/* 1. Select Animal Character */}
-          <div>
-            <label className="text-xs font-bold uppercase tracking-wider text-slate-400 block mb-2">
+          <div className="avatar-section">
+            <label className="avatar-section-title">
               1. Choose Animal Character ({CHARACTERS.length} Available) 🐾
             </label>
-            <div className="grid grid-cols-4 sm:grid-cols-8 gap-2">
+            <div className="avatar-grid-grid">
               {CHARACTERS.map(c => (
                 <button
                   key={c.id}
                   type="button"
                   onClick={() => setCharacter(c.id)}
-                  className={`flex flex-col items-center justify-center p-2 rounded-xl border text-xs font-bold transition ${
-                    character === c.id 
-                      ? 'bg-indigo-600/30 border-indigo-500 text-white shadow-md scale-105' 
-                      : 'bg-slate-800/50 border-slate-700/50 text-slate-400 hover:bg-slate-800 hover:text-white'
-                  }`}
+                  className={`avatar-choice-btn ${character === c.id ? 'active' : ''}`}
                 >
-                  <span className="text-xl mb-0.5">{c.icon}</span>
-                  <span className="text-[9px] truncate w-full text-center">{c.name.split(' ')[0]}</span>
+                  <span className="avatar-icon-emoji">{c.icon}</span>
+                  <span className="avatar-icon-label">{c.name.split(' ')[0]}</span>
                 </button>
               ))}
             </div>
           </div>
 
           {/* 2. Select Accessory / Hat */}
-          <div>
-            <label className="text-xs font-bold uppercase tracking-wider text-slate-400 block mb-2">
+          <div className="avatar-section">
+            <label className="avatar-section-title">
               2. Choose Hat & Accessories 🎩
             </label>
-            <div className="grid grid-cols-4 sm:grid-cols-8 gap-2">
+            <div className="avatar-grid-grid">
               {ACCESSORIES.map(a => (
                 <button
                   key={a.id}
                   type="button"
                   onClick={() => setAccessory(a.id)}
-                  className={`flex flex-col items-center justify-center p-2 rounded-xl border text-xs font-bold transition ${
-                    accessory === a.id 
-                      ? 'bg-amber-600/30 border-amber-500 text-white shadow-md scale-105' 
-                      : 'bg-slate-800/50 border-slate-700/50 text-slate-400 hover:bg-slate-800 hover:text-white'
-                  }`}
+                  className={`avatar-choice-btn accessory ${accessory === a.id ? 'active' : ''}`}
                 >
-                  <span className="text-xl mb-0.5">{a.icon}</span>
-                  <span className="text-[9px] truncate w-full text-center">{a.name.split(' ')[0]}</span>
+                  <span className="avatar-icon-emoji">{a.icon}</span>
+                  <span className="avatar-icon-label">{a.name.split(' ')[0]}</span>
                 </button>
               ))}
             </div>
           </div>
 
           {/* 3. Background Aura Color */}
-          <div>
-            <label className="text-xs font-bold uppercase tracking-wider text-slate-400 block mb-2">
+          <div className="avatar-section">
+            <label className="avatar-section-title">
               3. Choose Background Aura Color 🎨
             </label>
-            <div className="grid grid-cols-4 sm:grid-cols-8 gap-2">
+            <div className="avatar-grid-grid color-grid">
               {BG_COLORS.map(bg => (
                 <button
                   key={bg.id}
                   type="button"
                   onClick={() => setBgGlow(bg.id)}
-                  className={`py-2 px-1 rounded-xl border text-[10px] font-bold transition flex items-center justify-center gap-1 ${
-                    bgGlow === bg.id 
-                      ? 'border-white text-white shadow-lg scale-105' 
-                      : 'border-transparent text-slate-300 opacity-70 hover:opacity-100'
-                  }`}
+                  className={`avatar-color-btn ${bgGlow === bg.id ? 'active' : ''}`}
                   style={{ background: bg.grad }}
                 >
-                  {bgGlow === bg.id && <Check className="w-3 h-3" />}
-                  {bg.name.split(' ')[0]}
+                  {bgGlow === bg.id && <Check className="w-3.5 h-3.5 text-white" />}
+                  <span>{bg.name.split(' ')[0]}</span>
                 </button>
               ))}
             </div>
           </div>
 
           {/* 4. Custom Motto */}
-          <div>
-            <label className="text-xs font-bold uppercase tracking-wider text-slate-400 block mb-1">
+          <div className="avatar-section">
+            <label className="avatar-section-title">
               4. Learning Motto / Bio 💬
             </label>
             <input
               type="text"
               value={motto}
               onChange={(e) => setMotto(e.target.value)}
-              className="w-full bg-slate-950 border border-slate-700 text-white rounded-xl px-3 py-2 text-sm focus:border-indigo-500 outline-none"
+              className="avatar-motto-input"
               placeholder="e.g. Practicing English 15 mins daily!"
               maxLength={60}
             />
@@ -436,7 +421,7 @@ export default function AvatarDesignerModal({ user, onSave, onClose }) {
         <button
           type="button"
           onClick={handleSave}
-          className="w-full mt-4 py-3 rounded-2xl bg-gradient-to-r from-indigo-500 via-purple-500 to-amber-500 hover:brightness-110 text-white font-extrabold text-base flex items-center justify-center gap-2 shadow-lg shadow-indigo-500/25 transition active:scale-[0.98]"
+          className="avatar-save-btn"
         >
           <Sparkles className="w-5 h-5" /> Save Cartoon Avatar & Launch Portal
         </button>
