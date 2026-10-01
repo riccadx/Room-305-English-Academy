@@ -139,7 +139,7 @@ export default function DatabaseInspectorModal({ onClose }) {
 
   return (
     <div 
-      className="avatar-modal-overlay animate-fadeIn"
+      className="db-inspector-overlay animate-fadeIn"
       style={{
         position: 'fixed',
         top: 0,
@@ -148,30 +148,35 @@ export default function DatabaseInspectorModal({ onClose }) {
         bottom: 0,
         width: '100vw',
         height: '100vh',
+        maxWidth: '100vw',
+        maxHeight: '100vh',
         zIndex: 999999,
-        backgroundColor: 'rgba(9, 12, 21, 0.96)',
-        backdropFilter: 'blur(20px)',
-        WebkitBackdropFilter: 'blur(20px)',
+        backgroundColor: '#0b0f19',
         display: 'flex',
         flexDirection: 'column',
         padding: 0,
+        margin: 0,
         overflow: 'hidden'
       }}
     >
       <div 
-        className="avatar-modal-card"
+        className="db-inspector-card-fullscreen"
         style={{
           width: '100vw',
           height: '100vh',
           maxWidth: '100vw',
           maxHeight: '100vh',
+          minWidth: '100vw',
+          minHeight: '100vh',
           display: 'flex',
           flexDirection: 'column',
           overflow: 'hidden',
           borderRadius: 0,
-          background: 'linear-gradient(145deg, rgba(17, 24, 39, 0.98), rgba(11, 15, 25, 0.99))',
+          background: 'linear-gradient(145deg, #111827 0%, #0b0f19 100%)',
           border: 'none',
-          boxShadow: 'none'
+          boxShadow: 'none',
+          margin: 0,
+          padding: 0
         }}
       >
         {/* Full Screen Top Header Bar */}
