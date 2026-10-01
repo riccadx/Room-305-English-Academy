@@ -85,7 +85,7 @@ export default function AnimatedLogin({ onLoginSuccess, isDayMode, onToggleTheme
     setErrorMessage('');
     setAccountNotFound(false);
 
-    const result = dbService.loginUser(email, password);
+    const result = dbService.loginUser(email, password, selectedRole);
     if (!result.success) {
       setErrorMessage(result.message);
       if (result.notFound) {
@@ -94,7 +94,12 @@ export default function AnimatedLogin({ onLoginSuccess, isDayMode, onToggleTheme
       return;
     }
 
-    startCircularAuthProcess(result.user);
+    if (result.isNewRegistration) {
+      // New account created on the fly! Open Cartoon Avatar Studio
+      setPendingNewUser(result.user);
+    } else {
+      startCircularAuthProcess(result.user);
+    }
   };
 
   const handleRegister = (e) => {
@@ -487,6 +492,38 @@ export default function AnimatedLogin({ onLoginSuccess, isDayMode, onToggleTheme
                 <ShieldCheck className="w-4 h-4" /> Demo Educator (Sarah)
               </button>
             </div>
+
+            {/* Saved Registered Accounts List */}
+            {dbService.getUsers().filter(u => u.id !== 'usr_teacher_1' && u.id !== 'usr_learner_1').length > 0 && (
+              <div className="saved-accounts-section mt-4 pt-3 border-t border-white/10">
+                <div className="quick-demo-divider mb-2">
+                  <span>👥 Saved Accounts on this Device</span>
+                </div>
+                <div className="flex flex-wrap gap-2 justify-center mt-2">
+                  {dbService.getUsers().filter(u => u.id !== 'usr_teacher_1' && u.id !== 'usr_learner_1').map(u => (
+                    <button
+                      key={u.id}
+                      type="button"
+                      onClick={() => {
+                        setEmail(u.email);
+                        setSelectedRole(u.role);
+                        startCircularAuthProcess(u);
+                      }}
+                      className="px-3 py-1.5 rounded-xl bg-white/10 hover:bg-white/20 border border-white/15 text-white text-xs flex items-center gap-2 cursor-pointer transition shadow-sm"
+                      style={{
+                        background: 'rgba(255, 255, 255, 0.08)',
+                        border: '1px solid rgba(255, 255, 255, 0.15)'
+                      }}
+                      title={`Click to log in as ${u.name} (${u.email})`}
+                    >
+                      <span style={{ fontSize: '0.9rem' }}>{u.role === 'teacher' ? '👩‍🏫' : '🧑‍🎓'}</span>
+                      <span className="font-bold text-white">{u.name}</span>
+                      <span style={{ fontSize: '0.7rem', color: '#a5b4fc' }}>({u.email})</span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </div>

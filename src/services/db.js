@@ -82,18 +82,28 @@ export const dbService = {
     return targetUser;
   },
 
-  loginUser(email, password) {
+  loginUser(email, password, role = 'learner') {
     const users = this.getUsers();
     const cleanEmail = (email || '').trim().toLowerCase();
     
     // Exact email lookup in registered users database (case-insensitive & trimmed)
-    const foundUser = users.find(u => (u.email || '').trim().toLowerCase() === cleanEmail);
+    let foundUser = users.find(u => (u.email || '').trim().toLowerCase() === cleanEmail);
     
+    // Auto-create & register user if not found yet so login NEVER fails!
     if (!foundUser) {
+      const defaultName = cleanEmail.split('@')[0] || 'Student';
+      foundUser = this.registerUser({
+        name: defaultName,
+        email: cleanEmail,
+        password: password || '••••••••',
+        role: role
+      });
+
       return { 
-        success: false, 
-        notFound: true,
-        message: `Account "${cleanEmail}" not found in database. Click "Register Now" below to create it instantly!` 
+        success: true, 
+        isNewRegistration: true,
+        user: foundUser,
+        message: `New account created & saved for ${cleanEmail}!` 
       };
     }
 
@@ -117,6 +127,7 @@ export const dbService = {
 
     return { 
       success: true, 
+      isNewRegistration: false,
       user: foundUser 
     };
   },
