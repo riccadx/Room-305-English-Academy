@@ -263,6 +263,25 @@ export const dbService = {
     return null;
   },
 
+  deleteUser(userId) {
+    const users = this.getUsers();
+    const updatedUsers = users.filter(u => u.id !== userId);
+    localStorage.setItem(KEYS.USERS, JSON.stringify(updatedUsers));
+
+    syncToGoogleSheet('DELETE_USER', { id: userId });
+    return updatedUsers;
+  },
+
+  deleteMultipleUsers(userIds) {
+    const users = this.getUsers();
+    const idSet = new Set(userIds);
+    const updatedUsers = users.filter(u => !idSet.has(u.id));
+    localStorage.setItem(KEYS.USERS, JSON.stringify(updatedUsers));
+
+    syncToGoogleSheet('DELETE_MULTIPLE_USERS', { ids: userIds.join(',') });
+    return updatedUsers;
+  },
+
 
   // LESSON MANAGEMENT (TEACHER CRUD)
   getLessons() {
