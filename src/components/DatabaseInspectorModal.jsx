@@ -138,63 +138,24 @@ export default function DatabaseInspectorModal({ onClose }) {
   const allSelected = filteredUsers.length > 0 && filteredUsers.every(u => selectedUserIds.includes(u.id));
 
   return (
-    <div 
-      className="db-inspector-overlay animate-fadeIn"
-      style={{
-        position: 'fixed',
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-        width: '100vw',
-        height: '100vh',
-        maxWidth: '100vw',
-        maxHeight: '100vh',
-        zIndex: 999999,
-        backgroundColor: '#0b0f19',
-        display: 'flex',
-        flexDirection: 'column',
-        padding: 0,
-        margin: 0,
-        overflow: 'hidden'
-      }}
-    >
-      <div 
-        className="db-inspector-card-fullscreen"
-        style={{
-          width: '100vw',
-          height: '100vh',
-          maxWidth: '100vw',
-          maxHeight: '100vh',
-          minWidth: '100vw',
-          minHeight: '100vh',
-          display: 'flex',
-          flexDirection: 'column',
-          overflow: 'hidden',
-          borderRadius: 0,
-          background: 'linear-gradient(145deg, #111827 0%, #0b0f19 100%)',
-          border: 'none',
-          boxShadow: 'none',
-          margin: 0,
-          padding: 0
-        }}
-      >
+    <div className="db-inspector-overlay animate-fadeIn">
+      <div className="db-inspector-card-fullscreen">
         {/* Full Screen Top Header Bar */}
-        <div className="avatar-modal-header" style={{ padding: '1rem 2rem', background: 'rgba(255, 255, 255, 0.03)', borderBottom: '1px solid rgba(255, 255, 255, 0.08)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <div className="db-studio-header">
           <div className="avatar-title-group" style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
             <div style={{ padding: '0.75rem', borderRadius: '16px', background: 'linear-gradient(135deg, rgba(139, 92, 246, 0.35), rgba(99, 102, 241, 0.35))', border: '1px solid rgba(139, 92, 246, 0.5)', boxShadow: '0 0 20px rgba(139, 92, 246, 0.3)' }}>
               <Sparkles className="w-7 h-7 text-amber" />
             </div>
             <div>
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-                <h2 style={{ fontSize: '1.4rem', fontWeight: 800, margin: 0, color: '#ffffff', letterSpacing: '-0.01em' }}>
+                <h2 className="db-studio-title">
                   📊 Database Studio & Accounts Management (Full Screen)
                 </h2>
-                <span style={{ padding: '0.25rem 0.75rem', borderRadius: '20px', fontSize: '0.75rem', fontWeight: 700, background: 'rgba(139, 92, 246, 0.25)', color: '#c4b5fd', border: '1px solid rgba(139, 92, 246, 0.5)' }}>
+                <span style={{ padding: '0.25rem 0.75rem', borderRadius: '20px', fontSize: '0.75rem', fontWeight: 700, background: 'rgba(139, 92, 246, 0.25)', color: '#8b5cf6', border: '1px solid rgba(139, 92, 246, 0.5)' }}>
                   Teacher Portal Exclusive
                 </span>
               </div>
-              <p style={{ fontSize: '0.82rem', color: '#94a3b8', margin: '0.25rem 0 0', fontWeight: 500 }}>
+              <p className="db-studio-subtitle">
                 Manage & delete registered user profiles, view stored course lessons, inspect student quizzes & export database JSON.
               </p>
             </div>
@@ -204,35 +165,35 @@ export default function DatabaseInspectorModal({ onClose }) {
             onClick={onClose} 
             className="avatar-close-btn" 
             title="Close Full Screen Studio"
-            style={{ padding: '0.6rem 1.25rem', borderRadius: '12px', background: 'rgba(239, 68, 68, 0.2)', color: '#f87171', border: '1px solid rgba(239, 68, 68, 0.4)', fontWeight: 700, fontSize: '0.85rem', display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer' }}
+            style={{ padding: '0.6rem 1.25rem', borderRadius: '12px', background: 'rgba(239, 68, 68, 0.2)', color: '#ef4444', border: '1px solid rgba(239, 68, 68, 0.4)', fontWeight: 700, fontSize: '0.85rem', display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer' }}
           >
             <X className="w-5 h-5" /> Close Studio
           </button>
         </div>
 
         {/* Quick Stats Banner Bar */}
-        <div style={{ padding: '0.85rem 2rem', background: 'rgba(0, 0, 0, 0.3)', borderBottom: '1px solid rgba(255, 255, 255, 0.06)', display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '1rem' }}>
-          <div style={{ background: 'rgba(255, 255, 255, 0.04)', padding: '0.6rem 1rem', borderRadius: '14px', border: '1px solid rgba(255, 255, 255, 0.08)' }}>
-            <span style={{ fontSize: '0.72rem', color: '#94a3b8', display: 'block', fontWeight: 700, letterSpacing: '0.05em' }}>TOTAL REGISTERED PROFILES</span>
-            <span style={{ fontSize: '1.25rem', fontWeight: 800, color: '#ffffff' }}>{users.length} Profiles</span>
+        <div className="db-stats-bar">
+          <div className="db-stat-card">
+            <span className="db-stat-label">TOTAL REGISTERED PROFILES</span>
+            <span className="db-stat-value">{users.length} Profiles</span>
           </div>
-          <div style={{ background: 'rgba(139, 92, 246, 0.1)', padding: '0.6rem 1rem', borderRadius: '14px', border: '1px solid rgba(139, 92, 246, 0.25)' }}>
-            <span style={{ fontSize: '0.72rem', color: '#c4b5fd', display: 'block', fontWeight: 700, letterSpacing: '0.05em' }}>TEACHER / EDUCATOR PROFILES</span>
-            <span style={{ fontSize: '1.25rem', fontWeight: 800, color: '#ddd6fe' }}>👩‍🏫 {teacherCount}</span>
+          <div className="db-stat-card" style={{ background: 'rgba(139, 92, 246, 0.1)', borderColor: 'rgba(139, 92, 246, 0.25)' }}>
+            <span className="db-stat-label" style={{ color: '#8b5cf6' }}>TEACHER / EDUCATOR PROFILES</span>
+            <span className="db-stat-value" style={{ color: '#7c3aed' }}>👩‍🏫 {teacherCount}</span>
           </div>
-          <div style={{ background: 'rgba(16, 185, 129, 0.1)', padding: '0.6rem 1rem', borderRadius: '14px', border: '1px solid rgba(16, 185, 129, 0.25)' }}>
-            <span style={{ fontSize: '0.72rem', color: '#6ee7b7', display: 'block', fontWeight: 700, letterSpacing: '0.05em' }}>LEARNER / STUDENT PROFILES</span>
-            <span style={{ fontSize: '1.25rem', fontWeight: 800, color: '#a7f3d0' }}>🧑‍🎓 {learnerCount}</span>
+          <div className="db-stat-card" style={{ background: 'rgba(16, 185, 129, 0.1)', borderColor: 'rgba(16, 185, 129, 0.25)' }}>
+            <span className="db-stat-label" style={{ color: '#10b981' }}>LEARNER / STUDENT PROFILES</span>
+            <span className="db-stat-value" style={{ color: '#059669' }}>🧑‍🎓 {learnerCount}</span>
           </div>
-          <div style={{ background: 'rgba(59, 130, 246, 0.1)', padding: '0.6rem 1rem', borderRadius: '14px', border: '1px solid rgba(59, 130, 246, 0.25)' }}>
-            <span style={{ fontSize: '0.72rem', color: '#93c5fd', display: 'block', fontWeight: 700, letterSpacing: '0.05em' }}>LESSONS & QUIZZES</span>
-            <span style={{ fontSize: '1.25rem', fontWeight: 800, color: '#bfdbfe' }}>📚 {lessons.length} / 📝 {quizzes.length}</span>
+          <div className="db-stat-card" style={{ background: 'rgba(59, 130, 246, 0.1)', borderColor: 'rgba(59, 130, 246, 0.25)' }}>
+            <span className="db-stat-label" style={{ color: '#3b82f6' }}>LESSONS & QUIZZES</span>
+            <span className="db-stat-value" style={{ color: '#2563eb' }}>📚 {lessons.length} / 📝 {quizzes.length}</span>
           </div>
         </div>
 
         {/* Status Alert Message */}
         {statusMsg && (
-          <div style={{ padding: '0.75rem 2rem', background: 'rgba(16, 185, 129, 0.25)', color: '#6ee7b7', fontSize: '0.9rem', fontWeight: 700, borderBottom: '1px solid rgba(16, 185, 129, 0.35)', display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
+          <div style={{ padding: '0.75rem 2rem', background: 'rgba(16, 185, 129, 0.25)', color: '#059669', fontSize: '0.9rem', fontWeight: 700, borderBottom: '1px solid rgba(16, 185, 129, 0.35)', display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
             <Check className="w-5 h-5 text-emerald" />
             {statusMsg}
           </div>
@@ -286,22 +247,13 @@ export default function DatabaseInspectorModal({ onClose }) {
               <div style={{ display: 'flex', gap: '1rem', marginBottom: '1.25rem', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between' }}>
                 <div style={{ display: 'flex', gap: '0.75rem', flex: 1, minWidth: '280px' }}>
                   <div style={{ position: 'relative', flex: 1 }}>
-                    <Search className="w-5 h-5" style={{ position: 'absolute', left: '0.85rem', top: '50%', transform: 'translateY(-50%)', color: '#94a3b8' }} />
+                    <Search className="w-5 h-5" style={{ position: 'absolute', left: '0.85rem', top: '50%', transform: 'translateY(-50%)', color: '#64748b' }} />
                     <input
                       type="text"
+                      className="db-search-input"
                       placeholder="Search profiles by name or email address..."
                       value={userSearchQuery}
                       onChange={(e) => setUserSearchQuery(e.target.value)}
-                      style={{
-                        width: '100%',
-                        padding: '0.55rem 1rem 0.55rem 2.5rem',
-                        borderRadius: '12px',
-                        background: 'rgba(0, 0, 0, 0.45)',
-                        border: '1px solid rgba(255, 255, 255, 0.15)',
-                        color: '#ffffff',
-                        fontSize: '0.88rem',
-                        outline: 'none'
-                      }}
                     />
                   </div>
                 </div>
@@ -315,8 +267,8 @@ export default function DatabaseInspectorModal({ onClose }) {
                       borderRadius: '10px',
                       fontSize: '0.8rem',
                       fontWeight: 700,
-                      background: userRoleFilter === 'all' ? 'rgba(139, 92, 246, 0.35)' : 'rgba(255,255,255,0.06)',
-                      color: userRoleFilter === 'all' ? '#c4b5fd' : '#94a3b8',
+                      background: userRoleFilter === 'all' ? 'rgba(139, 92, 246, 0.35)' : 'rgba(0,0,0,0.06)',
+                      color: userRoleFilter === 'all' ? '#7c3aed' : '#475569',
                       border: userRoleFilter === 'all' ? '1px solid rgba(139, 92, 246, 0.6)' : '1px solid transparent',
                       cursor: 'pointer'
                     }}
@@ -330,8 +282,8 @@ export default function DatabaseInspectorModal({ onClose }) {
                       borderRadius: '10px',
                       fontSize: '0.8rem',
                       fontWeight: 700,
-                      background: userRoleFilter === 'teacher' ? 'rgba(139, 92, 246, 0.35)' : 'rgba(255,255,255,0.06)',
-                      color: userRoleFilter === 'teacher' ? '#c4b5fd' : '#94a3b8',
+                      background: userRoleFilter === 'teacher' ? 'rgba(139, 92, 246, 0.35)' : 'rgba(0,0,0,0.06)',
+                      color: userRoleFilter === 'teacher' ? '#7c3aed' : '#475569',
                       border: userRoleFilter === 'teacher' ? '1px solid rgba(139, 92, 246, 0.6)' : '1px solid transparent',
                       cursor: 'pointer'
                     }}
@@ -345,8 +297,8 @@ export default function DatabaseInspectorModal({ onClose }) {
                       borderRadius: '10px',
                       fontSize: '0.8rem',
                       fontWeight: 700,
-                      background: userRoleFilter === 'learner' ? 'rgba(16, 185, 129, 0.35)' : 'rgba(255,255,255,0.06)',
-                      color: userRoleFilter === 'learner' ? '#6ee7b7' : '#94a3b8',
+                      background: userRoleFilter === 'learner' ? 'rgba(16, 185, 129, 0.35)' : 'rgba(0,0,0,0.06)',
+                      color: userRoleFilter === 'learner' ? '#059669' : '#475569',
                       border: userRoleFilter === 'learner' ? '1px solid rgba(16, 185, 129, 0.6)' : '1px solid transparent',
                       cursor: 'pointer'
                     }}
@@ -361,16 +313,16 @@ export default function DatabaseInspectorModal({ onClose }) {
                       style={{
                         padding: '0.45rem 0.95rem',
                         borderRadius: '10px',
-                        background: 'rgba(239, 68, 68, 0.3)',
-                        color: '#f87171',
-                        border: '1px solid rgba(239, 68, 68, 0.6)',
+                        background: '#dc2626',
+                        color: '#ffffff',
+                        border: 'none',
                         fontSize: '0.8rem',
                         fontWeight: 800,
                         cursor: 'pointer',
                         display: 'flex',
                         alignItems: 'center',
                         gap: '0.4rem',
-                        boxShadow: '0 0 15px rgba(239, 68, 68, 0.3)'
+                        boxShadow: '0 4px 12px rgba(220, 38, 38, 0.35)'
                       }}
                     >
                       <Trash className="w-4 h-4" /> Delete Selected ({selectedUserIds.length})
@@ -379,7 +331,7 @@ export default function DatabaseInspectorModal({ onClose }) {
 
                   <button
                     onClick={refreshData}
-                    style={{ padding: '0.45rem 0.85rem', borderRadius: '10px', background: 'rgba(255,255,255,0.08)', color: '#fff', fontSize: '0.8rem', fontWeight: 600, border: '1px solid rgba(255,255,255,0.15)', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.35rem' }}
+                    style={{ padding: '0.45rem 0.85rem', borderRadius: '10px', background: 'rgba(99, 102, 241, 0.12)', color: '#4f46e5', fontSize: '0.8rem', fontWeight: 700, border: '1px solid rgba(99, 102, 241, 0.3)', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.35rem' }}
                     title="Reload data from LocalStorage"
                   >
                     <RefreshCw className="w-4 h-4" /> Refresh
@@ -388,11 +340,11 @@ export default function DatabaseInspectorModal({ onClose }) {
               </div>
 
               {/* Profiles Table with Unrestricted Deletion */}
-              <div style={{ overflowX: 'auto', borderRadius: '16px', border: '1px solid rgba(255,255,255,0.1)', background: 'rgba(0,0,0,0.3)', boxShadow: '0 10px 30px rgba(0,0,0,0.4)' }}>
-                <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.88rem', textAlign: 'left' }}>
+              <div className="db-table-container">
+                <table className="db-table">
                   <thead>
-                    <tr style={{ background: 'rgba(255,255,255,0.06)', color: '#94a3b8', borderBottom: '1px solid rgba(255,255,255,0.1)' }}>
-                      <th style={{ padding: '0.85rem 1rem', width: '40px' }}>
+                    <tr>
+                      <th style={{ width: '40px' }}>
                         <input
                           type="checkbox"
                           checked={allSelected}
@@ -401,18 +353,18 @@ export default function DatabaseInspectorModal({ onClose }) {
                           title="Select all profiles"
                         />
                       </th>
-                      <th style={{ padding: '0.85rem 1rem' }}>Avatar</th>
-                      <th style={{ padding: '0.85rem 1rem' }}>Full Name</th>
-                      <th style={{ padding: '0.85rem 1rem' }}>Email Address</th>
-                      <th style={{ padding: '0.85rem 1rem' }}>Role</th>
-                      <th style={{ padding: '0.85rem 1rem' }}>Password</th>
-                      <th style={{ padding: '0.85rem 1rem', textAlign: 'right' }}>Actions</th>
+                      <th>Avatar</th>
+                      <th>Full Name</th>
+                      <th>Email Address</th>
+                      <th>Role</th>
+                      <th>Password</th>
+                      <th style={{ textAlign: 'right' }}>Actions</th>
                     </tr>
                   </thead>
                   <tbody>
                     {filteredUsers.length === 0 ? (
                       <tr>
-                        <td colSpan={7} style={{ padding: '3rem', textAlign: 'center', color: '#94a3b8', fontSize: '0.95rem' }}>
+                        <td colSpan={7} style={{ padding: '3rem', textAlign: 'center', fontSize: '0.95rem' }}>
                           No profiles found matching your search filter.
                         </td>
                       </tr>
@@ -423,13 +375,11 @@ export default function DatabaseInspectorModal({ onClose }) {
                           <tr 
                             key={u.id} 
                             style={{ 
-                              borderBottom: '1px solid rgba(255,255,255,0.05)', 
                               background: isSelected ? 'rgba(139, 92, 246, 0.12)' : 'transparent',
                               transition: 'background 0.2s ease' 
                             }} 
-                            className="hover:bg-white/5"
                           >
-                            <td style={{ padding: '0.75rem 1rem' }}>
+                            <td>
                               <input
                                 type="checkbox"
                                 checked={isSelected}
@@ -437,44 +387,44 @@ export default function DatabaseInspectorModal({ onClose }) {
                                 style={{ cursor: 'pointer', width: '16px', height: '16px' }}
                               />
                             </td>
-                            <td style={{ padding: '0.75rem 1rem' }}>
+                            <td>
                               {u.avatarConfig ? (
                                 <RenderAvatar config={u.avatarConfig} size={38} />
                               ) : (
-                                <img src={u.avatar} alt={u.name} style={{ width: '38px', height: '38px', borderRadius: '50%', objectFit: 'cover', border: '1px solid rgba(255,255,255,0.2)' }} />
+                                <img src={u.avatar} alt={u.name} style={{ width: '38px', height: '38px', borderRadius: '50%', objectFit: 'cover', border: '1px solid rgba(0,0,0,0.15)' }} />
                               )}
                             </td>
-                            <td style={{ padding: '0.75rem 1rem', fontWeight: 700, color: '#ffffff', fontSize: '0.92rem' }}>
+                            <td className="db-user-name" style={{ fontWeight: 700, fontSize: '0.92rem' }}>
                               {editingUserId === u.id ? (
                                 <input 
                                   type="text" 
                                   value={editName} 
                                   onChange={(e) => setEditName(e.target.value)} 
-                                  style={{ padding: '0.35rem 0.6rem', borderRadius: '8px', background: 'rgba(0,0,0,0.6)', color: '#fff', border: '1px solid #818cf8', fontSize: '0.85rem', width: '160px' }}
+                                  style={{ padding: '0.35rem 0.6rem', borderRadius: '8px', background: '#ffffff', color: '#0f172a', border: '1px solid #4f46e5', fontSize: '0.85rem', width: '160px', fontWeight: 600 }}
                                 />
                               ) : (
                                 u.name
                               )}
                             </td>
-                            <td style={{ padding: '0.75rem 1rem', color: '#a5b4fc', fontFamily: 'monospace', fontSize: '0.83rem' }}>{u.email}</td>
-                            <td style={{ padding: '0.75rem 1rem' }}>
-                              <span style={{ padding: '0.3rem 0.75rem', borderRadius: '14px', fontSize: '0.75rem', fontWeight: 700, background: u.role === 'teacher' ? 'rgba(139, 92, 246, 0.25)' : 'rgba(16, 185, 129, 0.25)', color: u.role === 'teacher' ? '#c4b5fd' : '#6ee7b7', border: u.role === 'teacher' ? '1px solid rgba(139, 92, 246, 0.4)' : '1px solid rgba(16, 185, 129, 0.4)' }}>
+                            <td className="db-user-email">{u.email}</td>
+                            <td>
+                              <span style={{ padding: '0.3rem 0.75rem', borderRadius: '14px', fontSize: '0.75rem', fontWeight: 700, background: u.role === 'teacher' ? 'rgba(139, 92, 246, 0.25)' : 'rgba(16, 185, 129, 0.25)', color: u.role === 'teacher' ? '#6d28d9' : '#047857', border: u.role === 'teacher' ? '1px solid rgba(139, 92, 246, 0.4)' : '1px solid rgba(16, 185, 129, 0.4)' }}>
                                 {u.role === 'teacher' ? '👩‍🏫 Teacher' : '🧑‍🎓 Learner'}
                               </span>
                             </td>
-                            <td style={{ padding: '0.75rem 1rem', color: '#cbd5e1', fontFamily: 'monospace', fontSize: '0.83rem' }}>
+                            <td className="db-user-pwd">
                               {editingUserId === u.id ? (
                                 <input 
                                   type="text" 
                                   value={editPassword} 
                                   onChange={(e) => setEditPassword(e.target.value)} 
-                                  style={{ padding: '0.35rem 0.6rem', borderRadius: '8px', background: 'rgba(0,0,0,0.6)', color: '#fff', border: '1px solid #818cf8', fontSize: '0.85rem', width: '130px' }}
+                                  style={{ padding: '0.35rem 0.6rem', borderRadius: '8px', background: '#ffffff', color: '#0f172a', border: '1px solid #4f46e5', fontSize: '0.85rem', width: '130px', fontWeight: 600 }}
                                 />
                               ) : (
                                 u.password || '••••••••'
                               )}
                             </td>
-                            <td style={{ padding: '0.75rem 1rem', textAlign: 'right' }}>
+                            <td style={{ textAlign: 'right' }}>
                               {editingUserId === u.id ? (
                                 <button
                                   onClick={() => saveEditUser(u.id)}
@@ -485,7 +435,7 @@ export default function DatabaseInspectorModal({ onClose }) {
                               ) : (
                                 <button
                                   onClick={() => startEditUser(u)}
-                                  style={{ padding: '0.35rem 0.75rem', borderRadius: '8px', background: 'rgba(255,255,255,0.1)', color: '#a5b4fc', border: 'none', cursor: 'pointer', fontSize: '0.78rem', marginRight: '0.4rem', fontWeight: 600 }}
+                                  style={{ padding: '0.35rem 0.75rem', borderRadius: '8px', background: 'rgba(99, 102, 241, 0.15)', color: '#4338ca', border: 'none', cursor: 'pointer', fontSize: '0.78rem', marginRight: '0.4rem', fontWeight: 700 }}
                                 >
                                   Edit
                                 </button>
@@ -494,7 +444,7 @@ export default function DatabaseInspectorModal({ onClose }) {
                               {/* UNRESTRICTED DELETE PROFILE BUTTON */}
                               <button
                                 onClick={() => handleDeleteUser(u.id, u.name)}
-                                style={{ padding: '0.35rem 0.75rem', borderRadius: '8px', background: 'rgba(239,68,68,0.25)', color: '#f87171', border: '1px solid rgba(239,68,68,0.4)', cursor: 'pointer', fontSize: '0.78rem', fontWeight: 700 }}
+                                style={{ padding: '0.35rem 0.75rem', borderRadius: '8px', background: '#ef4444', color: '#ffffff', border: 'none', cursor: 'pointer', fontSize: '0.78rem', fontWeight: 700, boxShadow: '0 2px 6px rgba(239, 68, 68, 0.3)' }}
                                 title={`Delete profile "${u.name}"`}
                               >
                                 Delete Profile
@@ -514,28 +464,28 @@ export default function DatabaseInspectorModal({ onClose }) {
           {activeTab === 'lessons' && (
             <div>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
-                <span style={{ fontSize: '0.95rem', color: '#a5b4fc', fontWeight: 700 }}>
+                <span style={{ fontSize: '0.95rem', fontWeight: 700 }}>
                   Stored Course Lessons in Local Storage Database ({lessons.length})
                 </span>
-                <span style={{ fontSize: '0.8rem', color: '#94a3b8' }}>
+                <span style={{ fontSize: '0.8rem' }}>
                   Key: `lingua_lessons_v1`
                 </span>
               </div>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem' }}>
                 {lessons.map(l => (
-                  <div key={l.id} style={{ padding: '1rem 1.35rem', borderRadius: '16px', background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <div key={l.id} className="db-card-item" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                     <div>
                       <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
-                        <h4 style={{ margin: 0, fontSize: '1rem', color: '#ffffff', fontWeight: 700 }}>{l.title}</h4>
-                        <span style={{ padding: '0.2rem 0.6rem', borderRadius: '8px', fontSize: '0.72rem', fontWeight: 700, background: 'rgba(99, 102, 241, 0.25)', color: '#a5b4fc' }}>
+                        <h4 style={{ margin: 0, fontSize: '1rem', fontWeight: 700 }}>{l.title}</h4>
+                        <span style={{ padding: '0.2rem 0.6rem', borderRadius: '8px', fontSize: '0.72rem', fontWeight: 700, background: 'rgba(99, 102, 241, 0.15)', color: '#4f46e5' }}>
                           {l.module}
                         </span>
                       </div>
-                      <p style={{ margin: '0.35rem 0 0', fontSize: '0.82rem', color: '#94a3b8' }}>
-                        Level: <strong style={{ color: '#cbd5e1' }}>{l.level}</strong> • Est. Time: {l.estimatedTime || '15 min'} • Author: {l.authorName}
+                      <p style={{ margin: '0.35rem 0 0', fontSize: '0.82rem' }}>
+                        Level: <strong>{l.level}</strong> • Est. Time: {l.estimatedTime || '15 min'} • Author: {l.authorName}
                       </p>
                     </div>
-                    <span style={{ padding: '0.3rem 0.85rem', borderRadius: '14px', fontSize: '0.78rem', fontWeight: 700, background: l.published ? 'rgba(16,185,129,0.2)' : 'rgba(255,255,255,0.08)', color: l.published ? '#6ee7b7' : '#94a3b8', border: l.published ? '1px solid rgba(16,185,129,0.4)' : '1px solid transparent' }}>
+                    <span style={{ padding: '0.3rem 0.85rem', borderRadius: '14px', fontSize: '0.78rem', fontWeight: 700, background: l.published ? 'rgba(16,185,129,0.2)' : 'rgba(0,0,0,0.06)', color: l.published ? '#047857' : '#64748b', border: l.published ? '1px solid rgba(16,185,129,0.4)' : '1px solid transparent' }}>
                       {l.published ? '✓ Published' : 'Draft'}
                     </span>
                   </div>
@@ -548,27 +498,27 @@ export default function DatabaseInspectorModal({ onClose }) {
           {activeTab === 'quizzes' && (
             <div>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
-                <span style={{ fontSize: '0.95rem', color: '#a5b4fc', fontWeight: 700 }}>
+                <span style={{ fontSize: '0.95rem', fontWeight: 700 }}>
                   Interactive Quizzes ({quizzes.length})
                 </span>
-                <span style={{ fontSize: '0.8rem', color: '#94a3b8' }}>
+                <span style={{ fontSize: '0.8rem' }}>
                   Key: `lingua_quizzes_v1`
                 </span>
               </div>
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(350px, 1fr))', gap: '1rem' }}>
                 {quizzes.map(q => (
-                  <div key={q.id} style={{ padding: '1.15rem', borderRadius: '16px', background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+                  <div key={q.id} className="db-card-item" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
                     <div>
-                      <h4 style={{ margin: '0 0 0.5rem', fontSize: '1rem', color: '#ffffff', fontWeight: 700 }}>{q.title}</h4>
-                      <p style={{ margin: 0, fontSize: '0.82rem', color: '#94a3b8' }}>
-                        Lesson ID: <code style={{ color: '#c4b5fd', background: 'rgba(0,0,0,0.4)', padding: '0.15rem 0.5rem', borderRadius: '6px' }}>{q.lessonId}</code>
+                      <h4 style={{ margin: '0 0 0.5rem', fontSize: '1rem', fontWeight: 700 }}>{q.title}</h4>
+                      <p style={{ margin: 0, fontSize: '0.82rem' }}>
+                        Lesson ID: <code style={{ color: '#4f46e5', background: 'rgba(99, 102, 241, 0.1)', padding: '0.15rem 0.5rem', borderRadius: '6px' }}>{q.lessonId}</code>
                       </p>
                     </div>
-                    <div style={{ marginTop: '1rem', paddingTop: '0.75rem', borderTop: '1px solid rgba(255,255,255,0.06)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                      <span style={{ fontSize: '0.8rem', color: '#6ee7b7', fontWeight: 700 }}>
+                    <div style={{ marginTop: '1rem', paddingTop: '0.75rem', borderTop: '1px solid rgba(0,0,0,0.08)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                      <span style={{ fontSize: '0.8rem', color: '#047857', fontWeight: 700 }}>
                         {q.questions ? q.questions.length : 0} Questions
                       </span>
-                      <span style={{ fontSize: '0.75rem', color: '#cbd5e1', background: 'rgba(255,255,255,0.08)', padding: '0.25rem 0.6rem', borderRadius: '8px' }}>
+                      <span style={{ fontSize: '0.75rem', padding: '0.25rem 0.6rem', borderRadius: '8px', background: 'rgba(0,0,0,0.06)' }}>
                         Active Quiz
                       </span>
                     </div>
@@ -582,8 +532,8 @@ export default function DatabaseInspectorModal({ onClose }) {
           {activeTab === 'backup' && (
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(360px, 1fr))', gap: '1.5rem' }}>
               <div style={{ padding: '1.5rem', borderRadius: '20px', background: 'rgba(99, 102, 241, 0.1)', border: '1px solid rgba(99, 102, 241, 0.35)' }}>
-                <h3 style={{ margin: '0 0 0.6rem', fontSize: '1.15rem', color: '#ffffff', fontWeight: 800 }}>📥 Export Full Database (JSON)</h3>
-                <p style={{ fontSize: '0.85rem', color: '#c7d2fe', margin: '0 0 1.25rem', lineHeight: 1.6 }}>
+                <h3 style={{ margin: '0 0 0.6rem', fontSize: '1.15rem', fontWeight: 800 }}>📥 Export Full Database (JSON)</h3>
+                <p style={{ fontSize: '0.85rem', margin: '0 0 1.25rem', lineHeight: 1.6 }}>
                   Download a complete `.json` backup file containing all registered user profiles, avatar configurations, lessons, quizzes, and student scores.
                 </p>
                 <button
@@ -595,22 +545,22 @@ export default function DatabaseInspectorModal({ onClose }) {
               </div>
 
               <div style={{ padding: '1.5rem', borderRadius: '20px', background: 'rgba(16, 185, 129, 0.1)', border: '1px solid rgba(16, 185, 129, 0.35)' }}>
-                <h3 style={{ margin: '0 0 0.6rem', fontSize: '1.15rem', color: '#ffffff', fontWeight: 800 }}>📤 Restore Database (JSON)</h3>
-                <p style={{ fontSize: '0.85rem', color: '#a7f3d0', margin: '0 0 1.25rem', lineHeight: 1.6 }}>
+                <h3 style={{ margin: '0 0 0.6rem', fontSize: '1.15rem', fontWeight: 800 }}>📤 Restore Database (JSON)</h3>
+                <p style={{ fontSize: '0.85rem', margin: '0 0 1.25rem', lineHeight: 1.6 }}>
                   Select a previously exported `.json` database file from your computer to restore user profiles and course data.
                 </p>
                 <input
                   type="file"
                   accept=".json"
                   onChange={importBackupJSON}
-                  style={{ fontSize: '0.88rem', color: '#ffffff' }}
+                  style={{ fontSize: '0.88rem' }}
                 />
               </div>
 
               <div style={{ padding: '1.5rem', borderRadius: '20px', background: 'rgba(239, 68, 68, 0.1)', border: '1px solid rgba(239, 68, 68, 0.35)', gridColumn: '1 / -1' }}>
-                <h3 style={{ margin: '0 0 0.6rem', fontSize: '1.15rem', color: '#f87171', fontWeight: 800 }}>⚠️ Reset Database Memory</h3>
-                <p style={{ fontSize: '0.85rem', color: '#fca5a5', margin: '0 0 1.25rem', lineHeight: 1.6 }}>
-                  Reset all browser local storage data back to default clean demo seeds.
+                <h3 style={{ margin: '0 0 0.6rem', fontSize: '1.15rem', color: '#dc2626', fontWeight: 800 }}>⚠️ Reset Database Memory</h3>
+                <p style={{ fontSize: '0.85rem', margin: '0 0 1.25rem', lineHeight: 1.6 }}>
+                  Reset all browser local storage data back to default clean seeds.
                 </p>
                 <button
                   onClick={() => {
@@ -618,7 +568,7 @@ export default function DatabaseInspectorModal({ onClose }) {
                       dbService.resetToDefault();
                     }
                   }}
-                  style={{ padding: '0.75rem 1.25rem', borderRadius: '12px', background: 'rgba(239, 68, 68, 0.3)', color: '#f87171', border: '1px solid rgba(239, 68, 68, 0.6)', fontWeight: 800, cursor: 'pointer', fontSize: '0.88rem' }}
+                  style={{ padding: '0.75rem 1.25rem', borderRadius: '12px', background: '#dc2626', color: '#ffffff', border: 'none', fontWeight: 800, cursor: 'pointer', fontSize: '0.88rem', boxShadow: '0 4px 12px rgba(220, 38, 38, 0.35)' }}
                 >
                   <RefreshCw className="w-4 h-4 inline mr-1.5" /> Reset Local Storage Data
                 </button>
@@ -628,8 +578,8 @@ export default function DatabaseInspectorModal({ onClose }) {
         </div>
 
         {/* Full Screen Footer Bar */}
-        <div className="avatar-modal-footer" style={{ padding: '1rem 2rem', background: 'rgba(0,0,0,0.4)', borderTop: '1px solid rgba(255,255,255,0.08)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <span style={{ fontSize: '0.82rem', color: '#94a3b8' }}>
+        <div className="db-footer-bar">
+          <span>
             Room-305 English Academy • Educator Database Studio Mode
           </span>
           <button
