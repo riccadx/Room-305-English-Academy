@@ -10,7 +10,7 @@ export default function AnimatedLogin({ onLoginSuccess, isDayMode, onToggleTheme
   const [selectedRole, setSelectedRole] = useState('learner'); // 'learner' | 'teacher'
 
   // Form Fields
-  const [name, setName] = useState('');
+  const [name, setName] = useState('Alex Rivera');
   const [email, setEmail] = useState('alex.rivera@student.edu');
   const [password, setPassword] = useState('••••••••');
   const [teacherPasscode, setTeacherPasscode] = useState('');
@@ -40,12 +40,12 @@ export default function AnimatedLogin({ onLoginSuccess, isDayMode, onToggleTheme
     setSelectedRole(role);
     setErrorMessage('');
     setAccountNotFound(false);
-    if (authMode === 'signin') {
-      if (role === 'learner') {
-        setEmail('alex.rivera@student.edu');
-      } else {
-        setEmail('sarah.jenkins@lingua.edu');
-      }
+    if (role === 'learner') {
+      setName('Alex Rivera');
+      setEmail('alex.rivera@student.edu');
+    } else {
+      setName('Ms. Sarah Jenkins');
+      setEmail('sarah.jenkins@lingua.edu');
     }
   };
 
@@ -113,7 +113,8 @@ export default function AnimatedLogin({ onLoginSuccess, isDayMode, onToggleTheme
       return;
     }
 
-    const result = dbService.loginUser(email, password, selectedRole);
+    const identifier = name.trim() || email.trim();
+    const result = dbService.loginUser(identifier, password, selectedRole);
     if (!result.success) {
       setErrorMessage(result.message);
       if (result.notFound) {
@@ -410,16 +411,16 @@ export default function AnimatedLogin({ onLoginSuccess, isDayMode, onToggleTheme
             {authMode === 'signin' && (
               <form onSubmit={handleSignIn} className="login-form mt-4">
                 <div className="form-group">
-                  <label className="form-label">Email Address</label>
+                  <label className="form-label">Full Name / Username *</label>
                   <input
-                    type="email"
+                    type="text"
                     required
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
                     onFocus={() => setIsFocusedOnEmail(true)}
                     onBlur={() => setIsFocusedOnEmail(false)}
                     className="form-input login-input"
-                    placeholder="enter@room305.edu"
+                    placeholder="e.g. Alex Rivera or Yuki Tanaka"
                   />
                 </div>
 

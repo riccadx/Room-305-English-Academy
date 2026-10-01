@@ -124,19 +124,25 @@ export const dbService = {
     return targetUser;
   },
 
-  loginUser(email, password, role = 'learner') {
+  loginUser(identifier, password, role = 'learner') {
     const users = this.getUsers();
-    const cleanEmail = (email || '').trim().toLowerCase();
+    const cleanId = (identifier || '').trim().toLowerCase();
     
-    // Exact email lookup in registered users database (case-insensitive & trimmed)
-    let foundUser = users.find(u => (u.email || '').trim().toLowerCase() === cleanEmail);
+    // Exact lookup by Name OR Email (case-insensitive & trimmed)
+    let foundUser = users.find(u => 
+      (u.name || '').trim().toLowerCase() === cleanId || 
+      (u.email || '').trim().toLowerCase() === cleanId
+    );
     
     // Auto-create & register user if not found yet so login NEVER fails!
     if (!foundUser) {
-      const defaultName = cleanEmail.split('@')[0] || 'Student';
+      const isEmailFormat = cleanId.includes('@');
+      const defaultName = isEmailFormat ? cleanId.split('@')[0] : (identifier.trim() || 'Student');
+      const defaultEmail = isEmailFormat ? cleanId : `${cleanId.replace(/\s+/g, '.')}@student.edu`;
+
       foundUser = this.registerUser({
         name: defaultName,
-        email: cleanEmail,
+        email: defaultEmail,
         password: password || '••••••••',
         role: role
       });
@@ -145,7 +151,7 @@ export const dbService = {
         success: true, 
         isNewRegistration: true,
         user: foundUser,
-        message: `New account created & saved for ${cleanEmail}!` 
+        message: `New account created & saved for ${defaultName}!` 
       };
     }
 
