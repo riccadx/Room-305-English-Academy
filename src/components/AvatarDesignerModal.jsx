@@ -309,123 +309,264 @@ export default function AvatarDesignerModal({ user, onSave, onClose }) {
   const [bgGlow, setBgGlow] = useState(user?.avatarConfig?.bgGlow || 'indigo');
   const [motto, setMotto] = useState(user?.avatarConfig?.motto || 'Ready to learn English! 🚀');
 
+  // Tab navigation: 'character' | 'accessory' | 'color' | 'motto'
+  const [activeTab, setActiveTab] = useState('character');
+
   const avatarConfig = { character, accessory, bgGlow, motto };
 
   const handleSave = () => {
     onSave(avatarConfig);
   };
 
+  const handleRandomize = () => {
+    const randomChar = CHARACTERS[Math.floor(Math.random() * CHARACTERS.length)].id;
+    const randomAcc = ACCESSORIES[Math.floor(Math.random() * ACCESSORIES.length)].id;
+    const randomBg = BG_COLORS[Math.floor(Math.random() * BG_COLORS.length)].id;
+    setCharacter(randomChar);
+    setAccessory(randomAcc);
+    setBgGlow(randomBg);
+  };
+
   return (
-    <div className="avatar-modal-overlay animate-fadeIn">
-      <div className="avatar-modal-card">
+    <div 
+      className="avatar-modal-overlay animate-fadeIn"
+      style={{
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        zIndex: 999999,
+        backgroundColor: 'rgba(11, 15, 25, 0.88)',
+        backdropFilter: 'blur(16px)',
+        WebkitBackdropFilter: 'blur(16px)',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: '1rem'
+      }}
+    >
+      <div 
+        className="avatar-modal-card"
+        style={{
+          width: '100%',
+          maxWidth: '620px',
+          maxHeight: '92vh',
+          display: 'flex',
+          flexDirection: 'column',
+          overflow: 'hidden',
+          borderRadius: '24px'
+        }}
+      >
         {/* Header */}
         <div className="avatar-modal-header">
           <div className="avatar-title-group">
             <Sparkles className="w-6 h-6 text-amber" />
-            <h2>Design Your Cartoon Avatar! 🐾</h2>
+            <div>
+              <h2>Design Your Cartoon Avatar! 🐾</h2>
+              <p style={{ fontSize: '0.75rem', color: '#94a3b8', margin: 0, fontWeight: 500 }}>
+                Customize your animal character, hat, color & learning motto
+              </p>
+            </div>
           </div>
           {onClose && (
-            <button type="button" onClick={onClose} className="avatar-close-btn" title="Close">
+            <button type="button" onClick={onClose} className="avatar-close-btn" title="Close Studio">
               <X className="w-5 h-5" />
             </button>
           )}
         </div>
 
-        {/* Live Preview Display */}
+        {/* Live Hero Preview Studio Display */}
         <div className="avatar-preview-box">
-          <RenderAvatar config={avatarConfig} size={110} />
+          <RenderAvatar config={avatarConfig} size={115} />
           <h3 className="avatar-user-name">{user?.name || 'Student'}</h3>
           <p className="avatar-user-motto">"{motto}"</p>
+
+          <button 
+            type="button"
+            onClick={handleRandomize}
+            className="avatar-random-btn"
+            title="Generate a fun random character design!"
+          >
+            🎲 Randomize Design
+          </button>
         </div>
 
-        {/* Controls Sections Scroll Area */}
+        {/* Studio Category Navigation Tabs */}
+        <div className="avatar-studio-tabs">
+          <button
+            type="button"
+            className={`studio-tab-btn ${activeTab === 'character' ? 'active' : ''}`}
+            onClick={() => setActiveTab('character')}
+          >
+            <span>🐾 Character</span>
+            <span className="studio-tab-count">{CHARACTERS.length}</span>
+          </button>
+          <button
+            type="button"
+            className={`studio-tab-btn ${activeTab === 'accessory' ? 'active' : ''}`}
+            onClick={() => setActiveTab('accessory')}
+          >
+            <span>🎩 Hat & Accessory</span>
+            <span className="studio-tab-count">{ACCESSORIES.length}</span>
+          </button>
+          <button
+            type="button"
+            className={`studio-tab-btn ${activeTab === 'color' ? 'active' : ''}`}
+            onClick={() => setActiveTab('color')}
+          >
+            <span>🎨 Aura Color</span>
+            <span className="studio-tab-count">{BG_COLORS.length}</span>
+          </button>
+          <button
+            type="button"
+            className={`studio-tab-btn ${activeTab === 'motto' ? 'active' : ''}`}
+            onClick={() => setActiveTab('motto')}
+          >
+            <span>💬 Bio Motto</span>
+          </button>
+        </div>
+
+        {/* Active Studio Tab Body Area */}
         <div className="avatar-modal-scroll">
-          {/* 1. Select Animal Character */}
-          <div className="avatar-section">
-            <label className="avatar-section-title">
-              1. Choose Animal Character ({CHARACTERS.length} Available) 🐾
-            </label>
-            <div className="avatar-grid-grid">
-              {CHARACTERS.map(c => (
-                <button
-                  key={c.id}
-                  type="button"
-                  onClick={() => setCharacter(c.id)}
-                  className={`avatar-choice-btn ${character === c.id ? 'active' : ''}`}
-                >
-                  <span className="avatar-icon-emoji">{c.icon}</span>
-                  <span className="avatar-icon-label">{c.name.split(' ')[0]}</span>
-                </button>
-              ))}
+          {/* TAB 1: ANIMAL CHARACTER */}
+          {activeTab === 'character' && (
+            <div className="avatar-section">
+              <label className="avatar-section-title">
+                Choose Animal Character ({CHARACTERS.length} Cute Animals) 🐾
+              </label>
+              <div className="avatar-grid-grid">
+                {CHARACTERS.map(c => (
+                  <button
+                    key={c.id}
+                    type="button"
+                    onClick={() => setCharacter(c.id)}
+                    className={`avatar-choice-btn ${character === c.id ? 'active' : ''}`}
+                  >
+                    <span className="avatar-icon-emoji">{c.icon}</span>
+                    <span className="avatar-icon-label">{c.name.split(' ')[0]}</span>
+                    {character === c.id && <Check className="avatar-check-badge" />}
+                  </button>
+                ))}
+              </div>
             </div>
-          </div>
+          )}
 
-          {/* 2. Select Accessory / Hat */}
-          <div className="avatar-section">
-            <label className="avatar-section-title">
-              2. Choose Hat & Accessories 🎩
-            </label>
-            <div className="avatar-grid-grid">
-              {ACCESSORIES.map(a => (
-                <button
-                  key={a.id}
-                  type="button"
-                  onClick={() => setAccessory(a.id)}
-                  className={`avatar-choice-btn accessory ${accessory === a.id ? 'active' : ''}`}
-                >
-                  <span className="avatar-icon-emoji">{a.icon}</span>
-                  <span className="avatar-icon-label">{a.name.split(' ')[0]}</span>
-                </button>
-              ))}
+          {/* TAB 2: HATS & ACCESSORIES */}
+          {activeTab === 'accessory' && (
+            <div className="avatar-section">
+              <label className="avatar-section-title">
+                Choose Hat & Head Accessory 🎩
+              </label>
+              <div className="avatar-grid-grid">
+                {ACCESSORIES.map(a => (
+                  <button
+                    key={a.id}
+                    type="button"
+                    onClick={() => setAccessory(a.id)}
+                    className={`avatar-choice-btn accessory ${accessory === a.id ? 'active' : ''}`}
+                  >
+                    <span className="avatar-icon-emoji">{a.icon}</span>
+                    <span className="avatar-icon-label">{a.name}</span>
+                    {accessory === a.id && <Check className="avatar-check-badge" />}
+                  </button>
+                ))}
+              </div>
             </div>
-          </div>
+          )}
 
-          {/* 3. Background Aura Color */}
-          <div className="avatar-section">
-            <label className="avatar-section-title">
-              3. Choose Background Aura Color 🎨
-            </label>
-            <div className="avatar-grid-grid color-grid">
-              {BG_COLORS.map(bg => (
-                <button
-                  key={bg.id}
-                  type="button"
-                  onClick={() => setBgGlow(bg.id)}
-                  className={`avatar-color-btn ${bgGlow === bg.id ? 'active' : ''}`}
-                  style={{ background: bg.grad }}
-                >
-                  {bgGlow === bg.id && <Check className="w-3.5 h-3.5 text-white" />}
-                  <span>{bg.name.split(' ')[0]}</span>
-                </button>
-              ))}
+          {/* TAB 3: BACKGROUND AURA COLOR */}
+          {activeTab === 'color' && (
+            <div className="avatar-section">
+              <label className="avatar-section-title">
+                Choose Background Aura Glow Gradient 🎨
+              </label>
+              <div className="avatar-grid-grid color-grid">
+                {BG_COLORS.map(bg => (
+                  <button
+                    key={bg.id}
+                    type="button"
+                    onClick={() => setBgGlow(bg.id)}
+                    className={`avatar-color-btn ${bgGlow === bg.id ? 'active' : ''}`}
+                    style={{ background: bg.grad }}
+                  >
+                    {bgGlow === bg.id && <Check className="w-4 h-4 text-white drop-shadow" />}
+                    <span>{bg.name}</span>
+                  </button>
+                ))}
+              </div>
             </div>
-          </div>
+          )}
 
-          {/* 4. Custom Motto */}
-          <div className="avatar-section">
-            <label className="avatar-section-title">
-              4. Learning Motto / Bio 💬
-            </label>
-            <input
-              type="text"
-              value={motto}
-              onChange={(e) => setMotto(e.target.value)}
-              className="avatar-motto-input"
-              placeholder="e.g. Practicing English 15 mins daily!"
-              maxLength={60}
-            />
-          </div>
+          {/* TAB 4: CUSTOM MOTTO */}
+          {activeTab === 'motto' && (
+            <div className="avatar-section">
+              <label className="avatar-section-title">
+                Learning Motto & Bio Phrase 💬
+              </label>
+              <p style={{ fontSize: '0.8rem', color: '#94a3b8', marginBottom: '0.75rem' }}>
+                This sentence will show under your avatar in student leaderboards and profile cards.
+              </p>
+              <input
+                type="text"
+                value={motto}
+                onChange={(e) => setMotto(e.target.value)}
+                className="avatar-motto-input"
+                placeholder="e.g. Practicing English 15 mins daily! 🚀"
+                maxLength={60}
+              />
+              <div style={{ display: 'flex', gap: '0.5rem', marginTop: '0.75rem', flexWrap: 'wrap' }}>
+                <span style={{ fontSize: '0.75rem', color: '#64748b' }}>Quick suggestions:</span>
+                {[
+                  'Ready to learn English! 🚀',
+                  'Practicing daily speaking! 🎙️',
+                  'Listening to podcasts 🎧',
+                  'Grammar champion 📖'
+                ].map((sugg, i) => (
+                  <button
+                    key={i}
+                    type="button"
+                    onClick={() => setMotto(sugg)}
+                    style={{
+                      fontSize: '0.72rem',
+                      padding: '0.25rem 0.6rem',
+                      borderRadius: '12px',
+                      background: 'rgba(255, 255, 255, 0.06)',
+                      border: '1px solid rgba(255, 255, 255, 0.1)',
+                      color: '#a5b4fc',
+                      cursor: 'pointer'
+                    }}
+                  >
+                    {sugg}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
 
-        {/* Action Button */}
-        <button
-          type="button"
-          onClick={handleSave}
-          className="avatar-save-btn"
-        >
-          <Sparkles className="w-5 h-5" /> Save Cartoon Avatar & Launch Portal
-        </button>
+        {/* Action Save Bar */}
+        <div className="avatar-modal-footer">
+          {onClose && (
+            <button
+              type="button"
+              onClick={onClose}
+              className="avatar-cancel-btn"
+            >
+              Cancel
+            </button>
+          )}
+          <button
+            type="button"
+            onClick={handleSave}
+            className="avatar-save-btn"
+            style={{ flex: 1, margin: 0 }}
+          >
+            <Sparkles className="w-5 h-5" /> Save Cartoon Avatar & Launch Portal
+          </button>
+        </div>
       </div>
     </div>
   );
 }
+
