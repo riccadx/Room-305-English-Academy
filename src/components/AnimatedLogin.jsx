@@ -9,10 +9,10 @@ export default function AnimatedLogin({ onLoginSuccess, isDayMode, onToggleTheme
   const [authMode, setAuthMode] = useState('signin'); // 'signin' | 'register'
   const [selectedRole, setSelectedRole] = useState('learner'); // 'learner' | 'teacher'
 
-  // Form Fields
-  const [name, setName] = useState('Alex Rivera');
-  const [email, setEmail] = useState('alex.rivera@student.edu');
-  const [password, setPassword] = useState('••••••••');
+  // Form Fields - Blank initial state (no example values)
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [teacherPasscode, setTeacherPasscode] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
 
@@ -40,13 +40,6 @@ export default function AnimatedLogin({ onLoginSuccess, isDayMode, onToggleTheme
     setSelectedRole(role);
     setErrorMessage('');
     setAccountNotFound(false);
-    if (role === 'learner') {
-      setName('Alex Rivera');
-      setEmail('alex.rivera@student.edu');
-    } else {
-      setName('Ms. Sarah Jenkins');
-      setEmail('sarah.jenkins@lingua.edu');
-    }
   };
 
   const verifyPasscodeModal = (e) => {
@@ -416,7 +409,7 @@ export default function AnimatedLogin({ onLoginSuccess, isDayMode, onToggleTheme
                     onFocus={() => setIsFocusedOnEmail(true)}
                     onBlur={() => setIsFocusedOnEmail(false)}
                     className="form-input login-input"
-                    placeholder="e.g. Alex Rivera or Yuki Tanaka"
+                    placeholder="Enter full name or username"
                   />
                 </div>
 
@@ -469,7 +462,7 @@ export default function AnimatedLogin({ onLoginSuccess, isDayMode, onToggleTheme
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                     className="form-input login-input"
-                    placeholder="e.g. Yuki Tanaka"
+                    placeholder="Enter full name"
                   />
                 </div>
 
@@ -483,7 +476,7 @@ export default function AnimatedLogin({ onLoginSuccess, isDayMode, onToggleTheme
                     onFocus={() => setIsFocusedOnEmail(true)}
                     onBlur={() => setIsFocusedOnEmail(false)}
                     className="form-input login-input"
-                    placeholder="e.g. yuki.tanaka@student.edu"
+                    placeholder="Enter email address"
                   />
                 </div>
 
@@ -557,14 +550,14 @@ export default function AnimatedLogin({ onLoginSuccess, isDayMode, onToggleTheme
                 className="quick-demo-btn btn-learner"
                 onClick={() => handleQuickDemo('learner')}
               >
-                <User className="w-4 h-4" /> Demo Learner (Alex)
+                <User className="w-4 h-4" /> Demo Learner
               </button>
               <button
                 type="button"
                 className="quick-demo-btn btn-teacher"
                 onClick={() => handleQuickDemo('teacher')}
               >
-                <ShieldCheck className="w-4 h-4" /> Demo Educator (Sarah) 🔐
+                <ShieldCheck className="w-4 h-4" /> Demo Educator 🔐
               </button>
             </div>
 

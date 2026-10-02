@@ -124,7 +124,7 @@ export default function ProgressReport({ currentUser, onOpenLesson }) {
           <div className="cert-border">
             <div className="cert-title">CERTIFICATE OF ACCOMPLISHMENT</div>
             <div className="cert-subtitle">This certifies that</div>
-            <div className="cert-name">{currentUser?.name || 'Alex Rivera'}</div>
+            <div className="cert-name">{currentUser?.name || 'Student'}</div>
             <div className="cert-body">
               has successfully demonstrated proficiency in <strong>English Communication, Grammar & Business Pitching</strong> with a overall mastery score of <strong>{quizAccuracyPercent}%</strong>.
             </div>
