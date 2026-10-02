@@ -4135,6 +4135,268 @@ body.day-mode .avatar-motto-input:focus {
   box-shadow: 0 0 14px rgba(79, 70, 229, 0.25) !important;
 }
 
+/* ==========================================================================
+   MOBILE & SMARTPHONE RESPONSIVE STYLES (iOS / ANDROID SUPPORT)
+   ========================================================================== */
+
+@media (max-width: 768px) {
+  .main-content {
+    padding: 1rem 0.85rem;
+  }
+
+  /* NAVBAR MOBILE OPTIMIZATIONS */
+  .navbar-container {
+    padding: 0.65rem 0.85rem;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.75rem;
+  }
+
+  .navbar-brand {
+    justify-content: flex-start;
+  }
+
+  .brand-title {
+    font-size: 1.05rem;
+  }
+
+  .brand-subtitle {
+    font-size: 0.62rem;
+  }
+
+  /* Scrollable Navigation Bar for Mobile */
+  .navbar-nav {
+    width: 100%;
+    overflow-x: auto;
+    padding-bottom: 0.35rem;
+    display: flex;
+    gap: 0.4rem;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+
+  .navbar-nav::-webkit-scrollbar {
+    display: none;
+  }
+
+  .nav-link {
+    font-size: 0.8rem;
+    padding: 0.45rem 0.75rem;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .navbar-actions {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    padding-top: 0.35rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .theme-toggle-btn {
+    padding: 0.35rem 0.6rem;
+    font-size: 0.75rem;
+  }
+
+  .role-badge {
+    font-size: 0.7rem;
+    padding: 0.2rem 0.5rem;
+  }
+
+  .user-profile-pill {
+    gap: 0.4rem;
+  }
+
+  .user-avatar {
+    width: 32px;
+    height: 32px;
+  }
+
+  .user-name {
+    font-size: 0.8rem;
+  }
+
+  .user-role {
+    font-size: 0.65rem;
+  }
+
+  .teacher-db-inspector-btn {
+    padding: 0.35rem 0.65rem;
+    font-size: 0.75rem;
+  }
+
+  /* ANIMATED LOGIN SCREEN MOBILE RESPONSIVENESS */
+  .animated-login-backdrop {
+    padding: 1rem 0.75rem;
+    overflow-y: auto;
+  }
+
+  .animated-login-container {
+    grid-template-columns: 1fr;
+    border-radius: 20px;
+    max-width: 100%;
+    margin: auto 0;
+  }
+
+  .login-hero-side {
+    padding: 1.5rem 1.25rem;
+    border-right: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .hero-brand-title {
+    font-size: 1.6rem;
+  }
+
+  .hero-brand-desc {
+    font-size: 0.85rem;
+  }
+
+  .login-form-card {
+    padding: 1.5rem 1.25rem;
+  }
+
+  .bg-floating-badge {
+    display: none;
+  }
+
+  .bg-word {
+    font-size: 1.8rem;
+  }
+
+  /* LEARNER DASHBOARD & COURSES RESPONSIVENESS */
+  .dashboard-hero {
+    padding: 1.5rem 1.25rem;
+    border-radius: 20px;
+  }
+
+  .hero-title {
+    font-size: 1.4rem;
+  }
+
+  .courses-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .course-card {
+    border-radius: 18px;
+  }
+
+  /* WEEKLY PATHWAY VIEW MOBILE RESPONSIVENESS */
+  .schedule-container {
+    padding: 0.5rem;
+  }
+
+  .schedule-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+
+  .weeks-grid {
+    grid-template-columns: 1fr;
+  }
+
+  /* TEACHER DASHBOARD RESPONSIVENESS */
+  .teacher-dashboard-container {
+    padding: 0.5rem;
+  }
+
+  .teacher-metrics-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+  }
+
+  .teacher-actions-bar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.75rem;
+  }
+
+  .table-responsive-wrapper {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* FULLSCREEN DATABASE STUDIO MOBILE OPTIMIZATIONS */
+  .db-studio-header {
+    padding: 0.75rem 1rem;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+
+  .db-studio-title {
+    font-size: 1.1rem;
+  }
+
+  .db-studio-subtitle {
+    font-size: 0.75rem;
+  }
+
+  .db-stats-bar {
+    padding: 0.75rem 1rem;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.65rem;
+  }
+
+  .db-stat-card {
+    padding: 0.5rem 0.75rem;
+  }
+
+  .db-stat-label {
+    font-size: 0.65rem;
+  }
+
+  .db-stat-value {
+    font-size: 1.05rem;
+  }
+
+  .avatar-studio-tabs {
+    padding: 0.5rem 1rem 0;
+  }
+
+  .avatar-modal-scroll {
+    padding: 1rem;
+  }
+
+  .db-footer-bar {
+    padding: 0.75rem 1rem;
+    flex-direction: column;
+    gap: 0.5rem;
+    text-align: center;
+  }
+
+  /* MODALS MOBILE RESPONSIVENESS */
+  .lesson-modal-card,
+  .quiz-modal-card {
+    width: 96vw;
+    max-height: 94vh;
+    padding: 1rem;
+    border-radius: 18px;
+  }
+}
+
+@media (max-width: 480px) {
+  .teacher-metrics-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .db-stats-bar {
+    grid-template-columns: 1fr;
+  }
+
+  .brand-title {
+    font-size: 0.95rem;
+  }
+}
+
 
 
 
