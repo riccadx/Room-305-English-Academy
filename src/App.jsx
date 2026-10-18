@@ -12,6 +12,7 @@ import DatabaseInspectorModal from './components/DatabaseInspectorModal';
 import AvatarDesignerModal from './components/AvatarDesignerModal';
 import MobileBottomNav from './components/MobileBottomNav';
 import PwaInstallPrompt from './components/PwaInstallPrompt';
+import LearnerProfileView from './components/LearnerProfileView';
 import { dbService } from './services/db';
 import './App.css';
 
@@ -154,7 +155,18 @@ export default function App() {
           ) : (
             // LEARNER / STUDENT PORTAL VIEWS
             <>
-              {activeTab === 'progress' ? (
+              {activeTab === 'profile' ? (
+                <LearnerProfileView
+                  currentUser={currentUser}
+                  onUserChange={handleUserChange}
+                  onOpenAvatar={() => setShowAvatarDesigner(true)}
+                  onNavigateTab={(tabName) => setActiveTab(tabName)}
+                  isDayMode={isDayMode}
+                  onToggleTheme={toggleDayNightMode}
+                  onLogout={handleLogout}
+                  onOpenInstallPrompt={() => setShowInstallPrompt(true)}
+                />
+              ) : activeTab === 'progress' ? (
                 <ProgressReport
                   currentUser={currentUser}
                   onOpenLesson={handleOpenLesson}

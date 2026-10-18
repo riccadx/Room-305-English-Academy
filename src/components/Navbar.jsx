@@ -70,11 +70,17 @@ export default function Navbar({
             {isTeacher ? 'Educator Portal' : 'Learner Portal'}
           </span>
 
-          {/* User Profile Pill - Clickable to open Avatar Designer */}
+          {/* User Profile Pill - Clickable to open Cartoon Profile */}
           <div 
             className="user-profile-pill cursor-pointer hover:opacity-90 transition"
-            onClick={() => setShowAvatarDesigner(true)}
-            title="Click to customize your cartoon profile avatar!"
+            onClick={() => {
+              if (!isTeacher && setActiveTab) {
+                setActiveTab('profile');
+              } else {
+                setShowAvatarDesigner(true);
+              }
+            }}
+            title="Click to view Cartoon Profile & Mascot!"
           >
             {currentUser?.avatarConfig ? (
               <RenderAvatar config={currentUser.avatarConfig} size={36} className="user-avatar" />

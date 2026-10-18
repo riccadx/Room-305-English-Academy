@@ -48,9 +48,9 @@ export default function MobileBottomNav({
         {/* Avatar / Profile shortcut button */}
         <button
           type="button"
-          className="mobile-nav-btn profile-nav-btn"
-          onClick={onOpenAvatar}
-          title="Open Avatar / Profile"
+          className={`mobile-nav-btn profile-nav-btn ${activeTab === 'profile' ? 'active' : ''}`}
+          onClick={() => setActiveTab('profile')}
+          title="Open Cartoon Profile"
         >
           <div className="nav-icon-container">
             {currentUser?.avatarConfig ? (
@@ -60,6 +60,7 @@ export default function MobileBottomNav({
                 <User className="w-4 h-4 text-white" />
               </div>
             )}
+            {activeTab === 'profile' && <span className="active-dot" />}
           </div>
           <span className="mobile-nav-label">Profile</span>
         </button>

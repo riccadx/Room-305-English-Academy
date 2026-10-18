@@ -5605,6 +5605,562 @@ body.day-mode .ios-step-item {
   color: #334155;
 }
 
+/* ==========================================================================
+   MOBILE-FIRST CARTOON PROFILE VIEW
+   ========================================================================== */
+
+.learner-profile-container {
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 1.25rem 1rem 3rem 1rem;
+}
+
+.profile-header-card {
+  background: rgba(19, 27, 46, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 28px;
+  padding: 1.5rem;
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.35);
+  position: relative;
+  overflow: hidden;
+}
+
+.profile-header-card::before {
+  content: '';
+  position: absolute;
+  top: -50px;
+  right: -50px;
+  width: 180px;
+  height: 180px;
+  background: radial-gradient(circle, rgba(99, 102, 241, 0.25) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.profile-theme-toggle-btn {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 9999px;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.profile-theme-toggle-btn:hover {
+  background: rgba(255, 255, 255, 0.16);
+  transform: scale(1.05);
+}
+
+/* Mascot Spotlight Section */
+.mascot-spotlight-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 1.25rem;
+  position: relative;
+}
+
+.mascot-avatar-wrapper {
+  position: relative;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.mascot-avatar-wrapper:hover {
+  transform: scale(1.05);
+}
+
+.mascot-avatar-wrapper:active {
+  transform: scale(0.96);
+}
+
+.mascot-pulse-ring {
+  position: absolute;
+  inset: -8px;
+  border-radius: 9999px;
+  background: radial-gradient(circle, rgba(99, 102, 241, 0.35) 0%, rgba(139, 92, 246, 0.15) 70%, transparent 100%);
+  animation: mascotPulse 3s infinite ease-in-out;
+  pointer-events: none;
+}
+
+@keyframes mascotPulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.6;
+  }
+  50% {
+    transform: scale(1.08);
+    opacity: 0.9;
+  }
+}
+
+.profile-main-mascot {
+  border-radius: 9999px !important;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 0 3px rgba(255, 255, 255, 0.2) !important;
+}
+
+.mascot-edit-badge-btn {
+  position: absolute;
+  bottom: 4px;
+  right: 4px;
+  width: 34px;
+  height: 34px;
+  border-radius: 9999px;
+  background: #4f46e5;
+  border: 2px solid #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  transition: all 0.2s ease;
+}
+
+.mascot-edit-badge-btn:hover {
+  background: #4338ca;
+  transform: scale(1.1);
+}
+
+/* Mascot Speech Bubble */
+.mascot-speech-bubble {
+  margin-top: 1.25rem;
+  background: rgba(30, 41, 59, 0.85);
+  border: 1px solid rgba(99, 102, 241, 0.35);
+  border-radius: 18px;
+  padding: 0.85rem 1.15rem;
+  position: relative;
+  max-width: 380px;
+  width: 100%;
+  cursor: pointer;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+  transition: all 0.2s ease;
+}
+
+.mascot-speech-bubble:hover {
+  border-color: rgba(99, 102, 241, 0.6);
+  transform: translateY(-2px);
+}
+
+.mascot-speech-bubble::before {
+  content: '';
+  position: absolute;
+  top: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-width: 0 8px 8px 8px;
+  border-style: solid;
+  border-color: transparent transparent rgba(30, 41, 59, 0.85) transparent;
+}
+
+.speech-character-tag {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #818cf8;
+  margin-bottom: 0.25rem;
+}
+
+.speech-text {
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: #ffffff;
+  line-height: 1.4;
+}
+
+.speech-hint {
+  display: block;
+  font-size: 0.68rem;
+  color: #94a3b8;
+  margin-top: 0.35rem;
+  text-align: right;
+}
+
+/* Student Info & Level */
+.student-profile-name {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #ffffff;
+  letter-spacing: -0.02em;
+}
+
+.student-level-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: rgba(245, 158, 11, 0.15);
+  border: 1px solid rgba(245, 158, 11, 0.35);
+  padding: 0.3rem 0.85rem;
+  border-radius: 9999px;
+  color: #fcd34d;
+  font-size: 0.82rem;
+  font-weight: 700;
+  margin-top: 0.35rem;
+}
+
+.xp-bar-container {
+  max-width: 360px;
+  margin: 0.75rem auto 0 auto;
+}
+
+.xp-track {
+  width: 100%;
+  height: 10px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 9999px;
+  overflow: hidden;
+}
+
+.xp-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #10b981 0%, #38bdf8 100%);
+  border-radius: 9999px;
+  transition: width 0.6s ease;
+}
+
+.student-goal-box {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px dashed rgba(255, 255, 255, 0.15);
+  border-radius: 12px;
+  padding: 0.5rem 0.85rem;
+  display: inline-block;
+  max-width: 400px;
+  width: 100%;
+}
+
+.goal-quote {
+  font-size: 0.85rem;
+  font-style: italic;
+  color: #cbd5e1;
+}
+
+.goal-input {
+  background: rgba(0, 0, 0, 0.25);
+  border: 1px solid rgba(99, 102, 241, 0.4);
+  border-radius: 8px;
+  padding: 0.35rem 0.6rem;
+  color: #ffffff;
+  font-size: 0.85rem;
+}
+
+.goal-save-btn {
+  background: #10b981;
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  padding: 0.35rem 0.65rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Profile Card Sections */
+.profile-card-section {
+  background: rgba(19, 27, 46, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 24px;
+  padding: 1.25rem;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+}
+
+.section-title {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+/* Mascot Carousel Strips */
+.mascot-carousel-strip, .accessory-carousel-strip {
+  display: flex;
+  gap: 0.5rem;
+  overflow-x: auto;
+  padding-bottom: 0.5rem;
+  scrollbar-width: thin;
+  -webkit-overflow-scrolling: touch;
+}
+
+.mascot-chip {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.2rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1.5px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  padding: 0.6rem 0.75rem;
+  min-width: 64px;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.mascot-chip:active {
+  transform: scale(0.92);
+}
+
+.mascot-chip.selected {
+  background: rgba(99, 102, 241, 0.2);
+  border-color: #6366f1;
+  box-shadow: 0 0 14px rgba(99, 102, 241, 0.4);
+  transform: translateY(-2px);
+}
+
+.mascot-chip-emoji {
+  font-size: 1.6rem;
+}
+
+.mascot-chip-name {
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: #e2e8f0;
+}
+
+.accessory-chip {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 9999px;
+  padding: 0.35rem 0.75rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #cbd5e1;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s ease;
+}
+
+.accessory-chip.selected {
+  background: rgba(16, 185, 129, 0.2);
+  border-color: #10b981;
+  color: #34d399;
+}
+
+/* Gamified Stats Grid */
+.profile-stats-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+}
+
+.profile-stat-box {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 18px;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  transition: transform 0.2s ease;
+}
+
+.profile-stat-box:hover {
+  transform: translateY(-2px);
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.stat-number {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: #ffffff;
+}
+
+.stat-label {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: #94a3b8;
+  margin-top: 0.15rem;
+}
+
+/* Badges Grid */
+.badges-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.65rem;
+}
+
+@media (min-width: 500px) {
+  .badges-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.badge-item-card {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 16px;
+  padding: 0.75rem;
+  transition: all 0.2s ease;
+}
+
+.badge-item-card:hover {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(99, 102, 241, 0.3);
+}
+
+.badge-icon-bubble {
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  background: rgba(99, 102, 241, 0.15);
+  border: 1px solid rgba(99, 102, 241, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+  flex-shrink: 0;
+}
+
+.badge-details {
+  flex: 1;
+}
+
+/* Action Buttons */
+.profile-actions-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+
+.profile-nav-action-btn {
+  width: 100%;
+  padding: 0.85rem 1.25rem;
+  border-radius: 16px;
+  font-size: 0.92rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  border: none;
+}
+
+.profile-nav-action-btn.primary {
+  background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+  color: #ffffff;
+  box-shadow: 0 8px 20px rgba(99, 102, 241, 0.35);
+}
+
+.profile-nav-action-btn.primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px rgba(99, 102, 241, 0.5);
+}
+
+.profile-nav-action-btn.secondary {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #e2e8f0;
+}
+
+.profile-nav-action-btn.secondary:hover {
+  background: rgba(255, 255, 255, 0.12);
+  color: #ffffff;
+}
+
+.profile-nav-action-btn.pwa {
+  background: rgba(16, 185, 129, 0.15);
+  border: 1px solid rgba(16, 185, 129, 0.4);
+  color: #34d399;
+}
+
+.profile-nav-action-btn.pwa:hover {
+  background: rgba(16, 185, 129, 0.25);
+}
+
+.profile-nav-action-btn.logout {
+  background: transparent;
+  color: #ef4444;
+  font-size: 0.85rem;
+}
+
+.profile-nav-action-btn.logout:hover {
+  background: rgba(239, 68, 68, 0.1);
+}
+
+/* Day Mode Overrides for Profile View */
+body.day-mode .profile-header-card,
+body.day-mode .profile-card-section {
+  background: #ffffff;
+  border-color: rgba(15, 23, 42, 0.1);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+}
+
+body.day-mode .student-profile-name,
+body.day-mode .section-title,
+body.day-mode .speech-text,
+body.day-mode .stat-number {
+  color: #0f172a;
+}
+
+body.day-mode .mascot-speech-bubble {
+  background: #f1f5f9;
+  border-color: #cbd5e1;
+}
+
+body.day-mode .mascot-speech-bubble::before {
+  border-color: transparent transparent #f1f5f9 transparent;
+}
+
+body.day-mode .student-goal-box {
+  background: #f8fafc;
+  border-color: #cbd5e1;
+}
+
+body.day-mode .goal-quote {
+  color: #334155;
+}
+
+body.day-mode .mascot-chip {
+  background: #f8fafc;
+  border-color: #e2e8f0;
+}
+
+body.day-mode .mascot-chip.selected {
+  background: #eef2ff;
+  border-color: #6366f1;
+}
+
+body.day-mode .mascot-chip-name {
+  color: #1e293b;
+}
+
+body.day-mode .accessory-chip {
+  background: #f8fafc;
+  border-color: #e2e8f0;
+  color: #334155;
+}
+
+body.day-mode .profile-stat-box,
+body.day-mode .badge-item-card {
+  background: #f8fafc;
+  border-color: #e2e8f0;
+}
+
+body.day-mode .badge-title {
+  color: #0f172a;
+}
+
+body.day-mode .profile-nav-action-btn.secondary {
+  background: #f1f5f9;
+  border-color: #cbd5e1;
+  color: #1e293b;
+}
+
+
 
 
 

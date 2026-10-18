@@ -116,6 +116,13 @@ export default function Sidebar({
                     <ShieldCheck className="w-5 h-5 text-emerald" />
                     <span>My Learning Progress</span>
                   </button>
+                  <button
+                    className={`sidebar-nav-item ${activeTab === 'profile' ? 'active' : ''}`}
+                    onClick={() => handleNavClick('profile')}
+                  >
+                    <User className="w-5 h-5 text-purple" />
+                    <span>Cartoon Profile & Mascot</span>
+                  </button>
                 </>
               )}
             </nav>
