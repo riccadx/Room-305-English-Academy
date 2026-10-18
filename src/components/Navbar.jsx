@@ -1,22 +1,21 @@
 import React, { useState } from 'react';
-import { GraduationCap, User, RefreshCw, Sparkles, BookOpen, ShieldCheck, Sun, Moon } from './Icons';
-import { dbService } from '../services/db';
+import { GraduationCap, Menu, Sparkles, Smartphone } from './Icons';
 import AvatarDesignerModal, { RenderAvatar } from './AvatarDesignerModal';
-import DatabaseInspectorModal from './DatabaseInspectorModal';
+import { dbService } from '../services/db';
 
-export default function Navbar({ currentUser, onUserChange, activeTab, setActiveTab, onLogout, isDayMode, onToggleTheme }) {
+export default function Navbar({ 
+  currentUser,
+  onUserChange,
+  setActiveTab, 
+  onToggleSidebar,
+  sidebarOpen,
+  onOpenInstallPrompt
+}) {
   const isTeacher = currentUser?.role === 'teacher';
   const [showAvatarDesigner, setShowAvatarDesigner] = useState(false);
-  const [showDbInspector, setShowDbInspector] = useState(false);
-
-  const handleToggleRole = () => {
-    const nextRole = isTeacher ? 'learner' : 'teacher';
-    const newUser = dbService.switchRole(nextRole);
-    onUserChange(newUser);
-  };
 
   const handleSaveAvatar = (avatarConfig) => {
-    if (currentUser) {
+    if (currentUser && onUserChange) {
       const updatedUser = dbService.updateUserAvatar(currentUser.id, avatarConfig);
       onUserChange(updatedUser || currentUser);
       setShowAvatarDesigner(false);
@@ -26,90 +25,52 @@ export default function Navbar({ currentUser, onUserChange, activeTab, setActive
   return (
     <header className="navbar">
       <div className="navbar-container">
-        {/* Logo */}
-        <div className="navbar-brand" onClick={() => setActiveTab('feed')}>
-          <div className="brand-icon">
-            <GraduationCap className="w-6 h-6 text-indigo" />
-          </div>
-          <div className="brand-text">
-            <span className="brand-title">Room-305-English-Academy</span>
-            <span className="brand-subtitle">English Learning Portal</span>
-          </div>
-        </div>
-
-        {/* Navigation links depending on role */}
-        <nav className="navbar-nav">
-          {isTeacher ? (
-            <>
-              <button
-                className={`nav-link ${activeTab === 'pathway' ? 'active' : ''}`}
-                onClick={() => setActiveTab('pathway')}
-              >
-                <Sparkles className="w-4 h-4 text-amber" />
-                30-Week Pathway
-              </button>
-              <button
-                className={`nav-link ${activeTab === 'manage' ? 'active' : ''}`}
-                onClick={() => setActiveTab('manage')}
-              >
-                <BookOpen className="w-4 h-4" />
-                Lesson Management
-              </button>
-              <button
-                className={`nav-link ${activeTab === 'create' ? 'active' : ''}`}
-                onClick={() => setActiveTab('create')}
-              >
-                <Sparkles className="w-4 h-4" />
-                Create Lesson & Quiz
-              </button>
-            </>
-          ) : (
-            <>
-              <button
-                className={`nav-link ${activeTab === 'pathway' ? 'active' : ''}`}
-                onClick={() => setActiveTab('pathway')}
-              >
-                <Sparkles className="w-4 h-4 text-amber" />
-                30-Week Pathway
-              </button>
-              <button
-                className={`nav-link ${activeTab === 'feed' ? 'active' : ''}`}
-                onClick={() => setActiveTab('feed')}
-              >
-                <BookOpen className="w-4 h-4" />
-                Explore Courses
-              </button>
-              <button
-                className={`nav-link ${activeTab === 'progress' ? 'active' : ''}`}
-                onClick={() => setActiveTab('progress')}
-              >
-                <ShieldCheck className="w-4 h-4" />
-                My Learning Progress
-              </button>
-            </>
-          )}
-        </nav>
-
-        {/* Right Action Tools & Profile */}
-        <div className="navbar-actions">
-          {/* Day / Night Theme Toggle Button */}
-          {onToggleTheme && (
-            <button
-              className="theme-toggle-btn"
-              onClick={onToggleTheme}
-              title={isDayMode ? "Switch to Night Mode 🌙" : "Switch to Day Mode ☀️"}
+        {/* Left Side: Sidebar Hamburger Toggle + Logo */}
+        <div className="navbar-brand-group">
+          {onToggleSidebar && (
+            <button 
+              type="button" 
+              className={`sidebar-hamburger-btn ${sidebarOpen ? 'active' : ''}`}
+              onClick={onToggleSidebar}
+              title={sidebarOpen ? "Close Sidebar Navigation" : "Open Sidebar Navigation Menu ☰"}
             >
-              {isDayMode ? <Moon className="w-4 h-4 text-indigo" /> : <Sun className="w-4 h-4 text-amber" />}
-              <span className="theme-toggle-label">{isDayMode ? 'Night Mode' : 'Day Mode'}</span>
+              <Menu className="w-5 h-5 text-white" />
             </button>
           )}
 
-          {/* Active Portal Badge (Non-clickable) */}
+          {/* Logo */}
+          <div className="navbar-brand" onClick={() => setActiveTab && setActiveTab('pathway')}>
+            <div className="brand-icon">
+              <GraduationCap className="w-6 h-6 text-indigo" />
+            </div>
+            <div className="brand-text">
+              <span className="brand-title">Room-305-English-Academy</span>
+              <span className="brand-subtitle">English Learning Portal</span>
+            </div>
+          </div>
+        </div>
+
+        {/* Right Side: Portal Role Badge & User Profile Pill */}
+        <div className="navbar-actions">
+          {/* Quick Install Mobile App Button */}
+          {onOpenInstallPrompt && (
+            <button
+              type="button"
+              className="navbar-install-app-btn"
+              onClick={onOpenInstallPrompt}
+              title="Install Room-305 Mobile App on Phone or PC"
+            >
+              <Smartphone className="w-4 h-4 text-emerald" />
+              <span className="navbar-install-text">Install App</span>
+            </button>
+          )}
+
+          {/* Active Portal Badge */}
           <span className={`role-badge ${isTeacher ? 'teacher-badge' : 'learner-badge'}`}>
             {isTeacher ? 'Educator Portal' : 'Learner Portal'}
           </span>
 
-          {/* User Profile - Clickable to redesign avatar */}
+          {/* User Profile Pill - Clickable to open Avatar Designer */}
           <div 
             className="user-profile-pill cursor-pointer hover:opacity-90 transition"
             onClick={() => setShowAvatarDesigner(true)}
@@ -128,31 +89,6 @@ export default function Navbar({ currentUser, onUserChange, activeTab, setActive
               <span className="user-role">{isTeacher ? 'Teacher / Admin' : 'Student'}</span>
             </div>
           </div>
-
-          {/* Logout / Sign Out Button */}
-          {onLogout && (
-            <button className="primary-btn text-xs py-1.5 px-3" onClick={onLogout} title="Log out to Login / Register screen">
-              Sign Out
-            </button>
-          )}
-
-          {/* Database Inspector & Reset Demo Buttons - STRICTLY TEACHER / EDUCATOR PORTAL ONLY */}
-          {isTeacher && (
-            <>
-              <button 
-                className="teacher-db-inspector-btn" 
-                onClick={() => setShowDbInspector(true)} 
-                title="📊 Open Database & Registered Accounts Inspector (Educator Only)"
-              >
-                <span className="teacher-db-icon">📊</span>
-                <span className="teacher-db-text">DB Studio</span>
-              </button>
-
-              <button className="icon-btn" onClick={() => dbService.resetToDefault()} title="Reset demo database">
-                <RefreshCw className="w-4 h-4" />
-              </button>
-            </>
-          )}
         </div>
       </div>
 
@@ -164,15 +100,6 @@ export default function Navbar({ currentUser, onUserChange, activeTab, setActive
           onClose={() => setShowAvatarDesigner(false)}
         />
       )}
-
-      {/* Database Inspector Modal */}
-      {showDbInspector && (
-        <DatabaseInspectorModal
-          onClose={() => setShowDbInspector(false)}
-        />
-      )}
     </header>
   );
 }
-
-

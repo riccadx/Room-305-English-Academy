@@ -1,13 +1,18 @@
 import React, { useState } from 'react';
-import { Sparkles, X, Check, RefreshCw, Search, Trash } from './Icons';
-import { dbService } from '../services/db';
+import { Sparkles, X, Check, RefreshCw, Search, Trash, Lock } from './Icons';
+import { dbService, GOOGLE_SPREADSHEET_ID, GOOGLE_SHEET_VIEW_URL } from '../services/db';
 import { RenderAvatar } from './AvatarDesignerModal';
+import GoogleSheetPasscodeModal from './GoogleSheetPasscodeModal';
 
 export default function DatabaseInspectorModal({ onClose }) {
   const [users, setUsers] = useState(() => dbService.getUsers());
   const [lessons, setLessons] = useState(() => dbService.getLessons());
   const [quizzes, setQuizzes] = useState(() => dbService.getQuizzes());
   const [activeTab, setActiveTab] = useState('users'); // 'users' | 'lessons' | 'quizzes' | 'backup'
+  
+  // Google Sheets Security Passcode Modal State
+  const [showPasscodeModal, setShowPasscodeModal] = useState(false);
+  const [passcodeActionType, setPasscodeActionType] = useState('OPEN_SHEET'); // 'OPEN_SHEET' | 'SYNC' | 'CSV'
   
   // Search & Filter state for Users
   const [userSearchQuery, setUserSearchQuery] = useState('');
@@ -528,9 +533,49 @@ export default function DatabaseInspectorModal({ onClose }) {
             </div>
           )}
 
-          {/* TAB 4: BACKUP & JSON */}
+          {/* TAB 4: BACKUP & GOOGLE SHEETS SYNC */}
           {activeTab === 'backup' && (
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(360px, 1fr))', gap: '1.5rem' }}>
+              
+              {/* GOOGLE SHEETS LIVE DATABASE CONNECT CARD */}
+              <div className="db-backup-export-card" style={{ background: 'linear-gradient(135deg, rgba(16, 185, 129, 0.15), rgba(5, 150, 105, 0.15))', border: '1px solid rgba(16, 185, 129, 0.4)' }}>
+                <h3 style={{ margin: '0 0 0.6rem', fontSize: '1.15rem', color: '#10b981', fontWeight: 800, display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                  📊 Google Sheets Live Database Connection
+                </h3>
+                <p style={{ fontSize: '0.85rem', margin: '0 0 0.75rem', lineHeight: 1.6 }}>
+                  Connected Spreadsheet Status: <code style={{ background: 'rgba(16, 185, 129, 0.2)', padding: '0.2rem 0.5rem', borderRadius: '6px', color: '#6ee7b7', fontWeight: 700 }}>🔒 Protected (Passcode Required)</code>
+                </p>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', marginTop: '1rem' }}>
+                  <button
+                    onClick={() => {
+                      setPasscodeActionType('OPEN_SHEET');
+                      setShowPasscodeModal(true);
+                    }}
+                    style={{ border: 'none', cursor: 'pointer', padding: '0.75rem 1.25rem', borderRadius: '12px', background: '#059669', color: '#ffffff', fontWeight: 800, fontSize: '0.88rem', textAlign: 'center', boxShadow: '0 4px 12px rgba(5, 150, 105, 0.3)', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' }}
+                  >
+                    <Lock className="w-4 h-4" /> 🟢 Open Live Google Sheet (Passcode Protected) ↗
+                  </button>
+                  <button
+                    onClick={() => {
+                      setPasscodeActionType('SYNC');
+                      setShowPasscodeModal(true);
+                    }}
+                    style={{ padding: '0.75rem 1.25rem', borderRadius: '12px', background: 'rgba(255, 255, 255, 0.1)', color: '#ffffff', border: '1px solid rgba(255, 255, 255, 0.2)', fontWeight: 800, cursor: 'pointer', fontSize: '0.88rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' }}
+                  >
+                    <Lock className="w-4 h-4" /> 🔄 Sync Local Database to Google Sheet Now
+                  </button>
+                  <button
+                    onClick={() => {
+                      setPasscodeActionType('CSV');
+                      setShowPasscodeModal(true);
+                    }}
+                    style={{ padding: '0.65rem 1.25rem', borderRadius: '12px', background: 'transparent', color: '#6ee7b7', border: '1px border #10b981', fontWeight: 700, cursor: 'pointer', fontSize: '0.82rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' }}
+                  >
+                    <Lock className="w-4 h-4" /> 📊 Download Formatted CSV for Google Sheets
+                  </button>
+                </div>
+              </div>
+
               <div className="db-backup-export-card">
                 <h3 style={{ margin: '0 0 0.6rem', fontSize: '1.15rem', fontWeight: 800 }}>📥 Export Full Database (JSON)</h3>
                 <p style={{ fontSize: '0.85rem', margin: '0 0 1.25rem', lineHeight: 1.6 }}>
@@ -591,6 +636,25 @@ export default function DatabaseInspectorModal({ onClose }) {
             Exit Studio View
           </button>
         </div>
+
+        {/* Google Sheet Access Security Protection Passcode Modal */}
+        <GoogleSheetPasscodeModal
+          isOpen={showPasscodeModal}
+          actionType={passcodeActionType}
+          onSuccess={async () => {
+            if (passcodeActionType === 'SYNC') {
+              setStatusMsg('🔄 Syncing local database records live to Google Sheet...');
+              await dbService.syncAllToGoogleSheets();
+              setStatusMsg(`✅ Successfully synced local database records to Google Sheet (${GOOGLE_SPREADSHEET_ID})!`);
+              setTimeout(() => setStatusMsg(''), 4000);
+            } else if (passcodeActionType === 'CSV') {
+              dbService.exportDatabaseCSV();
+              setStatusMsg('📊 Exported Database CSV formatted for Google Sheets import!');
+              setTimeout(() => setStatusMsg(''), 4000);
+            }
+          }}
+          onClose={() => setShowPasscodeModal(false)}
+        />
       </div>
     </div>
   );

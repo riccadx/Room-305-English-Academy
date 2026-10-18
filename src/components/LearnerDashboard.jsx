@@ -1,12 +1,16 @@
 import React, { useState } from 'react';
 import { BookOpen, Search, Filter, Headphones, Video, FileText, CheckCircle, Sparkles, Flame, ChevronRight, Award, Star, Edit } from './Icons';
 import { dbService } from '../services/db';
+import SelfStudyCard from './SelfStudyCard';
+import SpeakingCard from './SpeakingCard';
 
 export default function LearnerDashboard({ currentUser, onOpenLesson, onOpenQuiz, onNavigateTab }) {
   const [lessons] = useState(dbService.getLessons().filter(l => l.published));
   const [quizzes] = useState(dbService.getQuizzes());
   const [progress] = useState(dbService.getProgress(currentUser?.id || 'usr_learner_1'));
   
+  // Interactive Card Learning selector: monday | tuesday | wednesday | thursday
+  const [activeStudyCardDay, setActiveStudyCardDay] = useState('monday');
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedModule, setSelectedModule] = useState('All');
   const [selectedLevel, setSelectedLevel] = useState('All');
@@ -68,12 +72,14 @@ export default function LearnerDashboard({ currentUser, onOpenLesson, onOpenQuiz
         </div>
       </div>
 
-      {/* SECTION 1: WEEKLY CLASS SCHEDULE (MONDAY - THURSDAY + VOCABULARY) */}
+      {/* SECTION 1: WEEKLY CLASS SCHEDULE (MONDAY & WEDNESDAY SELF-STUDY / TUESDAY & THURSDAY SPEAKING) */}
       <div className="dashboard-section mt-8">
         <div className="section-title-row">
           <div>
-            <h2 className="section-heading">📅 Section 1: Weekly Class Schedule</h2>
-            <p className="section-subtext">Click on any day to open the self-study lessons or Thursday's live class.</p>
+            <h2 className="section-heading">📅 Section 1: Weekly Class Schedule & Card Learning</h2>
+            <p className="section-subtext">
+              Monday & Wednesday: Self-Study (Listening, Reading, Writing + Role Prep) • Tuesday & Thursday: Speaking Practice!
+            </p>
           </div>
           <button className="primary-btn text-sm" onClick={() => onNavigateTab('pathway')}>
             Open 30-Week Pathway →
@@ -81,45 +87,117 @@ export default function LearnerDashboard({ currentUser, onOpenLesson, onOpenQuiz
         </div>
 
         <div className="weekly-schedule-grid mt-4">
-          <div className="day-card card-monday" onClick={() => onNavigateTab('pathway')}>
+          <div 
+            className={`day-card card-monday ${activeStudyCardDay === 'monday' ? 'ring-2 ring-emerald' : ''}`} 
+            onClick={() => setActiveStudyCardDay('monday')}
+            style={{ cursor: 'pointer' }}
+          >
             <div className="day-badge">MONDAY</div>
             <div className="day-icon"><Headphones className="w-7 h-7 text-emerald" /></div>
-            <h3 className="day-title">Listening Class</h3>
-            <p className="day-desc">Listen to practical conversations, main idea & details with Japanese Help.</p>
-            <span className="day-action">Start Listening →</span>
+            <h3 className="day-title">Self-Study</h3>
+            <p className="day-desc">Listening, Reading & Writing pillars + Tuesday role assignment.</p>
+            <span className="day-action">Open Study Card →</span>
           </div>
 
-          <div className="day-card card-tuesday" onClick={() => onNavigateTab('pathway')}>
+          <div 
+            className={`day-card card-tuesday ${activeStudyCardDay === 'tuesday' ? 'ring-2 ring-amber' : ''}`} 
+            onClick={() => setActiveStudyCardDay('tuesday')}
+            style={{ cursor: 'pointer' }}
+          >
             <div className="day-badge">TUESDAY</div>
-            <div className="day-icon"><Edit className="w-7 h-7 text-indigo" /></div>
-            <h3 className="day-title">Writing Class</h3>
-            <p className="day-desc">Learn grammar structures, complete scaffolded sentences & short responses.</p>
-            <span className="day-action">Start Writing →</span>
+            <div className="day-icon"><Video className="w-7 h-7 text-amber" /></div>
+            <h3 className="day-title">Speaking Class</h3>
+            <p className="day-desc">Practice Monday's reading tasks & roles in 30-min live pairs.</p>
+            <span className="day-action">Open Speaking Card →</span>
           </div>
 
-          <div className="day-card card-wednesday" onClick={() => onNavigateTab('pathway')}>
+          <div 
+            className={`day-card card-wednesday ${activeStudyCardDay === 'wednesday' ? 'ring-2 ring-indigo' : ''}`} 
+            onClick={() => setActiveStudyCardDay('wednesday')}
+            style={{ cursor: 'pointer' }}
+          >
             <div className="day-badge">WEDNESDAY</div>
-            <div className="day-icon"><FileText className="w-7 h-7 text-amber" /></div>
-            <h3 className="day-title">Reading & Prep</h3>
-            <p className="day-desc">Read context stories, assign role-play script for Thursday class.</p>
-            <span className="day-action">Prepare Script →</span>
+            <div className="day-icon"><FileText className="w-7 h-7 text-indigo" /></div>
+            <h3 className="day-title">Self-Study</h3>
+            <p className="day-desc">Listening, Reading & Writing pillars + Thursday role assignment.</p>
+            <span className="day-action">Open Study Card →</span>
           </div>
 
-          <div className="day-card card-thursday" onClick={() => onNavigateTab('pathway')}>
+          <div 
+            className={`day-card card-thursday ${activeStudyCardDay === 'thursday' ? 'ring-2 ring-rose' : ''}`} 
+            onClick={() => setActiveStudyCardDay('thursday')}
+            style={{ cursor: 'pointer' }}
+          >
             <div className="day-badge badge-thursday">THURSDAY</div>
             <div className="day-icon"><Video className="w-7 h-7 text-rose" /></div>
             <h3 className="day-title">Speaking Class</h3>
-            <p className="day-desc">30-Minute Live Online Class with Teacher feedback & script discussion.</p>
-            <span className="day-action">Join Live Class →</span>
+            <p className="day-desc">30-Minute live synthesis roleplay based on Wednesday prep.</p>
+            <span className="day-action">Open Speaking Card →</span>
           </div>
 
           <div className="day-card card-vocab" onClick={() => onNavigateTab('pathway')}>
             <div className="day-badge badge-vocab">VOCABULARY</div>
             <div className="day-icon"><Sparkles className="w-7 h-7 text-yellow" /></div>
             <h3 className="day-title">Vocabulary Hub</h3>
-            <p className="day-desc">8–12 target words per week with Japanese tap-to-reveal help cards.</p>
+            <p className="day-desc">30-week target vocabulary synced with Google Sheets database.</p>
             <span className="day-action">Study Vocab →</span>
           </div>
+        </div>
+
+        {/* ACTIVE CARD LEARNING COMPONENT (DUOLINGO 3-PILLAR OR SPEAKING PREP) */}
+        <div className="active-card-learning-container mt-6">
+          <div className="flex items-center justify-between mb-3">
+            <div className="flex items-center gap-2">
+              <span className="text-xl">🌟</span>
+              <h3 className="text-base font-bold text-white uppercase tracking-wider">
+                Active Learning Card: {activeStudyCardDay.toUpperCase()} MISSION
+              </h3>
+            </div>
+            <div className="flex gap-2">
+              <button 
+                className={`text-xs px-3 py-1.5 rounded-lg font-semibold transition ${activeStudyCardDay === 'monday' ? 'bg-emerald-600 text-white' : 'bg-slate-800 text-slate-300'}`}
+                onClick={() => setActiveStudyCardDay('monday')}
+              >
+                Mon Self-Study
+              </button>
+              <button 
+                className={`text-xs px-3 py-1.5 rounded-lg font-semibold transition ${activeStudyCardDay === 'tuesday' ? 'bg-amber-600 text-white' : 'bg-slate-800 text-slate-300'}`}
+                onClick={() => setActiveStudyCardDay('tuesday')}
+              >
+                Tue Speaking
+              </button>
+              <button 
+                className={`text-xs px-3 py-1.5 rounded-lg font-semibold transition ${activeStudyCardDay === 'wednesday' ? 'bg-indigo-600 text-white' : 'bg-slate-800 text-slate-300'}`}
+                onClick={() => setActiveStudyCardDay('wednesday')}
+              >
+                Wed Self-Study
+              </button>
+              <button 
+                className={`text-xs px-3 py-1.5 rounded-lg font-semibold transition ${activeStudyCardDay === 'thursday' ? 'bg-rose-600 text-white' : 'bg-slate-800 text-slate-300'}`}
+                onClick={() => setActiveStudyCardDay('thursday')}
+              >
+                Thu Speaking
+              </button>
+            </div>
+          </div>
+
+          {/* Render Self-Study Card for Monday & Wednesday */}
+          {(activeStudyCardDay === 'monday' || activeStudyCardDay === 'wednesday') && (
+            <SelfStudyCard 
+              dayType={activeStudyCardDay}
+              weekNumber={1}
+              onNavigateSpeaking={() => setActiveStudyCardDay(activeStudyCardDay === 'monday' ? 'tuesday' : 'thursday')}
+            />
+          )}
+
+          {/* Render Speaking Card for Tuesday & Thursday */}
+          {(activeStudyCardDay === 'tuesday' || activeStudyCardDay === 'thursday') && (
+            <SpeakingCard 
+              dayType={activeStudyCardDay}
+              weekNumber={1}
+              onNavigateToSelfStudy={() => setActiveStudyCardDay(activeStudyCardDay === 'tuesday' ? 'monday' : 'wednesday')}
+            />
+          )}
         </div>
       </div>
 

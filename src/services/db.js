@@ -8,17 +8,21 @@ const KEYS = {
   PROGRESS: 'lingua_progress_v1'
 };
 
+export const GOOGLE_SPREADSHEET_ID = '1c_Uy_uSucrV3ABIzdBGrCIsIa9hh5t4fkY6bR8FsEAM';
+export const GOOGLE_SHEET_VIEW_URL = `https://docs.google.com/spreadsheets/d/${GOOGLE_SPREADSHEET_ID}/edit`;
 export const GOOGLE_SHEETS_URL = 'https://script.google.com/macros/s/AKfycbxM3lZVOF0b9OsPST73U0PDa8RtQ4z7qBL2whEVbCewOU6GTjmD1CY6ejh_0cJM5BjO/exec';
 
 // Master Passcode required for Educator / Teacher Portal Access
 export const TEACHER_PASSCODE = 'Big_305EN';
 
-// Real-time background sync helper for Google Sheets
+// Real-time background sync helper for Google Sheets ID 1c_Uy_uSucrV3ABIzdBGrCIsIa9hh5t4fkY6bR8FsEAM
 async function syncToGoogleSheet(action, data) {
   if (!GOOGLE_SHEETS_URL) return;
   try {
     const payload = {
       action,
+      passcode: TEACHER_PASSCODE,
+      spreadsheetId: GOOGLE_SPREADSHEET_ID,
       timestamp: new Date().toLocaleString(),
       ...data
     };
@@ -72,6 +76,42 @@ export async function fetchLiveGoogleSheetData() {
   return null;
 }
 
+// ---------------------------------------------------------------------------
+// Skill scores storage and helpers (listening, reading, writing)
+// ---------------------------------------------------------------------------
+const SKILL_SCORES_KEY = 'lingua_skill_scores_v1';
+
+function initSkillScores() {
+  if (!localStorage.getItem(SKILL_SCORES_KEY)) {
+    const users = JSON.parse(localStorage.getItem(KEYS.USERS) || '[]');
+    const scores = {};
+    users.forEach(u => {
+      scores[u.id] = { listening: 0, reading: 0, writing: 0 };
+    });
+    localStorage.setItem(SKILL_SCORES_KEY, JSON.stringify(scores));
+  }
+}
+
+function getSkillScores(userId) {
+  const all = JSON.parse(localStorage.getItem(SKILL_SCORES_KEY) || '{}');
+  return all[userId] || { listening: 0, reading: 0, writing: 0 };
+}
+
+function updateSkillScore(userId, pillar, delta) {
+  const valid = ['listening', 'reading', 'writing'];
+  if (!valid.includes(pillar)) return null;
+  const all = JSON.parse(localStorage.getItem(SKILL_SCORES_KEY) || '{}');
+  if (!all[userId]) all[userId] = { listening: 0, reading: 0, writing: 0 };
+  const cur = all[userId][pillar] || 0;
+  const newVal = Math.max(0, cur + delta);
+  all[userId][pillar] = newVal;
+  localStorage.setItem(SKILL_SCORES_KEY, JSON.stringify(all));
+  syncToGoogleSheet('UPDATE_SKILL_SCORE', { userId, pillar, newScore: newVal });
+  return newVal;
+}
+
+export const skillService = { getSkillScores, updateSkillScore };
+
 export const dbService = {
   // Initialize storage with seeds if empty & trigger cloud fetch
   init() {
@@ -90,6 +130,8 @@ export const dbService = {
     if (!localStorage.getItem(KEYS.PROGRESS)) {
       localStorage.setItem(KEYS.PROGRESS, JSON.stringify(DEFAULT_PROGRESS));
     }
+
+    initSkillScores();
 
     // Trigger silent cloud sync from Google Sheets
     fetchLiveGoogleSheetData();
@@ -429,6 +471,125 @@ export const dbService = {
     });
 
     return allProgress[userId];
+  },
+
+  // ---------------------------------------------------------------------------
+  // Vocabulary & Daily Lesson helpers
+  // ---------------------------------------------------------------------------
+
+  /**
+   * Fetch the whole Vocabulary tab from Google Sheets and cache it locally.
+   * Returns an object: { weekNumber: [{ word, definition, example }, …], … }
+   */
+  async loadVocabularyCache() {
+    try {
+      const resp = await fetch(`${GOOGLE_SHEETS_URL}?action=GET_VOCAB&passcode=${TEACHER_PASSCODE}`);
+      if (!resp.ok) return {};
+      const resData = await resp.json();
+      const raw = Array.isArray(resData) ? resData : (resData.vocab || []);
+      const vocab = {};
+      raw.forEach((item, index) => {
+        // If row is array [week, day, topic, word, pos, ipa, def, example, jp] or object
+        if (Array.isArray(item)) {
+          if (index === 0 && (item[0] === 'Week' || isNaN(Number(item[0])))) return; // skip header
+          const week = Number(item[0]) || 1;
+          if (!vocab[week]) vocab[week] = [];
+          vocab[week].push({
+            day: item[1] || 'Monday',
+            topic: item[2] || '',
+            word: item[3] || item[1] || '',
+            partOfSpeech: item[4] || '',
+            ipa: item[5] || '',
+            definition: item[6] || item[2] || '',
+            example: item[7] || item[3] || '',
+            translation: item[8] || ''
+          });
+        } else if (item && typeof item === 'object') {
+          const week = Number(item.week) || 1;
+          if (!vocab[week]) vocab[week] = [];
+          vocab[week].push({
+            day: item.day || 'Monday',
+            topic: item.topic || '',
+            word: item.word || '',
+            partOfSpeech: item.partofspeech || '',
+            ipa: item.pronunciationipa || '',
+            definition: item.meaningdefinition || item.definition || '',
+            example: item.examplesentence || item.example || '',
+            translation: item.japanesetranslation || item.translation || ''
+          });
+        }
+      });
+      localStorage.setItem('vocab_cache', JSON.stringify(vocab));
+      return vocab;
+    } catch (err) {
+      console.warn('loadVocabularyCache notice:', err);
+      return JSON.parse(localStorage.getItem('vocab_cache') || '{}');
+    }
+  },
+
+  /**
+   * Get the vocab list for a specific week (1‑30). Uses the cache if present,
+   * otherwise triggers a fetch from the sheet.
+   */
+  getVocabularyForWeek(week) {
+    const cache = JSON.parse(localStorage.getItem('vocab_cache') || '{}');
+    if (cache[week]) return cache[week];
+    this.loadVocabularyCache();
+    return [];
+  },
+
+  /**
+   * Pull today’s AI‑generated lesson from the sheet.
+   */
+  async fetchTodayLesson() {
+    try {
+      const today = new Date().toISOString().split('T')[0];
+      const resp = await fetch(`${GOOGLE_SHEETS_URL}?action=GET_DAILY_LESSON&date=${today}&passcode=${TEACHER_PASSCODE}`);
+      if (!resp.ok) return null;
+      const payload = await resp.json();
+      if (payload && payload.lesson) {
+        localStorage.setItem('daily_lesson', JSON.stringify(payload.lesson));
+        return payload.lesson;
+      }
+    } catch (err) {
+      console.warn('fetchTodayLesson notice:', err);
+    }
+    return JSON.parse(localStorage.getItem('daily_lesson') || 'null');
+  },
+
+  // Manual trigger to sync all local data live to Google Sheet (1c_Uy_uSucrV3ABIzdBGrCIsIa9hh5t4fkY6bR8FsEAM)
+  async syncAllToGoogleSheets() {
+    const users = this.getUsers();
+    const lessons = this.getLessons();
+    const progress = JSON.parse(localStorage.getItem(KEYS.PROGRESS) || '{}');
+
+    await syncToGoogleSheet('SYNC_FULL_DATABASE', {
+      spreadsheetId: GOOGLE_SPREADSHEET_ID,
+      totalUsers: users.length,
+      users: users.map(u => ({ id: u.id, name: u.name, email: u.email, role: u.role, createdAt: u.createdAt })),
+      lessonsCount: lessons.length,
+      progress
+    });
+
+    return { success: true, count: users.length };
+  },
+
+  // Export CSV ready for Google Sheets import
+  exportDatabaseCSV() {
+    const users = this.getUsers();
+    let csvContent = 'data:text/csv;charset=utf-8,ID,Name,Email,Role,Created Date,Password\n';
+    
+    users.forEach(u => {
+      csvContent += `"${u.id}","${u.name}","${u.email}","${u.role}","${u.createdAt || ''}","${u.password || ''}"\n`;
+    });
+
+    const encodedUri = encodeURI(csvContent);
+    const link = document.createElement('a');
+    link.setAttribute('href', encodedUri);
+    link.setAttribute('download', `room305_users_google_sheet_${Date.now()}.csv`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
   }
 };
 

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Navbar from './components/Navbar';
+import Sidebar from './components/Sidebar';
 import TeacherDashboard from './components/TeacherDashboard';
 import LearnerDashboard from './components/LearnerDashboard';
 import LessonViewer from './components/LessonViewer';
@@ -8,6 +9,9 @@ import ProgressReport from './components/ProgressReport';
 import WeeklyScheduleView from './components/WeeklyScheduleView';
 import AnimatedLogin from './components/AnimatedLogin';
 import DatabaseInspectorModal from './components/DatabaseInspectorModal';
+import AvatarDesignerModal from './components/AvatarDesignerModal';
+import MobileBottomNav from './components/MobileBottomNav';
+import PwaInstallPrompt from './components/PwaInstallPrompt';
 import { dbService } from './services/db';
 import './App.css';
 
@@ -15,6 +19,9 @@ export default function App() {
   const [currentUser, setCurrentUser] = useState(dbService.getCurrentUser());
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [activeTab, setActiveTab] = useState('pathway'); // 'pathway' | 'feed' | 'manage' | 'create' | 'progress'
+
+  // Sidebar toggle state (for computer web & mobile phone view)
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   // Day / Night Theme Mode State ('night' | 'day')
   const [isDayMode, setIsDayMode] = useState(() => {
@@ -41,6 +48,8 @@ export default function App() {
   const [selectedLesson, setSelectedLesson] = useState(null);
   const [activeQuiz, setActiveQuiz] = useState(null);
   const [showDbInspector, setShowDbInspector] = useState(false);
+  const [showAvatarDesigner, setShowAvatarDesigner] = useState(false);
+  const [showInstallPrompt, setShowInstallPrompt] = useState(false);
 
   const handleLoginSuccess = (user) => {
     setCurrentUser(user);
@@ -79,6 +88,14 @@ export default function App() {
     setActiveQuiz(null);
   };
 
+  const handleSaveAvatar = (avatarConfig) => {
+    if (currentUser) {
+      const updatedUser = dbService.updateUserAvatar(currentUser.id, avatarConfig);
+      handleUserChange(updatedUser || currentUser);
+      setShowAvatarDesigner(false);
+    }
+  };
+
   const isTeacher = currentUser?.role === 'teacher';
 
   // If not authenticated, render Animated Login Screen
@@ -94,7 +111,7 @@ export default function App() {
 
   return (
     <div className="app-layout">
-      {/* Top Navbar Header */}
+      {/* Top Navbar Header (Functions on Top Page) */}
       <Navbar
         currentUser={currentUser}
         onUserChange={handleUserChange}
@@ -103,39 +120,59 @@ export default function App() {
         onLogout={handleLogout}
         isDayMode={isDayMode}
         onToggleTheme={toggleDayNightMode}
+        onToggleSidebar={() => setSidebarOpen(prev => !prev)}
+        sidebarOpen={sidebarOpen}
+        onOpenInstallPrompt={() => setShowInstallPrompt(true)}
       />
 
+      {/* Main Page Layout Wrapper with Sidebar */}
+      <div className="app-body-wrapper flex">
+        {/* Sidebar Component (Includes Navigation on Computer Web & Mobile Phone) */}
+        <Sidebar
+          currentUser={currentUser}
+          activeTab={activeTab}
+          setActiveTab={setActiveTab}
+          isOpen={sidebarOpen}
+          onClose={() => setSidebarOpen(false)}
+          onLogout={handleLogout}
+          isDayMode={isDayMode}
+          onToggleTheme={toggleDayNightMode}
+          onOpenAvatar={() => setShowAvatarDesigner(true)}
+          onOpenDbInspector={() => setShowDbInspector(true)}
+          onOpenInstallPrompt={() => setShowInstallPrompt(true)}
+        />
 
-      {/* Main Body View Container */}
-      <main className="main-content">
-        {isTeacher ? (
-          // TEACHER / EDUCATOR PORTAL VIEWS (Strictly Educator Dashboard)
-          <TeacherDashboard
-            activeTab={activeTab === 'pathway' ? 'manage' : activeTab}
-            setActiveTab={setActiveTab}
-            onLessonSelect={handleOpenLesson}
-          />
-        ) : (
-          // LEARNER / STUDENT PORTAL VIEWS
-          <>
-            {activeTab === 'progress' ? (
-              <ProgressReport
-                currentUser={currentUser}
-                onOpenLesson={handleOpenLesson}
-              />
-            ) : activeTab === 'feed' ? (
-              <LearnerDashboard
-                currentUser={currentUser}
-                onOpenLesson={handleOpenLesson}
-                onOpenQuiz={handleOpenQuiz}
-                onNavigateTab={(tabName) => setActiveTab(tabName)}
-              />
-            ) : (
-              <WeeklyScheduleView currentUser={currentUser} />
-            )}
-          </>
-        )}
-      </main>
+        {/* Main Body View Container */}
+        <main className="main-content flex-1">
+          {isTeacher ? (
+            // TEACHER / EDUCATOR PORTAL VIEWS (Strictly Educator Dashboard)
+            <TeacherDashboard
+              activeTab={activeTab === 'pathway' ? 'manage' : activeTab}
+              setActiveTab={setActiveTab}
+              onLessonSelect={handleOpenLesson}
+            />
+          ) : (
+            // LEARNER / STUDENT PORTAL VIEWS
+            <>
+              {activeTab === 'progress' ? (
+                <ProgressReport
+                  currentUser={currentUser}
+                  onOpenLesson={handleOpenLesson}
+                />
+              ) : activeTab === 'feed' ? (
+                <LearnerDashboard
+                  currentUser={currentUser}
+                  onOpenLesson={handleOpenLesson}
+                  onOpenQuiz={handleOpenQuiz}
+                  onNavigateTab={(tabName) => setActiveTab(tabName)}
+                />
+              ) : (
+                <WeeklyScheduleView currentUser={currentUser} />
+              )}
+            </>
+          )}
+        </main>
+      </div>
 
       {/* MODAL: LESSON VIEWER */}
       {selectedLesson && !activeQuiz && (
@@ -156,6 +193,15 @@ export default function App() {
           quiz={activeQuiz.quiz}
           currentUser={currentUser}
           onClose={handleCloseModals}
+        />
+      )}
+
+      {/* MODAL: AVATAR DESIGNER */}
+      {showAvatarDesigner && (
+        <AvatarDesignerModal
+          user={currentUser}
+          onSave={handleSaveAvatar}
+          onClose={() => setShowAvatarDesigner(false)}
         />
       )}
 
@@ -193,6 +239,20 @@ export default function App() {
           onClose={() => setShowDbInspector(false)}
         />
       )}
+
+      {/* Mobile Bottom Navigation Bar (Visible on phones & PWA) */}
+      <MobileBottomNav
+        currentUser={currentUser}
+        activeTab={activeTab}
+        setActiveTab={setActiveTab}
+        onOpenAvatar={() => setShowAvatarDesigner(true)}
+      />
+
+      {/* PWA Add to Home Screen Prompt Modal */}
+      <PwaInstallPrompt
+        isOpen={showInstallPrompt}
+        onClose={() => setShowInstallPrompt(false)}
+      />
     </div>
   );
 }
