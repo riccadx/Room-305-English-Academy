@@ -1,5 +1,5 @@
 // Service Worker for Room-305 English Academy PWA
-const CACHE_NAME = 'room-305-cache-v1';
+const CACHE_NAME = 'room-305-cache-v2';
 
 const STATIC_ASSETS = [
   '/',
